@@ -1,16 +1,23 @@
 package com.servermonks.pushinprime.app;
 
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.Scanner;
 import static com.servermonks.pushinprime.Colors.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
 import java.util.Scanner;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONString;
+import org.json.JSONObject;
 import com.apps.util.Console;
 import com.apps.util.Prompter;
 //import com.PushinPrimeApp.Player;
+
 
 
 public class PushinPrimeApp {
@@ -30,6 +37,11 @@ public class PushinPrimeApp {
 //        welcome();
         //howToPlay();
         PROMPTER.prompt(GREEN + "Press [enter] to start..." + RESET + "");
+        try {
+            jsonPractice();
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
         //showSplashScreen();
         //createBoard();
         //prompts for user name
@@ -40,7 +52,7 @@ public class PushinPrimeApp {
 
     private void welcome() throws IOException {
         Console.clear();
-        String banner = Files.readString(Path.of("resources/welcome_banner.txt"));
+        String banner = Files.readString(Path.of("resources/data"));
         PROMPTER.info(banner);
     }
 
@@ -55,37 +67,36 @@ public class PushinPrimeApp {
 
         }
     }
+
+    public void jsonPractice() throws JSONException, IOException {
+
+        String content = new String(Files.readAllBytes(Path.of("resources/data")));
+        JSONObject json = new JSONObject(content);
+
+
+        System.out.println(json);
+        System.out.println(json.get("Pantry"));
+//        JSONObject json = new JSONObject();
+//        JSONObject json2 = new JSONObject();
+//        JSONArray array = new JSONArray();
+
+//        json.put("name", "David");
+//        json.put("object", json2 );
+//        json.put("number", 5);
+//        array.put("item");
+//        array.put(4);
+//        array.put("item2");
+//        json.put("array", array);
+//        System.out.println(json);
+//
+//
+//        System.out.println(json.get("name"));
+
+
+
+
+
+    }
 }
 
 
-//
-//rooms = {
-//        'Hall': {
-//        'south': 'Kitchen',
-//        'east': 'Dining Room',
-//        'item': 'key',
-//        'description': 'This is a really beautiful hall you will see the kitchen to the south and the Dining Room to the east'
-//        },
-//        'Kitchen': {
-//        'north': 'Hall',
-//        'item': 'monster',
-//        'description': 'Be careful there is a Monster somewhere in the kitchen'
-//        },
-//        'Dining Room': {
-//        'west': 'Hall',
-//        'south': 'Garden',
-//        'item': 'potion',
-//        'north': 'Pantry',
-//        'description': 'There is really powerful potion in this room. From here you can go to the hall, the garden or the pantry'
-//        },
-//        'Garden': {
-//        'north': 'Dining Room',
-//        'east': 'Maze',
-//        'description': 'This beautiful garden has a maze. Be careful you do not want to get trap in there'
-//        },
-//        'Pantry': {
-//        'south': 'Dining Room',
-//        'item': 'cookie',
-//        'description': 'There is not much in this room but you can get some cookies if you look around'
-//        }
-//        }
