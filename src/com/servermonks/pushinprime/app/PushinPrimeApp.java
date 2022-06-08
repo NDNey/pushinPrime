@@ -65,7 +65,7 @@ public class PushinPrimeApp {
         String route = game.nextLine().toLowerCase();
         System.out.println(route);
         if (route.equals("b")){
-            System.out.println("yurtttt");
+            System.out.println("Looks like we are going to Ballard today"); //need to connect to object from this point on.
         }
         while (gameOver != true) {
             if (game.nextLine().toLowerCase() == "quit"){
