@@ -45,7 +45,7 @@ public class PushinPrimeApp {
     }
     private void howToPlay() {
         PROMPTER.info(RED_UNDERLINED + "$How to play:" + RESET + "\n" +
-                "   *  The game is played on a 3x3 grid.\n" +
+                "   *  Driver moves to loading dock.\n" +
                 "   *  Players take turns putting their marks (X or O) in empty squares using [1-9].\n" +
                 "   *  The first player to get 3 of her marks in a row (up, down, across, " +
                 "or diagonally) is the winner.\n" +
