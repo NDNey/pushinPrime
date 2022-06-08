@@ -26,8 +26,8 @@ public class PushinPrimeApp {
      * Initial game execution:
      *  -> displays welcome banner, instructions and promps for player names
      */
-    public void execute()  {
-//        welcome();
+    public void execute() throws IOException {
+        welcome();
         //howToPlay();
         PROMPTER.prompt(GREEN + "Press [enter] to start..." + RESET + "");
         //showSplashScreen();
@@ -43,9 +43,17 @@ public class PushinPrimeApp {
         String banner = Files.readString(Path.of("resources/welcome_banner.txt"));
         PROMPTER.info(banner);
     }
+    private void howToPlay() {
+        PROMPTER.info(RED_UNDERLINED + "$How to play:" + RESET + "\n" +
+                "   *  The game is played on a 3x3 grid.\n" +
+                "   *  Players take turns putting their marks (X or O) in empty squares using [1-9].\n" +
+                "   *  The first player to get 3 of her marks in a row (up, down, across, " +
+                "or diagonally) is the winner.\n" +
+                "   *  If all 9 squares are full, the game is over.\n");
+    }
 
     public void getCommands() {
-        while (gameOver != true) {
+        while (gameOver != true) { // while(!gameOver)
             Scanner myObj = new Scanner(System.in);  // Create a Scanner object
             System.out.println("Enter username");
             String userName = myObj.nextLine();

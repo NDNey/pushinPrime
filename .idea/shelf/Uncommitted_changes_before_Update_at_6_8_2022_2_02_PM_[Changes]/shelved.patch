@@ -1,0 +1,97 @@
+Index: src/com/servermonks/pushinprime/app/PushinPrimeApp.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.servermonks.pushinprime.app;\r\n\r\nimport java.util.*;\r\nimport java.util.Scanner;\r\nimport static com.servermonks.pushinprime.Colors.*;\r\nimport java.io.IOException;\r\nimport java.nio.file.Files;\r\nimport java.nio.file.Path;\r\nimport java.util.Scanner;\r\n\r\nimport com.apps.util.Console;\r\nimport com.apps.util.Prompter;\r\n//import com.PushinPrimeApp.Player;\r\n\r\n\r\npublic class PushinPrimeApp {\r\n\r\n    private final Prompter PROMPTER = new Prompter(new Scanner(System.in)) ;\r\n//    private final Board board = Board.getInstance();\r\n    private boolean gameOver;\r\n\r\n\r\n\r\n\r\n    /*\r\n     * Initial game execution:\r\n     *  -> displays welcome banner, instructions and promps for player names\r\n     */\r\n    public void execute()  {\r\n//        welcome();\r\n        //howToPlay();\r\n        PROMPTER.prompt(GREEN + \"Press [enter] to start...\" + RESET + \"\");\r\n        //showSplashScreen();\r\n        //createBoard();\r\n        //prompts for user name\r\n        //prompt for commands\r\n        //promptForUsername();\r\n        //run();\r\n    }\r\n\r\n    private void welcome() throws IOException {\r\n        Console.clear();\r\n        String banner = Files.readString(Path.of(\"resources/welcome_banner.txt\"));\r\n        PROMPTER.info(banner);\r\n    }\r\n\r\n    public void getCommands() {\r\n        while (gameOver != true) {\r\n            Scanner myObj = new Scanner(System.in);  // Create a Scanner object\r\n            System.out.println(\"Enter username\");\r\n            String userName = myObj.nextLine();\r\n            //need to use .split(\"\",2) to split input into two.\r\n            //take seperate actions depending on input(grab,use,go)\r\n\r\n\r\n        }\r\n    }\r\n}\r\n\r\n\r\n//\r\n//rooms = {\r\n//        'Hall': {\r\n//        'south': 'Kitchen',\r\n//        'east': 'Dining Room',\r\n//        'item': 'key',\r\n//        'description': 'This is a really beautiful hall you will see the kitchen to the south and the Dining Room to the east'\r\n//        },\r\n//        'Kitchen': {\r\n//        'north': 'Hall',\r\n//        'item': 'monster',\r\n//        'description': 'Be careful there is a Monster somewhere in the kitchen'\r\n//        },\r\n//        'Dining Room': {\r\n//        'west': 'Hall',\r\n//        'south': 'Garden',\r\n//        'item': 'potion',\r\n//        'north': 'Pantry',\r\n//        'description': 'There is really powerful potion in this room. From here you can go to the hall, the garden or the pantry'\r\n//        },\r\n//        'Garden': {\r\n//        'north': 'Dining Room',\r\n//        'east': 'Maze',\r\n//        'description': 'This beautiful garden has a maze. Be careful you do not want to get trap in there'\r\n//        },\r\n//        'Pantry': {\r\n//        'south': 'Dining Room',\r\n//        'item': 'cookie',\r\n//        'description': 'There is not much in this room but you can get some cookies if you look around'\r\n//        }\r\n//        }
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/servermonks/pushinprime/app/PushinPrimeApp.java b/src/com/servermonks/pushinprime/app/PushinPrimeApp.java
+--- a/src/com/servermonks/pushinprime/app/PushinPrimeApp.java	(revision 47891f34d0277dfa41ce8392beea135db1b9a29b)
++++ b/src/com/servermonks/pushinprime/app/PushinPrimeApp.java	(date 1654711344310)
+@@ -45,7 +45,7 @@
+     }
+ 
+     public void getCommands() {
+-        while (gameOver != true) {
++        while (gameOver != true) { // while(!gameOver)
+             Scanner myObj = new Scanner(System.in);  // Create a Scanner object
+             System.out.println("Enter username");
+             String userName = myObj.nextLine();
+Index: .idea/libraries/app_utils_1_1.xml
+===================================================================
+diff --git a/.idea/libraries/app_utils_1_1.xml b/.idea/libraries/app_utils_1_1.xml
+deleted file mode 100644
+--- a/.idea/libraries/app_utils_1_1.xml	(revision 47891f34d0277dfa41ce8392beea135db1b9a29b)
++++ /dev/null	(revision 47891f34d0277dfa41ce8392beea135db1b9a29b)
+@@ -1,9 +0,0 @@
+-<component name="libraryTable">
+-  <library name="app-utils-1.1">
+-    <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/lib/app-utils-1.1.jar!/" />
+-    </CLASSES>
+-    <JAVADOC />
+-    <SOURCES />
+-  </library>
+-</component>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"c8cbc9d8-dacc-4aee-8906-b727e29fe46a\" name=\"Changes\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/.gitignore\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/app_utils_1_1.xml\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/misc.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/misc.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/modules.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/modules.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/pushinPrime.iml\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/pushinPrime.iml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/pushinPrime.iml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/servermonks/pushinprime/app/PushinPrimeApp.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/servermonks/pushinprime/app/PushinPrimeApp.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2AIwwLjesoiHaGTBlsNgo9AOMcD\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"flattenPackages\" value=\"true\" />\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showExcludedFiles\" value=\"false\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n    <property name=\"SHARE_PROJECT_CONFIGURATION_FILES\" value=\"true\" />\r\n    <property name=\"project.structure.last.edited\" value=\"Modules\" />\r\n    <property name=\"project.structure.proportion\" value=\"0.0\" />\r\n    <property name=\"project.structure.side.proportion\" value=\"0.0\" />\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"Main\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"com.servermonks.pushinprime.client.Main\" />\r\n      <module name=\"pushinPrime\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"com.servermonks.pushinprime.client.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.Main\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"c8cbc9d8-dacc-4aee-8906-b727e29fe46a\" name=\"Changes\" comment=\"\" />\r\n      <created>1654710644444</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1654710644444</updated>\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 47891f34d0277dfa41ce8392beea135db1b9a29b)
++++ b/.idea/workspace.xml	(date 1654711344449)
+@@ -2,11 +2,7 @@
+ <project version="4">
+   <component name="ChangeListManager">
+     <list default="true" id="c8cbc9d8-dacc-4aee-8906-b727e29fe46a" name="Changes" comment="">
+-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/libraries/app_utils_1_1.xml" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/pushinPrime.iml" beforeDir="false" />
+       <change beforePath="$PROJECT_DIR$/pushinPrime.iml" beforeDir="false" afterPath="$PROJECT_DIR$/pushinPrime.iml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/com/servermonks/pushinprime/app/PushinPrimeApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/servermonks/pushinprime/app/PushinPrimeApp.java" afterDir="false" />
+     </list>
+@@ -29,9 +25,10 @@
+     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
++    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+     <property name="project.structure.last.edited" value="Modules" />
+-    <property name="project.structure.proportion" value="0.0" />
+-    <property name="project.structure.side.proportion" value="0.0" />
++    <property name="project.structure.proportion" value="0.15" />
++    <property name="project.structure.side.proportion" value="0.2" />
+   </component>
+   <component name="RunManager">
+     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+@@ -74,5 +71,6 @@
+         </entry>
+       </map>
+     </option>
++    <option name="oldMeFiltersMigrated" value="true" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: pushinPrime.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module type=\"JAVA_MODULE\" version=\"4\">\r\n  <component name=\"NewModuleRootManager\" inherit-compiler-output=\"true\">\r\n    <exclude-output />\r\n    <content url=\"file://$MODULE_DIR$\">\r\n      <sourceFolder url=\"file://$MODULE_DIR$/src\" isTestSource=\"false\" />\r\n    </content>\r\n    <orderEntry type=\"inheritedJdk\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n    <orderEntry type=\"library\" name=\"app-utils-1.1\" level=\"project\" />\r\n  </component>\r\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pushinPrime.iml b/pushinPrime.iml
+--- a/pushinPrime.iml	(revision 47891f34d0277dfa41ce8392beea135db1b9a29b)
++++ b/pushinPrime.iml	(date 1654711121881)
+@@ -7,6 +7,5 @@
+     </content>
+     <orderEntry type="inheritedJdk" />
+     <orderEntry type="sourceFolder" forTests="false" />
+-    <orderEntry type="library" name="app-utils-1.1" level="project" />
+   </component>
+ </module>
+\ No newline at end of file
