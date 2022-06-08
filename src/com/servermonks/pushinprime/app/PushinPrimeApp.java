@@ -9,28 +9,26 @@ import java.nio.file.Path;
 import java.util.Scanner;
 import com.apps.util.Console;
 import com.apps.util.Prompter;
-import com.PushinPrimeApp.Player;
+//import com.PushinPrimeApp.Player;
 
 
 public class PushinPrimeApp {
 
-    private Prompter prompter;
-    private final Board board = Board.getInstance();
+    private final Prompter PROMPTER = new Prompter(new Scanner(System.in)) ;
+//    private final Board board = Board.getInstance();
     private boolean gameOver;
 
 
-    public PushinPrimeApp(Prompter prompter) {
-        this.prompter = prompter;
-    }
+
 
     /*
      * Initial game execution:
      *  -> displays welcome banner, instructions and promps for player names
      */
-    public void execute() throws IOException {
-        welcome();
+    public void execute()  {
+//        welcome();
         //howToPlay();
-        prompter.prompt(GREEN + "Press [enter] to start..." + RESET + "");
+        PROMPTER.prompt(GREEN + "Press [enter] to start..." + RESET + "");
         //showSplashScreen();
         //createBoard();
         //prompts for user name
@@ -42,7 +40,7 @@ public class PushinPrimeApp {
     private void welcome() throws IOException {
         Console.clear();
         String banner = Files.readString(Path.of("resources/welcome_banner.txt"));
-        prompter.info(banner);
+        PROMPTER.info(banner);
     }
 
     public void getCommands() {
