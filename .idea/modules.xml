@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
+      <module fileurl="file://$PROJECT_DIR$/.idea/pushinPrime.iml" filepath="$PROJECT_DIR$/.idea/pushinPrime.iml" />
+=======
       <module fileurl="file://$PROJECT_DIR$/pushinPrime.iml" filepath="$PROJECT_DIR$/pushinPrime.iml" />
+>>>>>>> d7e95792ebaba759eea611b6c1473e37cf952c18
     </modules>
   </component>
 </project>
