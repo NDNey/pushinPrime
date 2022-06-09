@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c8cbc9d8-dacc-4aee-8906-b727e29fe46a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/thankyou.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_6_8_2022_1_58_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_6_8_2022_1_58_PM__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_6_8_2022_2_02_PM__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_6_8_2022_2_02_PM__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/servermonks/pushinprime/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/servermonks/pushinprime/Board.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/servermonks/pushinprime/app/PushinPrimeApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/servermonks/pushinprime/app/PushinPrimeApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/servermonks/pushinprime/client/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/servermonks/pushinprime/client/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

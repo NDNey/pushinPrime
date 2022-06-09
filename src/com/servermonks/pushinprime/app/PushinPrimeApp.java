@@ -18,14 +18,17 @@ public class PushinPrimeApp {
     private final Prompter PROMPTER = new Prompter(new Scanner(System.in));
     private final Board board = Board.getInstance();
     private boolean gameOver;
-    private Player player1;
+    private Player player;
+    private String username;
+    private String password = "password";
+    private String endGame = "quit";
 
 
     /*
      * Initial game execution:
      *  -> displays welcome banner, instructions and promps for player name
      */
-    public void execute() throws IOException {
+    public void execute() throws IOException, InterruptedException {
         welcome();
         howToPlay();
         PROMPTER.prompt(GREEN + "Press [enter] to start..." + RESET + "");
@@ -35,6 +38,7 @@ public class PushinPrimeApp {
         //validateInput();
         //announceWinner();
         playAgain();
+        quitGame();
 
     }
 
@@ -61,9 +65,28 @@ public class PushinPrimeApp {
     }
 
     // Prompts for usernames and creates new Player objects
-    private void promptForUsername() {
-        this.player1 = new Player(PROMPTER.prompt("Enter your name: "));
+    private void promptForUsername() throws InterruptedException {
+        //this.player = new Player(PROMPTER.prompt("Enter your name: "));
+
+
+        Scanner s = new Scanner(System.in);
+        System.out.print("Enter username:");//username:user
+        username = s.nextLine();
+        System.out.print("Enter password:");//password:user
+        password = s.nextLine();
+        if(password.equals("password"))
+        {
+            System.out.println("Authenticating....please wait");
+            Thread.sleep(3000);
+            System.out.println("Authentication Successful");
+        }
+        else
+        {
+            Thread.sleep(3000);
+            System.out.println("Authentication Failed");
+        }
     }
+
 
 //
 //    private void announceWinner() {
@@ -85,7 +108,7 @@ public class PushinPrimeApp {
 //
 //        }
 //    }
-    public void playAgain() throws IOException {
+    public void playAgain() throws IOException, InterruptedException {
         Console.blankLines(1);
         String playAgain= PROMPTER.prompt("Would you like to play again? " +
                         GREEN + "[N]ew Game" + RESET + "/" + YELLOW +
@@ -98,6 +121,7 @@ public class PushinPrimeApp {
         } else if ("R".equalsIgnoreCase(playAgain)) {
             gameOver = false;
             Console.clear();
+            execute();
 
         } else {
             gameOver();
@@ -114,6 +138,15 @@ public class PushinPrimeApp {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+    private void quitGame() throws IOException, InterruptedException {
+        if(endGame.equalsIgnoreCase("quit")) {
+            gameOver();
+        }
+        else {
+            PROMPTER.prompt("Keep playing?");
+            playAgain();
         }
     }
 }
