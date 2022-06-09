@@ -31,6 +31,7 @@ public class Board {
     private Color clockColorBG = Color.darkGray;
     private Player player;
 
+
     public Board() {
         createBoard();
         //test();
@@ -161,3 +162,4 @@ public class Board {
         }
     }
 }
+
