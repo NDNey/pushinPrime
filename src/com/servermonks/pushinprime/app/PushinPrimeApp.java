@@ -7,7 +7,14 @@ import static com.servermonks.pushinprime.Colors.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Scanner;
+
+
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONString;
+import org.json.JSONObject;
+
 import com.apps.util.Console;
 import com.apps.util.Prompter;
 
@@ -18,16 +25,12 @@ import com.servermonks.pushinprime.Board;
 //import com.PushinPrimeApp.Player;
 
 
+
 public class PushinPrimeApp {
 
     private final Prompter PROMPTER = new Prompter(new Scanner(System.in));
-    private final Board board = Board.getInstance();
+//    private final Board board = Board.getInstance();
 
-import com.servermonks.pushinprime.Board;
-
-public class PushinPrimeApp {
-
-    private Board board;
     private boolean gameOver;
     private Player player1;
 
@@ -41,7 +44,14 @@ public class PushinPrimeApp {
         howToPlay();
         PROMPTER.prompt(GREEN + "Press [enter] to start..." + RESET + "");
 
+        try {
+            jsonPractice();
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
+
         getCommands();
+
         //showSplashScreen();
         //createBoard();
         //prompts for user name
@@ -58,7 +68,7 @@ public class PushinPrimeApp {
 
     private void welcome() throws IOException {
         Console.clear();
-        String banner = Files.readString(Path.of("resources/welcome_banner.txt"));
+        String banner = Files.readString(Path.of("resources/data"));
         PROMPTER.info(banner);
     }
 
@@ -82,14 +92,14 @@ public class PushinPrimeApp {
         System.out.println("C. waterlow row");
         String route = game.nextLine().toLowerCase();
         System.out.println(route);
-        if (route.equals("b")){
+        if (route.equals("b")) {
             System.out.println("Looks like we are going to Ballard today"); //need to connect to object from this point on.
         }
         while (gameOver != true) {
-            if (game.nextLine().toLowerCase() == "quit"){
+            if (game.nextLine().toLowerCase() == "quit") {
                 return;
             }
-            if (game.nextLine().toLowerCase() == "help"){
+            if (game.nextLine().toLowerCase() == "help") {
                 System.out.println("To move type 'go' and the direction you want move (go right)");
                 System.out.println("To pick up an item type 'grab' and the item (grab snacks)");
                 System.out.println("To quit game type 'quit'");
@@ -98,7 +108,8 @@ public class PushinPrimeApp {
 
             //need to use .split("",2) to split input into two.
             //take seperate actions depending on input(grab,use,go)
-
+        }
+    }
     private void howToPlay() {
         PROMPTER.info(YELLOW + "How to play:" + RESET + "\n" + CYAN +
                 "   *  Driver moves to loading dock.\n" +
@@ -115,6 +126,36 @@ public class PushinPrimeApp {
                 "||/  O  |__________/  O  |_||\n" +
                 "   \\___/            \\___/\n");
     }
+
+
+    public void jsonPractice() throws JSONException, IOException {
+
+        String content = new String(Files.readAllBytes(Path.of("resources/data")));
+        JSONObject json = new JSONObject(content);
+
+
+        System.out.println(json);
+        System.out.println(json.get("Pantry"));
+//        JSONObject json = new JSONObject();
+//        JSONObject json2 = new JSONObject();
+//        JSONArray array = new JSONArray();
+
+//        json.put("name", "David");
+//        json.put("object", json2 );
+//        json.put("number", 5);
+//        array.put("item");
+//        array.put(4);
+//        array.put("item2");
+//        json.put("array", array);
+//        System.out.println(json);
+//
+//
+//        System.out.println(json.get("name"));
+
+    }
+
+
+
 
     // Prompts for usernames and creates new Player objects
     private void promptForUsername() {
@@ -171,14 +212,10 @@ public class PushinPrimeApp {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
     }
+
+
+
 }
 
-
-    public PushinPrimeApp() {
-    }
-
-    public void execute() {
-        board = new Board();
-    }
-}
