@@ -1,5 +1,6 @@
 package com.servermonks.pushinprime.app;
 
+
 import java.util.*;
 import java.util.Scanner;
 import static com.servermonks.pushinprime.Colors.*;
@@ -17,6 +18,12 @@ public class PushinPrimeApp {
 
     private final Prompter PROMPTER = new Prompter(new Scanner(System.in));
     private final Board board = Board.getInstance();
+
+import com.servermonks.pushinprime.Board;
+
+public class PushinPrimeApp {
+
+    private Board board;
     private boolean gameOver;
     private Player player;
     private String username;
@@ -152,34 +159,10 @@ public class PushinPrimeApp {
 }
 
 
-//
-//rooms = {
-//        'Hall': {
-//        'south': 'Kitchen',
-//        'east': 'Dining Room',
-//        'item': 'key',
-//        'description': 'This is a really beautiful hall you will see the kitchen to the south and the Dining Room to the east'
-//        },
-//        'Kitchen': {
-//        'north': 'Hall',
-//        'item': 'monster',
-//        'description': 'Be careful there is a Monster somewhere in the kitchen'
-//        },
-//        'Dining Room': {
-//        'west': 'Hall',
-//        'south': 'Garden',
-//        'item': 'potion',
-//        'north': 'Pantry',
-//        'description': 'There is really powerful potion in this room. From here you can go to the hall, the garden or the pantry'
-//        },
-//        'Garden': {
-//        'north': 'Dining Room',
-//        'east': 'Maze',
-//        'description': 'This beautiful garden has a maze. Be careful you do not want to get trap in there'
-//        },
-//        'Pantry': {
-//        'south': 'Dining Room',
-//        'item': 'cookie',
-//        'description': 'There is not much in this room but you can get some cookies if you look around'
-//        }
-//        }
+    public PushinPrimeApp() {
+    }
+
+    public void execute() {
+        board = new Board();
+    }
+}
