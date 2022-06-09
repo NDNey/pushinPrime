@@ -2,21 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="01a9d9eb-345f-48a9-920e-40afc53c95ba" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/box.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/key.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/thankyou.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/servermonks/pushinprime/ConsoleOutputStream.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/java_json.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/java_json.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/java_json_jar.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/java_json_lib.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pushinPrime.iml" beforeDir="false" afterPath="$PROJECT_DIR$/pushinPrime.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/servermonks/pushinprime/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/servermonks/pushinprime/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/servermonks/pushinprime/JoutputStream.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/servermonks/pushinprime/app/PushinPrimeApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/servermonks/pushinprime/app/PushinPrimeApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/servermonks/pushinprime/client/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/servermonks/pushinprime/client/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/welcome_banner.txt" beforeDir="false" afterPath="$PROJECT_DIR$/resources/welcome_banner.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
