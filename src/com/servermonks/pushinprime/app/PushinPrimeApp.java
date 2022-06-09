@@ -10,7 +10,11 @@ import java.nio.file.Path;
 import java.util.Scanner;
 import com.apps.util.Console;
 import com.apps.util.Prompter;
+
+import netscape.javascript.JSObject;
+
 import com.servermonks.pushinprime.Board;
+
 //import com.PushinPrimeApp.Player;
 
 
@@ -36,7 +40,14 @@ public class PushinPrimeApp {
         welcome();
         howToPlay();
         PROMPTER.prompt(GREEN + "Press [enter] to start..." + RESET + "");
+
+        getCommands();
+        //showSplashScreen();
+        //createBoard();
+        //prompts for user name
+
         //board.createBoard();
+
         //prompt for commands
         promptForUsername();
         //validateInput();
@@ -51,12 +62,50 @@ public class PushinPrimeApp {
         PROMPTER.info(banner);
     }
 
+
+//    public void help(){
+//        System.out.println("To move type 'go' and the direction you want move (go right)");
+//        System.out.println("To pick up an item type 'grab' and the item (grab snacks)");
+//        System.out.println("To quit game type 'quit'");
+//
+//    }
+
+    public void getCommands() {
+        Scanner game = new Scanner(System.in);
+        System.out.println("Enter username");
+        String userName = game.nextLine();
+        System.out.println("Welcome " + userName + " to your first day as a Prime Driver");
+        System.out.println("Your mission today is to deliver all of the packages correctly to our customers. I hope you're up for the challenge!");
+        System.out.println("choose your route.");
+        System.out.println("A. sunnyside park");
+        System.out.println("B. Ballard ");
+        System.out.println("C. waterlow row");
+        String route = game.nextLine().toLowerCase();
+        System.out.println(route);
+        if (route.equals("b")){
+            System.out.println("Looks like we are going to Ballard today"); //need to connect to object from this point on.
+        }
+        while (gameOver != true) {
+            if (game.nextLine().toLowerCase() == "quit"){
+                return;
+            }
+            if (game.nextLine().toLowerCase() == "help"){
+                System.out.println("To move type 'go' and the direction you want move (go right)");
+                System.out.println("To pick up an item type 'grab' and the item (grab snacks)");
+                System.out.println("To quit game type 'quit'");
+            }
+            // Create a Scanner object
+
+            //need to use .split("",2) to split input into two.
+            //take seperate actions depending on input(grab,use,go)
+
     private void howToPlay() {
         PROMPTER.info(YELLOW + "How to play:" + RESET + "\n" + CYAN +
                 "   *  Driver moves to loading dock.\n" +
                 "   *  Four packages are assigned for delivery, with their routes\n" +
                 "   *  driver is expected to delivered all packages to keep customer satisfaction up.\n" +
                 "   *  If no obstacle,or you overcome, package is delivered successfully." + RESET + "\n");
+
 
         System.out.println("================\\\n" +
                 " |----------||@  \\\\   ___\n" +
