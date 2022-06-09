@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c8cbc9d8-dacc-4aee-8906-b727e29fe46a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/java_json.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/java_json_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/java_json_lib.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/data" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pushinPrime.iml" beforeDir="false" afterPath="$PROJECT_DIR$/pushinPrime.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/servermonks/pushinprime/app/PushinPrimeApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/servermonks/pushinprime/app/PushinPrimeApp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
