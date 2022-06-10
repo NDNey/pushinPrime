@@ -6,8 +6,12 @@ import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args)  {
         PushinPrimeApp pushinPrimeApp = new PushinPrimeApp();
-        pushinPrimeApp.execute  ();
+        try {
+            pushinPrimeApp.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
