@@ -185,6 +185,9 @@ public class PushinPrimeApp {
         } else if ("R".equalsIgnoreCase(playAgain)) {
             gameOver = false;
             Console.clear();
+            currentLocation = "warehouse";
+            System.out.println("Hello " + username + " welcome back for another round of PushinPrime!");
+            getCommands();
         } else {
             gameOver();
         }
