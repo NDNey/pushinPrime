@@ -92,6 +92,7 @@ public class Board {
         commandInputConstraints.gridx = 0;
         commandInputConstraints.gridy = 1;
         commandInputConstraints.weightx = 1;
+<<<<<<< HEAD
 
         commandInput.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -99,6 +100,13 @@ public class Board {
                     String input = commandInput.getText();
                     PushinPrimeApp.setInputStream(new ByteArrayInputStream(input.getBytes()));
                     commandInput.setText("");
+=======
+        commandInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                System.out.println(playerName + ": " + evt.getActionCommand()); //player.getName()
+                if (evt.getActionCommand().equals("drop box")) {
+                    sysOut.insertIcon(new ImageIcon(getClass().getResource("/box.png")));
+>>>>>>> a85d36f43eca4304500c37cee65c3785fd4f30b1
                 }
             }
         });
@@ -123,8 +131,27 @@ public class Board {
         startClock();
     }
 
+<<<<<<< HEAD
+=======
+    public void test() {
+        redirectOutput();
+        for (int i = 0; i < 300; i++) {
+            System.out.println("" + i + System.lineSeparator());
+        }
+    }
+
+    public void redirectOutput() {
+        printStream = new PrintStream(new ConsoleOutputStream(sysOut));
+        System.setOut(printStream);
+    }
+
+    public void resetOutput() {
+        System.setOut(System.out);
+    }
+
+>>>>>>> a85d36f43eca4304500c37cee65c3785fd4f30b1
     public void startClock() {
-        if(clock == null)
+        if (clock == null)
             clock = new Clock();
         clock.start();
     }
@@ -157,12 +184,14 @@ public class Board {
                 try {
                     Thread.sleep(1000);
                     time++;
-                    if(time > 3600) {
+                    if (time > 3600) {
                         time = 0;
                     }
-                    String timeString = String.format("%02d:%02d" , time / 60, time%60);
+                    String timeString = String.format("%02d:%02d", time / 60, time % 60);
                     clockText.setText(timeString);
-                } catch (Exception e) { e.printStackTrace(); }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
