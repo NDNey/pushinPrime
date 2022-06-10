@@ -1,29 +1,17 @@
 package com.servermonks.pushinprime.app;
 
 
-import java.util.*;
-import java.util.Scanner;
-import static com.servermonks.pushinprime.Colors.*;
+import com.apps.util.Console;
+import com.apps.util.Prompter;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Scanner;
 
-
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONString;
-import org.json.JSONObject;
-
-import com.apps.util.Console;
-import com.apps.util.Prompter;
-
-import netscape.javascript.JSObject;
-
-import com.servermonks.pushinprime.Board;
-
-//import com.PushinPrimeApp.Player;
-
+import static com.servermonks.pushinprime.Colors.*;
 
 
 public class PushinPrimeApp {
@@ -68,7 +56,7 @@ public class PushinPrimeApp {
 
     private void welcome() throws IOException {
         Console.clear();
-        String banner = Files.readString(Path.of("resources/data"));
+        String banner = Files.readString(Path.of("resources/welcome_banner.txt"));
         PROMPTER.info(banner);
     }
 
@@ -110,6 +98,7 @@ public class PushinPrimeApp {
             //take seperate actions depending on input(grab,use,go)
         }
     }
+
     private void howToPlay() {
         PROMPTER.info(YELLOW + "How to play:" + RESET + "\n" + CYAN +
                 "   *  Driver moves to loading dock.\n" +
@@ -155,8 +144,6 @@ public class PushinPrimeApp {
     }
 
 
-
-
     // Prompts for usernames and creates new Player objects
     private void promptForUsername() {
         this.player1 = new Player(PROMPTER.prompt("Enter your name: "));
@@ -184,7 +171,7 @@ public class PushinPrimeApp {
 //    }
     public void playAgain() throws IOException {
         Console.blankLines(1);
-        String playAgain= PROMPTER.prompt("Would you like to play again? " +
+        String playAgain = PROMPTER.prompt("Would you like to play again? " +
                         GREEN + "[N]ew Game" + RESET + "/" + YELLOW +
                         "[R]ematch" + RESET + "/" + RED + "[E]xit " + RESET,
                 "(?i)E|N|R", RED + "Please enter 'E', 'R', or 'N'" + RESET);
@@ -214,7 +201,6 @@ public class PushinPrimeApp {
         }
 
     }
-
 
 
 }
