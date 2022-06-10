@@ -1,115 +1,143 @@
 package com.servermonks.pushinprime.app;
 
+import com.apps.util.Console;
+import com.apps.util.Prompter;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.util.*;
-import java.util.Scanner;
-import static com.servermonks.pushinprime.Colors.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Scanner;
 
-
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONString;
-import org.json.JSONObject;
-
-import com.apps.util.Console;
-import com.apps.util.Prompter;
-
-import netscape.javascript.JSObject;
-
-import com.servermonks.pushinprime.Board;
-
-//import com.PushinPrimeApp.Player;
-
+import static com.servermonks.pushinprime.Colors.*;
 
 
 public class PushinPrimeApp {
 
     private final Prompter PROMPTER = new Prompter(new Scanner(System.in));
-//    private final Board board = Board.getInstance();
+    private JSONObject data;
+    private String currentLocation = "warehouse";
 
     private boolean gameOver;
-    private Player player1;
+//    private Player player;
+    private String username;
+    private String password = "password";
 
 
     /*
      * Initial game execution:
      *  -> displays welcome banner, instructions and promps for player name
      */
-    public void execute() throws IOException {
+    public void execute() throws IOException, InterruptedException, JSONException {
+        data = getJson();
         welcome();
         howToPlay();
         PROMPTER.prompt(GREEN + "Press [enter] to start..." + RESET + "");
-
-        try {
-            jsonPractice();
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
-
+        promptForUsername();
         getCommands();
 
-        //showSplashScreen();
-        //createBoard();
-        //prompts for user name
-
-        //board.createBoard();
-
-        //prompt for commands
-        promptForUsername();
-        //validateInput();
-        //announceWinner();
-        playAgain();
 
     }
 
-    private void welcome() throws IOException {
+    private void welcome() {
         Console.clear();
-        String banner = Files.readString(Path.of("resources/data"));
+        String banner = null;
+        try {
+            banner = Files.readString(Path.of("resources/welcome_banner.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         PROMPTER.info(banner);
     }
 
 
-//    public void help(){
-//        System.out.println("To move type 'go' and the direction you want move (go right)");
-//        System.out.println("To pick up an item type 'grab' and the item (grab snacks)");
-//        System.out.println("To quit game type 'quit'");
-//
-//    }
+    public void help() {
+        System.out.println("Seems that you need some Help!");
+        System.out.println("To move type 'go' and the direction you want move (go north)");
+        System.out.println("To pick up an item type 'get' and the item (get snacks)");
+        System.out.println("To quit game type 'quit game'");
+    }
+
+    public void showStatus() {
+
+        try {
+            System.out.println("You are in the " + currentLocation + " from here you can go");
+            System.out.println(data.getJSONObject(currentLocation).getJSONObject("directions"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void look() {
+
+        try {
+            System.out.println("Here you can see: ");
+            System.out.println(data.getJSONObject(currentLocation).getJSONArray("item"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // Prompts for usernames and password for authentication
+    private void promptForUsername() throws InterruptedException {
+
+         username = PROMPTER.prompt("Enter username: ","^[a-zA-Z]*$","Please use a valid name! Numbers are not allowed in names");
+         password = PROMPTER.prompt("Enter password: ");
+        int totalAttempts = 2;
+
+        while (totalAttempts >= 0) {
+            if (password.equals("password")) {
+                System.out.println("Authenticating....please wait");
+                Thread.sleep(3000);
+                System.out.println("Authentication Successful !");
+                System.out.println();
+                System.out.println("Welcome " + username + " to your first day as a Prime Driver");
+                System.out.println("Your mission today is to deliver all of the packages correctly to our customers. I hope you're up for the challenge!");
+                break;
+            } else if (password != "password") {
+                totalAttempts--;
+                String tryAgain = PROMPTER.prompt("Invalid password,try again:");
+                System.out.println("You have " + totalAttempts + " attempts left");
+                password = tryAgain;
+            }
+
+            if (totalAttempts == 0) {
+                System.out.println("Password limit reached..Goodbye!");
+                System.exit(0);
+            }
+
+        }
+    }
 
     public void getCommands() {
         Scanner game = new Scanner(System.in);
-        System.out.println("Enter username");
-        String userName = game.nextLine();
-        System.out.println("Welcome " + userName + " to your first day as a Prime Driver");
-        System.out.println("Your mission today is to deliver all of the packages correctly to our customers. I hope you're up for the challenge!");
-        System.out.println("choose your route.");
-        System.out.println("A. sunnyside park");
-        System.out.println("B. Ballard ");
-        System.out.println("C. waterlow row");
+        showStatus();
         String route = game.nextLine().toLowerCase();
-        System.out.println(route);
-        if (route.equals("b")) {
-            System.out.println("Looks like we are going to Ballard today"); //need to connect to object from this point on.
-        }
-        while (gameOver != true) {
-            if (game.nextLine().toLowerCase() == "quit") {
-                return;
-            }
-            if (game.nextLine().toLowerCase() == "help") {
-                System.out.println("To move type 'go' and the direction you want move (go right)");
-                System.out.println("To pick up an item type 'grab' and the item (grab snacks)");
-                System.out.println("To quit game type 'quit'");
-            }
-            // Create a Scanner object
 
-            //need to use .split("",2) to split input into two.
-            //take seperate actions depending on input(grab,use,go)
+        if (route.equals("help")) {
+            help();
+        } else if (route.contains("go")) {
+            try {
+                currentLocation = (String) data.getJSONObject(currentLocation).getJSONObject("directions").get(route.substring(3));
+            } catch (JSONException e) {
+                help();
+            }
+        } else if (route.contains("look")) {
+            look();
+
+        } else if (route.equals("quit game")) {
+            playAgain();
+        } else {
+            System.out.println("Remember the available commands are: ");
+            help();
         }
+
+        getCommands();
+
     }
+
     private void howToPlay() {
         PROMPTER.info(YELLOW + "How to play:" + RESET + "\n" + CYAN +
                 "   *  Driver moves to loading dock.\n" +
@@ -128,80 +156,46 @@ public class PushinPrimeApp {
     }
 
 
-    public void jsonPractice() throws JSONException, IOException {
+    private JSONObject getJson() {
+        String content = null;
+        JSONObject json = null;
 
-        String content = new String(Files.readAllBytes(Path.of("resources/data")));
-        JSONObject json = new JSONObject(content);
+        try {
+            content = new String(Files.readAllBytes(Path.of("resources/data")));
+            json = new JSONObject(content);
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+        }
 
-
-        System.out.println(json);
-        System.out.println(json.get("Pantry"));
-//        JSONObject json = new JSONObject();
-//        JSONObject json2 = new JSONObject();
-//        JSONArray array = new JSONArray();
-
-//        json.put("name", "David");
-//        json.put("object", json2 );
-//        json.put("number", 5);
-//        array.put("item");
-//        array.put(4);
-//        array.put("item2");
-//        json.put("array", array);
-//        System.out.println(json);
-//
-//
-//        System.out.println(json.get("name"));
+        return json;
 
     }
 
 
-
-
-    // Prompts for usernames and creates new Player objects
-    private void promptForUsername() {
-        this.player1 = new Player(PROMPTER.prompt("Enter your name: "));
-    }
-
-//
-//    private void announceWinner() {
-//    }
-//
-//    private void validateInput() {
-//        Console.blankLines(1);
-//
-//    }
-
-
-    //    public void getCommands() {
-//        while (gameOver != true) { // while(!gameOver)
-//            Scanner myObj = new Scanner(System.in);  // Create a Scanner object
-//            System.out.println("Enter username");
-//            String userName = myObj.nextLine();
-//            //need to use .split("",2) to split input into two.
-//            //take seperate actions depending on input(grab,use,go)
-//
-//        }
-//    }
-    public void playAgain() throws IOException {
+    public void playAgain() {
         Console.blankLines(1);
-        String playAgain= PROMPTER.prompt("Would you like to play again? " +
+        String playAgain = PROMPTER.prompt("Would you like to play again? " +
                         GREEN + "[N]ew Game" + RESET + "/" + YELLOW +
                         "[R]ematch" + RESET + "/" + RED + "[E]xit " + RESET,
                 "(?i)E|N|R", RED + "Please enter 'E', 'R', or 'N'" + RESET);
 
         if ("N".equalsIgnoreCase(playAgain)) {
             gameOver = false;
-            execute();
+
         } else if ("R".equalsIgnoreCase(playAgain)) {
             gameOver = false;
             Console.clear();
-
         } else {
             gameOver();
         }
+        try {
+            execute();
+        } catch (IOException | InterruptedException | JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void gameOver() throws IOException {
+    private void gameOver() {
         try {
             Console.clear();
             Console.blankLines(1);
@@ -209,13 +203,11 @@ public class PushinPrimeApp {
             PROMPTER.info(banner);
             Console.blankLines(1);
             Thread.sleep(3000);
-        } catch (InterruptedException e) {
+            System.exit(0);
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
 
     }
-
-
-
 }
 
