@@ -98,8 +98,8 @@ public class PushinPrimeApp {
                 break;
             } else if (password != "password") {
                 totalAttempts--;
-                String tryAgain = PROMPTER.prompt("Invalid password,try again:");
                 System.out.println("You have " + totalAttempts + " attempts left");
+                String tryAgain = PROMPTER.prompt("Invalid password,try again:");
                 password = tryAgain;
             }
 
