@@ -82,8 +82,8 @@ public class PushinPrimeApp {
     // Prompts for usernames and password for authentication
     private void promptForUsername() throws InterruptedException {
 
-         username = PROMPTER.prompt("Enter username: ","^[a-zA-Z]*$","Please use a valid name! Numbers are not allowed in names");
-         password = PROMPTER.prompt("Enter password: ");
+        username = PROMPTER.prompt("Enter username: ", "^[a-zA-Z]*$", "Please use a valid name! Numbers are not allowed in names");
+        password = PROMPTER.prompt("Enter password: ");
         int totalAttempts = 2;
 
         while (totalAttempts >= 0) {
@@ -169,7 +169,6 @@ public class PushinPrimeApp {
         return json;
 
     }
-
 
 
     public void playAgain() {
