@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4002c686-4e67-413d-8b1b-53cc4c85ea76" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/java_json.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/servermonks/pushinprime/app/PushinPrimeApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/servermonks/pushinprime/app/PushinPrimeApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/servermonks/pushinprime/client/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/servermonks/pushinprime/client/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,5 +57,10 @@
       <updated>1654821252143</updated>
     </task>
     <servers />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/pushinPrime$Main.ic" NAME="Main Coverage Results" MODIFIED="1654824557945" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.servermonks.pushinprime.client.*</FILTER>
+    </SUITE>
   </component>
 </project>

@@ -41,8 +41,8 @@ public class PushinPrimeApp {
         PROMPTER.prompt(GREEN + "Press [enter] to start..." + RESET + "");
         promptForUsername();
         getCommands();
-        playAgain();
-        Board board = new Board();
+
+
     }
 
     private void welcome() {
@@ -58,16 +58,26 @@ public class PushinPrimeApp {
 
 
     public void help() {
-        System.out.println("To move type 'go' and the direction you want move (go right)");
-        System.out.println("To pick up an item type 'grab' and the item (grab snacks)");
-        System.out.println("To quit game type 'quit'");
-
+        System.out.println("To move type 'go' and the direction you want move (go north)");
+        System.out.println("To pick up an item type 'get' and the item (get snacks)");
+        System.out.println("To quit game type 'quit game'");
     }
 
     public void showStatus() {
-        System.out.println("You are in the " + currentLocation + " from here you can go");
+
         try {
+            System.out.println("You are in the " + currentLocation + " from here you can go");
             System.out.println(data.getJSONObject(currentLocation).getJSONObject("directions"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void look() {
+
+        try {
+            System.out.println("Here you can see: ");
+            System.out.println(data.getJSONObject(currentLocation).getJSONArray("item"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -90,6 +100,8 @@ public class PushinPrimeApp {
                 Thread.sleep(3000);
                 System.out.println("Authentication Successful !");
                 System.out.println();
+                System.out.println("Welcome " + username + " to your first day as a Prime Driver");
+                System.out.println("Your mission today is to deliver all of the packages correctly to our customers. I hope you're up for the challenge!");
                 break;
             } else if (password != "password") {
                 PROMPTER.prompt("Invalid password,try again:");
@@ -105,34 +117,33 @@ public class PushinPrimeApp {
     }
 
     public void getCommands() throws JSONException, IOException, InterruptedException {
-
         Scanner game = new Scanner(System.in);
-        System.out.println("Welcome " + username + " to your first day as a Prime Driver");
-        System.out.println("Your mission today is to deliver all of the packages correctly to our customers. I hope you're up for the challenge!");
-
         showStatus();
         String route = game.nextLine().toLowerCase();
         System.out.println(route);
 
 
-
-        while (gameOver != true) {
             if (route.equals("help")) {
                 help();
             } else if (route.contains("go")) {
-                System.out.println("I work");
-                System.out.println(data.getJSONObject(currentLocation).getJSONObject("directions"));
-                System.out.println(data.getJSONObject(currentLocation).getJSONObject("directions").get(route.substring(3)));
+
+//                System.out.println(data.getJSONObject(currentLocation).getJSONObject("directions"));
+//                System.out.println(data.getJSONObject(currentLocation).getJSONObject("directions").get(route.substring(3)));
                 currentLocation = (String) data.getJSONObject(currentLocation).getJSONObject("directions").get(route.substring(3));
-                showStatus();
+
+            } else if (route.contains("look")) {
+                 look();
+
             } else if (route.equals("quit game")) {
                 playAgain();
             } else {
-                System.exit(0);
+                System.out.println("Remember the commands availables are: ");
+                help();
+
             }
 
+        getCommands();
 
-        }
     }
 
     private void howToPlay() {
