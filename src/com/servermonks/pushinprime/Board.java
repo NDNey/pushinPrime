@@ -2,6 +2,7 @@ package com.servermonks.pushinprime;
 
 import com.servermonks.pushinprime.app.Player;
 import com.servermonks.pushinprime.app.PushinPrimeApp;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.ByteArrayInputStream;
@@ -22,8 +23,8 @@ public class Board {
     private Clock clock;
     private Font sysOutTextFont = new Font("SansSerif", Font.BOLD, 12);
     private Font inputTextFont = new Font("SansSerif", Font.BOLD, 35);
-    private Color sysOutColorBG = Color.white;
-    private Color commandInputColorBG = Color.lightGray;
+    private Colors sysOutColorBG = Colors.LIGHT_GREY;
+    private Color commandInputColorBG = Color.LIGHT_GRAY;
     private Color clockColorBG = Color.darkGray;
     private Player player;
     private ByteArrayInputStream inputStream = new ByteArrayInputStream("".getBytes());
@@ -37,7 +38,7 @@ public class Board {
     }
 
     public static Board getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new Board();
         }
         return instance;
@@ -48,7 +49,7 @@ public class Board {
     }
 
     public void clear() {
-        textPane.setText("<html><head><style>body{width:100%;text-align:left;}</style></head><body><div id=\"content\"></div></body></html>");
+        textPane.setText("<html><head><style>body{font-size:18px;margin:10px;width:100%;text-align:left;}</style></head><body><div id=\"content\"></div></body></html>");
     }
 
     public void createBoard() {
@@ -64,7 +65,8 @@ public class Board {
         textPane = new JTextPane();
         textPane.setContentType("text/html;charset=UTF-16");
         textPane.setEditable(false);
-        textPane.setBackground(new java.awt.Color(sysOutColorBG.getRGB()));
+        Color bg = new Color(106, 105, 111);
+        textPane.setBackground(bg);
         textPane.setFont(sysOutTextFont);
         textPane.setText("<html><head><style>body{width:100%;text-align:left;}</style></head><body><div id=\"content\"></div></body></html>");
 
@@ -92,28 +94,20 @@ public class Board {
         commandInputConstraints.gridx = 0;
         commandInputConstraints.gridy = 1;
         commandInputConstraints.weightx = 1;
-<<<<<<< HEAD
+
 
         commandInput.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                if(evt.getKeyCode() == 10) {
+                if (evt.getKeyCode() == 10) {
                     String input = commandInput.getText();
                     PushinPrimeApp.setInputStream(new ByteArrayInputStream(input.getBytes()));
                     commandInput.setText("");
-=======
-        commandInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                System.out.println(playerName + ": " + evt.getActionCommand()); //player.getName()
-                if (evt.getActionCommand().equals("drop box")) {
-                    sysOut.insertIcon(new ImageIcon(getClass().getResource("/box.png")));
->>>>>>> a85d36f43eca4304500c37cee65c3785fd4f30b1
                 }
             }
         });
 
         pane.add(commandInput, commandInputConstraints);
-
-        clockText = new JTextField("00:00");
+        clockText = new JTextField(" ");
         clockText.setMinimumSize(new Dimension(100, 45));
         clockText.setMaximumSize(new Dimension(100, 45));
         clockText.setEditable(false);
@@ -128,28 +122,10 @@ public class Board {
 
         commandInput.requestFocus();
 
-        startClock();
+//        startClock();
     }
 
-<<<<<<< HEAD
-=======
-    public void test() {
-        redirectOutput();
-        for (int i = 0; i < 300; i++) {
-            System.out.println("" + i + System.lineSeparator());
-        }
-    }
 
-    public void redirectOutput() {
-        printStream = new PrintStream(new ConsoleOutputStream(sysOut));
-        System.setOut(printStream);
-    }
-
-    public void resetOutput() {
-        System.setOut(System.out);
-    }
-
->>>>>>> a85d36f43eca4304500c37cee65c3785fd4f30b1
     public void startClock() {
         if (clock == null)
             clock = new Clock();

@@ -9,7 +9,9 @@ public enum Colors {
     RED_UNDERLINED("RED_UNDERLINED"),
     GREEN("#00FF00"),
     YELLOW("#FFFF00"),
-    DARK_YELLOW("#8B8000");
+    DARK_YELLOW("#8B8000"),
+    LIGHT_GREY("#A9ADAF");
+
 
     private final String color;
 
