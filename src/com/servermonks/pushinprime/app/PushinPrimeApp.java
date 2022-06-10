@@ -86,20 +86,21 @@ public class PushinPrimeApp {
          password = PROMPTER.prompt("Enter password: ");
         int totalAttempts = 2;
 
-        while (totalAttempts >= 0) {
+        while (totalAttempts != 0) {
             if (password.equals("password")) {
                 System.out.println("Authenticating....please wait");
                 Thread.sleep(3000);
                 System.out.println("Authentication Successful !");
                 System.out.println();
-                System.out.println("Welcome " + username + " to your first day as a Prime Driver");
+                System.out.println("Welcome " + CYAN + username + RESET + " to your first day as a Prime Driver");
                 System.out.println("Your mission today is to deliver all of the packages correctly to our customers. I hope you're up for the challenge!");
                 break;
             } else if (password != "password") {
+                PROMPTER.prompt("Invalid password,try again:");
                 totalAttempts--;
                 System.out.println("You have " + totalAttempts + " attempts left");
-                String tryAgain = PROMPTER.prompt("Invalid password,try again:");
-                password = tryAgain;
+//                String tryAgain = PROMPTER.prompt("Invalid password,try again:");
+//                password = tryAgain;
             }
 
             if (totalAttempts == 0) {
@@ -142,8 +143,9 @@ public class PushinPrimeApp {
                 "   *  Driver moves to loading dock.\n" +
                 "   *  Four packages are assigned for delivery, with their routes\n" +
                 "   *  driver is expected to delivered all packages to keep customer satisfaction up.\n" +
-                "   *  If no obstacle,or you overcome, package is delivered successfully." + RESET + "\n");
-
+                "   *  If no obstacle,or you overcome, package is delivered successfully. \n" +
+                "   *  If you need help type 'help' \n" +
+                "   *  The user password is " + RED + "password" + RESET + "\n");
 
         System.out.println("================\\\n" +
                 " |----------||@  \\\\   ___\n" +
