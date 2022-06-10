@@ -19,6 +19,8 @@ public class ConsoleOutputStream extends OutputStream {
             caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
             textArea.getDocument().insertString(textArea.getDocument().getLength(), String.valueOf((char) b), null);
             textArea.setCaretPosition(textArea.getDocument().getLength());
-        } catch(Exception e ) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

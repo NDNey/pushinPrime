@@ -84,7 +84,7 @@ public class Board {
         commandInput.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 System.out.println(playerName + ": " + evt.getActionCommand()); //player.getName()
-                if(evt.getActionCommand().equals("drop box")) {
+                if (evt.getActionCommand().equals("drop box")) {
                     sysOut.insertIcon(new ImageIcon(getClass().getResource("/box.png")));
                 }
                 commandInput.setText("");
@@ -112,7 +112,7 @@ public class Board {
 
     public void test() {
         redirectOutput();
-        for(int i = 0;i<300;i++) {
+        for (int i = 0; i < 300; i++) {
             System.out.println("" + i + System.lineSeparator());
         }
     }
@@ -127,7 +127,7 @@ public class Board {
     }
 
     public void startClock() {
-        if(clock == null)
+        if (clock == null)
             clock = new Clock();
         clock.start();
     }
@@ -152,12 +152,14 @@ public class Board {
                 try {
                     Thread.sleep(1000);
                     time++;
-                    if(time > 3600) {
+                    if (time > 3600) {
                         time = 0;
                     }
-                    String timeString = String.format("%02d:%02d" , time / 60, time%60);
+                    String timeString = String.format("%02d:%02d", time / 60, time % 60);
                     clockText.setText(timeString);
-                } catch (Exception e) { e.printStackTrace(); }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
