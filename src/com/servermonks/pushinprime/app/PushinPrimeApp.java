@@ -1,110 +1,75 @@
 package com.servermonks.pushinprime.app;
 
 
-import java.util.*;
-import java.util.Scanner;
+import java.io.ByteArrayInputStream;
 import static com.servermonks.pushinprime.Colors.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 
-
-import org.json.JSONArray;
+import com.servermonks.pushinprime.Prompter;
 import org.json.JSONException;
-import org.json.JSONString;
 import org.json.JSONObject;
 
 import com.apps.util.Console;
-import com.apps.util.Prompter;
-
-import netscape.javascript.JSObject;
 
 import com.servermonks.pushinprime.Board;
 
 //import com.PushinPrimeApp.Player;
 
-
-
 public class PushinPrimeApp {
 
-    private final Prompter PROMPTER = new Prompter(new Scanner(System.in));
-//    private final Board board = Board.getInstance();
-
+    public static ByteArrayInputStream inputStream = new ByteArrayInputStream("".getBytes());
+    private Board board = Board.getInstance();
+    private Prompter PROMPTER = new Prompter(board);
     private boolean gameOver;
     private Player player1;
 
+    public void PushinPrimeApp() {
+        board = Board.getInstance();
+    }
 
     /*
      * Initial game execution:
      *  -> displays welcome banner, instructions and promps for player name
      */
     public void execute() throws IOException {
-        welcome();
+        //welcome();
         howToPlay();
-        PROMPTER.prompt(GREEN + "Press [enter] to start..." + RESET + "");
-
-        try {
-            jsonPractice();
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
-
-        getCommands();
-
-        //showSplashScreen();
-        //createBoard();
-        //prompts for user name
-
-        //board.createBoard();
-
-        //prompt for commands
         promptForUsername();
-        //validateInput();
-        //announceWinner();
-        playAgain();
-
     }
 
     private void welcome() throws IOException {
-        Console.clear();
+        board.clear();
         String banner = Files.readString(Path.of("resources/data"));
         PROMPTER.info(banner);
     }
 
-
-//    public void help(){
-//        System.out.println("To move type 'go' and the direction you want move (go right)");
-//        System.out.println("To pick up an item type 'grab' and the item (grab snacks)");
-//        System.out.println("To quit game type 'quit'");
-//
-//    }
-
     public void getCommands() {
-        Scanner game = new Scanner(System.in);
-        System.out.println("Enter username");
-        String userName = game.nextLine();
-        System.out.println("Welcome " + userName + " to your first day as a Prime Driver");
-        System.out.println("Your mission today is to deliver all of the packages correctly to our customers. I hope you're up for the challenge!");
-        System.out.println("choose your route.");
-        System.out.println("A. sunnyside park");
-        System.out.println("B. Ballard ");
-        System.out.println("C. waterlow row");
-        String route = game.nextLine().toLowerCase();
-        System.out.println(route);
+        //PROMPTER.info(game.delimiter());
+        PROMPTER.info("Enter username");
+        String userName = PROMPTER.prompt();
+        PROMPTER.info("Welcome " + userName + " to your first day as a Prime Driver");
+        PROMPTER.info("Your mission today is to deliver all of the packages correctly to our customers. I hope you're up for the challenge!");
+        PROMPTER.info("choose your route.");
+        PROMPTER.info("A. sunnyside park");
+        PROMPTER.info("B. Ballard ");
+        PROMPTER.info("C. waterlow row");
+        String route = PROMPTER.prompt().toLowerCase();
+        PROMPTER.info(route);
         if (route.equals("b")) {
-            System.out.println("Looks like we are going to Ballard today"); //need to connect to object from this point on.
+            PROMPTER.info("Looks like we are going to Ballard today"); //need to connect to object from this point on.
         }
         while (gameOver != true) {
-            if (game.nextLine().toLowerCase() == "quit") {
+            if (PROMPTER.prompt().toLowerCase() == "quit") {
                 return;
             }
-            if (game.nextLine().toLowerCase() == "help") {
-                System.out.println("To move type 'go' and the direction you want move (go right)");
-                System.out.println("To pick up an item type 'grab' and the item (grab snacks)");
-                System.out.println("To quit game type 'quit'");
+            if (PROMPTER.prompt().toLowerCase() == "help") {
+                PROMPTER.info("To move type 'go' and the direction you want move (go right)");
+                PROMPTER.info("To pick up an item type 'grab' and the item (grab snacks)");
+                PROMPTER.info("To quit game type 'quit'");
             }
-            // Create a Scanner object
 
             //need to use .split("",2) to split input into two.
             //take seperate actions depending on input(grab,use,go)
@@ -117,8 +82,7 @@ public class PushinPrimeApp {
                 "   *  driver is expected to delivered all packages to keep customer satisfaction up.\n" +
                 "   *  If no obstacle,or you overcome, package is delivered successfully." + RESET + "\n");
 
-
-        System.out.println("================\\\n" +
+        PROMPTER.asciiArt("================\\\n" +
                 " |----------||@  \\\\   ___\n" +
                 " |____|_____|||_/_\\\\_|___|_\n" +
                 "<|  ___\\    ||     | ____  |\n" +
@@ -134,54 +98,16 @@ public class PushinPrimeApp {
         JSONObject json = new JSONObject(content);
 
 
-        System.out.println(json);
-        System.out.println(json.get("Pantry"));
-//        JSONObject json = new JSONObject();
-//        JSONObject json2 = new JSONObject();
-//        JSONArray array = new JSONArray();
-
-//        json.put("name", "David");
-//        json.put("object", json2 );
-//        json.put("number", 5);
-//        array.put("item");
-//        array.put(4);
-//        array.put("item2");
-//        json.put("array", array);
-//        System.out.println(json);
-//
-//
-//        System.out.println(json.get("name"));
-
+        PROMPTER.info(json.toString());
+        PROMPTER.info(json.get("Pantry").toString());
     }
-
-
-
 
     // Prompts for usernames and creates new Player objects
     private void promptForUsername() {
         this.player1 = new Player(PROMPTER.prompt("Enter your name: "));
+        PROMPTER.info("Thanks " + player1.getName() + "!");
     }
 
-//
-//    private void announceWinner() {
-//    }
-//
-//    private void validateInput() {
-//        Console.blankLines(1);
-//
-//    }
-
-
-    //    public void getCommands() {
-//        while (gameOver != true) { // while(!gameOver)
-//            Scanner myObj = new Scanner(System.in);  // Create a Scanner object
-//            System.out.println("Enter username");
-//            String userName = myObj.nextLine();
-//            //need to use .split("",2) to split input into two.
-//            //take seperate actions depending on input(grab,use,go)
-//
-//        }
-//    }
     public void playAgain() throws IOException {
         Console.blankLines(1);
         String playAgain= PROMPTER.prompt("Would you like to play again? " +
@@ -194,7 +120,7 @@ public class PushinPrimeApp {
             execute();
         } else if ("R".equalsIgnoreCase(playAgain)) {
             gameOver = false;
-            Console.clear();
+            board.clear();
 
         } else {
             gameOver();
@@ -203,7 +129,7 @@ public class PushinPrimeApp {
 
     private void gameOver() throws IOException {
         try {
-            Console.clear();
+            board.clear();
             Console.blankLines(1);
             String banner = Files.readString(Path.of("resources/thankyou.txt"));
             PROMPTER.info(banner);
@@ -215,7 +141,11 @@ public class PushinPrimeApp {
 
     }
 
+    public static ByteArrayInputStream getInputStream() {
+        return inputStream;
+    }
 
-
+    public static void setInputStream(ByteArrayInputStream inputStream) {
+        PushinPrimeApp.inputStream = inputStream;
+    }
 }
-
