@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ef2c3f45-9366-490b-9bd6-d75fb8290613" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/servermonks/pushinprime/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/servermonks/pushinprime/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/servermonks/pushinprime/ConsoleOutputStream.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/servermonks/pushinprime/ConsoleOutputStream.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/servermonks/pushinprime/app/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/servermonks/pushinprime/app/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/servermonks/pushinprime/app/PushinPrimeApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/servermonks/pushinprime/app/PushinPrimeApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/servermonks/pushinprime/client/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/servermonks/pushinprime/client/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
