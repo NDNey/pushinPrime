@@ -2,14 +2,16 @@ package com.servermonks.pushinprime;
 
 public enum Colors {
 
-    RESET("\033[0m"),
-    CYAN("\033[96m"),
-    MAGENTA("\033[95m"),
-    RED("\033[31m"),
-    RED_UNDERLINED("\033[4;31m"),
-    GREEN("\033[32m"),
-    YELLOW("\033[93m"),
-    DARK_YELLOW("\033[33m");
+    RESET("RESET"),
+    CYAN("#00FFFF"),
+    MAGENTA("#FF00FF"),
+    RED("#ff0000"),
+    RED_UNDERLINED("RED_UNDERLINED"),
+    GREEN("#00FF00"),
+    YELLOW("#FFFF00"),
+    DARK_YELLOW("#8B8000"),
+    LIGHT_GREY("#A9ADAF");
+
 
     private final String color;
 
