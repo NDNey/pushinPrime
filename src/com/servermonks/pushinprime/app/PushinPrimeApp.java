@@ -17,7 +17,7 @@ import com.servermonks.pushinprime.Board;
 public class PushinPrimeApp {
 
     private final Prompter PROMPTER = new Prompter(new Scanner(System.in));
-    private final Board board = Board.getInstance();
+//    private final Board board = Board.getInstance();
 
 import com.servermonks.pushinprime.Board;
 
