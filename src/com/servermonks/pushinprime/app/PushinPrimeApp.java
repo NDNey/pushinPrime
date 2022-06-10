@@ -20,7 +20,6 @@ public class PushinPrimeApp {
     private String currentLocation = "warehouse";
 
     private boolean gameOver;
-//    private Player player;
     private String username;
     private String password = "password";
 
@@ -69,6 +68,7 @@ public class PushinPrimeApp {
         }
     }
 
+
     public void look() {
 
         try {
@@ -78,7 +78,6 @@ public class PushinPrimeApp {
             e.printStackTrace();
         }
     }
-
 
     // Prompts for usernames and password for authentication
     private void promptForUsername() throws InterruptedException {
@@ -98,8 +97,8 @@ public class PushinPrimeApp {
                 break;
             } else if (password != "password") {
                 totalAttempts--;
-                String tryAgain = PROMPTER.prompt("Invalid password,try again:");
                 System.out.println("You have " + totalAttempts + " attempts left");
+                String tryAgain = PROMPTER.prompt("Invalid password,try again:");
                 password = tryAgain;
             }
 
@@ -172,6 +171,7 @@ public class PushinPrimeApp {
     }
 
 
+
     public void playAgain() {
         Console.blankLines(1);
         String playAgain = PROMPTER.prompt("Would you like to play again? " +
@@ -185,6 +185,9 @@ public class PushinPrimeApp {
         } else if ("R".equalsIgnoreCase(playAgain)) {
             gameOver = false;
             Console.clear();
+            currentLocation = "warehouse";
+            System.out.println("Hello " + username + " welcome back for another round of PushinPrime!");
+            getCommands();
         } else {
             gameOver();
         }
@@ -209,5 +212,6 @@ public class PushinPrimeApp {
         }
 
     }
+
 }
 
