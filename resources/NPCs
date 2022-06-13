@@ -5,15 +5,33 @@
       "power": "djhjfh",
       "more.." : "more..."
     },
-    "Banana Hammock": {
+    "Gazzy Colon": {
       "dialog": "blablalblabllabl",
       "power": "djhjfh",
       "more.." : "more..."
-    }, "Banana Hammock": {
+    },
+    "Rock Star Ronney": {
       "dialog": "blablalblabllabl",
       "power": "djhjfh",
       "more.." : "more..."
-    }, "Banana Hammock": {
+    },
+    "Bobby Singer": {
+      "dialog": "blablalblabllabl",
+      "power": "djhjfh",
+      "more.." : "more..."
+    }
+  },
+  "adversaries" : {
+    "usps": {
+      "dialog": "blablalblabllabl",
+      "power": "djhjfh",
+      "more.." : "more..."
+    },
+    "dog": {
+      "dialog": "blablalblabllabl",
+      "power": "djhjfh",
+      "more.." : "more..."
+    },"rain": {
       "dialog": "blablalblabllabl",
       "power": "djhjfh",
       "more.." : "more..."
