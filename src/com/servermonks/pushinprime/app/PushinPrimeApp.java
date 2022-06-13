@@ -94,18 +94,22 @@ public class PushinPrimeApp {
         PROMPTER.info(" ");
         List inventory = user.getInventory();
         try {
-            PROMPTER.info("Here you got: ");
             String[] items = data.getJSONObject(currentLocation).getJSONArray("item").join("-").split("-");
-            System.out.println(Arrays.toString(items));
 
             for (int i = 0; i < items.length; i++) {
                 if (items[i].toLowerCase().contains(item)) {
                     inventory.add(item);
                     user.setInventory(inventory);
                     data.getJSONObject(currentLocation).getJSONArray("item").remove(i);
+                    break;
+                }else{
+                    PROMPTER.info("It seems that there is not any " + item + " around");
+                    help();
                 }
             }
-            System.out.println("this is " + user.getName() + " inventory" + user.getInventory());
+            PROMPTER.info(item + " has been added to your inventory!");
+            PROMPTER.info(user.getName() + " your inventory looks like this: " + user.getInventory());
+
 
         } catch (JSONException e) {
             e.printStackTrace();
