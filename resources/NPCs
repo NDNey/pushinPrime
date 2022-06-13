@@ -1,7 +1,22 @@
 {
-  "name": {
-    "dialog": "blablalblabllabl",
-    "power": "djhjfh",
-    "more.." : "more..."
+  "customers" : {
+    "Banana Hammock": {
+      "dialog": "blablalblabllabl",
+      "power": "djhjfh",
+      "more.." : "more..."
+    },
+    "Banana Hammock": {
+      "dialog": "blablalblabllabl",
+      "power": "djhjfh",
+      "more.." : "more..."
+    }, "Banana Hammock": {
+      "dialog": "blablalblabllabl",
+      "power": "djhjfh",
+      "more.." : "more..."
+    }, "Banana Hammock": {
+      "dialog": "blablalblabllabl",
+      "power": "djhjfh",
+      "more.." : "more..."
+    }
   }
 }

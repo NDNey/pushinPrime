@@ -3,6 +3,7 @@ package com.servermonks.pushinprime.app;
 import com.apps.util.Console;
 import com.servermonks.pushinprime.Board;
 import com.servermonks.pushinprime.Prompter;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,6 +11,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.ClientInfoStatus;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 import static com.servermonks.pushinprime.Colors.*;
 
@@ -26,13 +32,12 @@ public class PushinPrimeApp {
 
 
     private boolean gameOver;
-    private String username;
+//    private String username;
     private String password = "password";
+    private Player user ;
 
 
-    public void PushinPrimeApp() {
-        board = Board.getInstance();
-    }
+
 
     /*
      * Initial game execution:
@@ -90,11 +95,34 @@ public class PushinPrimeApp {
         }
     }
 
+    public void getItem(String item) {
+        PROMPTER.info(" ");
+        List inventory = user.getInventory();
+        try {
+            PROMPTER.info("Here you got: ");
+            String[] items = data.getJSONObject(currentLocation).getJSONArray("item").join("-").split("-");
+            System.out.println(Arrays.toString(items));
+
+            for (int i = 0; i < items.length; i++){
+                if(items[i].toLowerCase().contains(item)){
+                    inventory.add(item);
+                    user.setInventory(inventory);
+                    data.getJSONObject(currentLocation).getJSONArray("item").remove(i);
+                }
+            }
+            System.out.println("this is " + user.getName() + " inventory" + user.getInventory());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Prompts for usernames and password for authentication
     private void promptForUsername() throws InterruptedException {
 
-        username = PROMPTER.prompt("Enter username: ");
+        String username = PROMPTER.prompt("Enter username: ");
         password = PROMPTER.prompt("Enter password: ");
+        user = new Player(username);
         int totalAttempts = 2;
 
         while (totalAttempts != 0) {
@@ -123,7 +151,6 @@ public class PushinPrimeApp {
                     password = tryAgain;
                 }
 
-
             }
 
             if (totalAttempts == 0) {
@@ -137,18 +164,21 @@ public class PushinPrimeApp {
     public void getCommands() {
         showStatus();
         String route = PROMPTER.prompt().toLowerCase();
+        String[] commands = route.replaceAll("\\s+", " ").split(" ");
+
 
         if (route.equals("help")) {
             help();
-        } else if (route.contains("go")) {
+        } else if (commands[0].equals("go")) {
             try {
-                currentLocation = (String) data.getJSONObject(currentLocation).getJSONObject("directions").get(route.substring(3));
+                currentLocation = (String) data.getJSONObject(currentLocation).getJSONObject("directions").get(commands[1]);
             } catch (JSONException e) {
                 help();
             }
-        } else if (route.contains("look")) {
+        } else if (commands[0].equals("look")) {
             look();
-
+        }  else if (commands[0].equals("get")) {
+            getItem(commands[1]);
         } else if (route.equals("quit game")) {
             playAgain();
         } else {
@@ -211,7 +241,7 @@ public class PushinPrimeApp {
             board.clear();
 //            Console.clear();
             currentLocation = "warehouse";
-            PROMPTER.info("Hello " + username + " welcome back for another round of PushinPrime!");
+            PROMPTER.info("Hello " + user.getName() + " welcome back for another round of PushinPrime!");
             getCommands();
 
         } else {
