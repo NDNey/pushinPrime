@@ -24,7 +24,6 @@ public class PushinPrimeApp {
     private JSONObject data;
     private String currentLocation = "warehouse";
 
-
     private boolean gameOver;
     private String username;
     private String password = "password";
@@ -151,10 +150,13 @@ public class PushinPrimeApp {
 
         } else if (route.equals("quit game")) {
             playAgain();
+        } else if (route.equals("attack")) {
+            combat();
         } else {
             PROMPTER.info("Remember the available commands are: ");
             help();
         }
+
 
 //        board.clear();
         getCommands();
@@ -194,8 +196,22 @@ public class PushinPrimeApp {
         return json;
 
     }
+    String streetFight = "yoo";
+    public void combat(){
+        int playersHealth = 100;
+        int thiefHealth = 100;
 
+        try {
+          String streetFight = data.getJSONObject(currentLocation).get("adversary").toString();
+            System.out.println(streetFight);
+        } catch (JSONException e) {
+            System.out.println(e);
+            System.out.println("nope");
+        }
+        PROMPTER.info("Combat MODEEEE");
 
+//        if (currentLocation)
+    }
     public void playAgain() {
 //        Console.blankLines(1);
         String playAgain = PROMPTER.prompt("Would you like to play again? " +

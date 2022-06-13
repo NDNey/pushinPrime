@@ -29,7 +29,7 @@
   "customer": "Bobby Singer",
      "directions" : {"north": "waterlow row",},
      "item": [],
-    "adversary":"usps",
+    "adversary":"thief",
     "description": "I see the enemy...I better be careful"
   }
 
