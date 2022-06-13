@@ -8,9 +8,7 @@ public class Player {
     private String name;
     private int wins = 0;
     private int losses = 0;
-    private List<String> inventory =new ArrayList<String>();
-
-
+    private List<String> inventory = new ArrayList<String>();
 
 
     public Player(String name) {

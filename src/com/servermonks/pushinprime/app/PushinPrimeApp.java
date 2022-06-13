@@ -3,7 +3,6 @@ package com.servermonks.pushinprime.app;
 import com.apps.util.Console;
 import com.servermonks.pushinprime.Board;
 import com.servermonks.pushinprime.Prompter;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -11,11 +10,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.sql.ClientInfoStatus;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 import static com.servermonks.pushinprime.Colors.*;
 
@@ -32,9 +28,8 @@ public class PushinPrimeApp {
 
 
     private boolean gameOver;
-//    private String username;
     private String password = "password";
-    private Player user ;
+    private Player user;
 
 
 
@@ -103,8 +98,8 @@ public class PushinPrimeApp {
             String[] items = data.getJSONObject(currentLocation).getJSONArray("item").join("-").split("-");
             System.out.println(Arrays.toString(items));
 
-            for (int i = 0; i < items.length; i++){
-                if(items[i].toLowerCase().contains(item)){
+            for (int i = 0; i < items.length; i++) {
+                if (items[i].toLowerCase().contains(item)) {
                     inventory.add(item);
                     user.setInventory(inventory);
                     data.getJSONObject(currentLocation).getJSONArray("item").remove(i);
@@ -177,7 +172,7 @@ public class PushinPrimeApp {
             }
         } else if (commands[0].equals("look")) {
             look();
-        }  else if (commands[0].equals("get")) {
+        } else if (commands[0].equals("get")) {
             getItem(commands[1]);
         } else if (route.equals("quit game")) {
             playAgain();
