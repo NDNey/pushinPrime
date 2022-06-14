@@ -3,6 +3,7 @@ package com.servermonks.pushinprime.app;
 
 import com.servermonks.pushinprime.Board;
 import com.servermonks.pushinprime.Prompter;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -112,6 +113,40 @@ public class PushinPrimeApp {
         }
     }
 
+    public void dropItem(String item) {
+        PROMPTER.info(" ");
+        List inventory = user.getInventory();
+        try {
+            if(inventory.contains(item)){
+                JSONArray locationItems = data.getJSONObject(currentLocation).getJSONArray("item");
+                int nextIndex = locationItems.length();
+                locationItems.put(nextIndex,item);
+                inventory.remove(item);
+                PROMPTER.info(item + " has been dropped in " + currentLocation +
+                        " from your inventory!");
+            }else{
+                PROMPTER.info("You don't have " + item + " in your Inventory" );
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+//            for (int i = 0; i < items.length; i++) {
+//                if (items[i].toLowerCase().contains(item)) {
+//                    inventory.add(item);
+//                    user.setInventory(inventory);
+//                    data.getJSONObject(currentLocation).getJSONArray("item").remove(i);
+//                    break;
+//                }else{
+//                    PROMPTER.info("It seems that there is not any " + item + " around");
+//                    help();
+//                }
+//            }
+
+//            PROMPTER.info(user.getName() + " your inventory looks like this: " + user.getInventory());
+
+    }
+
     public void showInventory(){
         List inventory = user.getInventory();
         if(inventory.size() > 0){
@@ -185,7 +220,9 @@ public class PushinPrimeApp {
             look();
         } else if (commands[0].equals("get")) {
             getItem(commands[1]);
-        } else if (route.equals("quit game")) {
+        } else if (commands[0].equals("drop")) {
+            dropItem(commands[1]);
+        }else if (route.equals("quit game")) {
             playAgain();
         } else if (route.equals("inventory")) {
             showInventory();
