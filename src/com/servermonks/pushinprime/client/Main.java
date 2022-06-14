@@ -12,7 +12,7 @@ public class Main {
         PushinPrimeApp pushinPrimeApp = new PushinPrimeApp();
         try {
             pushinPrimeApp.execute();
-        } catch (IOException | InterruptedException | JSONException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

@@ -1,8 +1,9 @@
 package com.servermonks.pushinprime.app;
 
-import com.apps.util.Console;
+
 import com.servermonks.pushinprime.Board;
 import com.servermonks.pushinprime.Prompter;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,12 +11,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
+
 import java.util.List;
 
 import static com.servermonks.pushinprime.Colors.*;
 
-//import com.PushinPrimeApp.Player;
 
 public class PushinPrimeApp {
 
@@ -32,25 +32,21 @@ public class PushinPrimeApp {
     private Player user;
 
 
-
-
     /*
      * Initial game execution:
      *  -> displays welcome banner, instructions and promps for player name
      */
 
 
-    public void execute() throws IOException, InterruptedException, JSONException {
+    public void execute() throws InterruptedException {
         data = getJson();
         welcome();
         howToPlay();
-//        PROMPTER.prompt(GREEN + "Press [enter] to start..." + RESET + "");
         promptForUsername();
         getCommands();
     }
 
     private void welcome() {
-        Console.clear();
         String banner = null;
         try {
             banner = Files.readString(Path.of("resources/welcome_banner.txt"));
@@ -63,10 +59,11 @@ public class PushinPrimeApp {
 
     public void help() {
         PROMPTER.info(" ");
-        PROMPTER.info("* Seems that you need some Help!");
-        PROMPTER.info("* To move type 'go' and the direction you want move (go north)");
-        PROMPTER.info("* To pick up an item type 'get' and the item (get snacks)");
-        PROMPTER.info("* To quit game type 'quit game'");
+        PROMPTER.info(YELLOW + "Seems that you need some Help!\n" + RESET +
+                "* To move type 'go' and the direction you want move (go north)\n" +
+                "* To pick up an item type 'get' and the item (get snacks)\n" +
+                "* To look around the area type 'look'\n" +
+                "* To quit game type 'quit game'");
     }
 
     public void showStatus() {
@@ -115,6 +112,51 @@ public class PushinPrimeApp {
             e.printStackTrace();
         }
     }
+
+    public void dropItem(String item) {
+        PROMPTER.info(" ");
+        List inventory = user.getInventory();
+        try {
+            if(inventory.contains(item)){
+                JSONArray locationItems = data.getJSONObject(currentLocation).getJSONArray("item");
+                int nextIndex = locationItems.length();
+                locationItems.put(nextIndex,item);
+                inventory.remove(item);
+                PROMPTER.info(item + " has been dropped in " + currentLocation +
+                        " from your inventory!");
+            }else{
+                PROMPTER.info("You don't have " + item + " in your Inventory" );
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+//            for (int i = 0; i < items.length; i++) {
+//                if (items[i].toLowerCase().contains(item)) {
+//                    inventory.add(item);
+//                    user.setInventory(inventory);
+//                    data.getJSONObject(currentLocation).getJSONArray("item").remove(i);
+//                    break;
+//                }else{
+//                    PROMPTER.info("It seems that there is not any " + item + " around");
+//                    help();
+//                }
+//            }
+
+//            PROMPTER.info(user.getName() + " your inventory looks like this: " + user.getInventory());
+
+    }
+
+    public void showInventory(){
+        List inventory = user.getInventory();
+        if(inventory.size() > 0){
+            PROMPTER.info(user.getName() + " This is your inventory: " + user.getInventory());
+        }else{
+            PROMPTER.info("Hey!" + user.getName() + " it seems that you don't have anything in your inventory yet!\n" +
+                    "look around to check what you can add to your inventory." );
+        }
+    }
+
 
     // Prompts for usernames and password for authentication
     private void promptForUsername() throws InterruptedException {
@@ -178,10 +220,14 @@ public class PushinPrimeApp {
             look();
         } else if (commands[0].equals("get")) {
             getItem(commands[1]);
-        } else if (route.equals("quit game")) {
+        } else if (commands[0].equals("drop")) {
+            dropItem(commands[1]);
+        }else if (route.equals("quit game")) {
             playAgain();
+        } else if (route.equals("inventory")) {
+            showInventory();
         } else {
-            PROMPTER.info("Remember the available commands are: ");
+            PROMPTER.info("Invalid command!");
             help();
         }
 
@@ -248,7 +294,7 @@ public class PushinPrimeApp {
         }
         try {
             execute();
-        } catch (IOException | InterruptedException | JSONException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -256,10 +302,8 @@ public class PushinPrimeApp {
     private void gameOver() {
         try {
             board.clear();
-            Console.blankLines(1);
             String banner = Files.readString(Path.of("resources/thankyou.txt"));
             PROMPTER.asciiArt(banner);
-            Console.blankLines(1);
             Thread.sleep(3000);
             System.exit(0);
         } catch (InterruptedException | IOException e) {
