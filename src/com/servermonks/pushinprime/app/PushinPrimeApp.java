@@ -235,17 +235,18 @@ public class PushinPrimeApp {
                 PROMPTER.info("WHAP! You didnt do much damage but you certainly showed them whos boss!");
                 thiefHealth = thiefHealth - 10;
             }
-            PROMPTER.info("Give me that package!");
             Random rand = new Random();
             int randomNum = rand.nextInt((3 - 1) + 1) + 1;
             if (randomNum == 1){
-                PROMPTER.info("WHAP! You didnt do much damage but you certainly showed them whos boss!");
+                PROMPTER.info("The thief backhanded you.....Disrespectful");
+                playersHealth = playersHealth - 10;
             }
             if (randomNum == 2){
-                PROMPTER.info("WHAP! You didnt do much damage but you certainly showed them whos boss!");
+                PROMPTER.info("thief throws a nasty uppercut that connected...ouch");
+                playersHealth = playersHealth - 30;
             }
             if (randomNum == 3){
-                PROMPTER.info("");
+                PROMPTER.info("OH no the thief body slammed you into the pavement...That has to hurt");
                 playersHealth = playersHealth - 50;
             }
 
