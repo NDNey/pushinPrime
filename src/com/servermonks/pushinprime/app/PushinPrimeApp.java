@@ -10,6 +10,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Locale;
+import java.util.Random;
 
 import static com.servermonks.pushinprime.Colors.*;
 
@@ -196,22 +198,60 @@ public class PushinPrimeApp {
         return json;
 
     }
-    String streetFight = "yoo";
+//    String streetFight = "yoo";
     public void combat(){
-        int playersHealth = 100;
-        int thiefHealth = 100;
-
         try {
           String streetFight = data.getJSONObject(currentLocation).get("adversary").toString();
+          if(streetFight.equals("thief")){
+              PROMPTER.info("OH noo the thief is coming to steal a package!");
+              fight();
+          }
             System.out.println(streetFight);
         } catch (JSONException e) {
-            System.out.println(e);
-            System.out.println("nope");
+            PROMPTER.info("We are delivery drivers. We don't attack unless to protect our packages!");
         }
-        PROMPTER.info("Combat MODEEEE");
-
-//        if (currentLocation)
     }
+
+    private void fight() {
+        int playersHealth = 100;
+        int thiefHealth = 100;
+        while (playersHealth > 0 && thiefHealth > 0){
+            PROMPTER.info("Thief health: " + thiefHealth + "Your health: " + playersHealth);
+            String playerAttack = PROMPTER.prompt("Choose your attacks 'A' Punch. 'B' Kick. 'C' BodySlam. 'D' Open Hand smack.");
+            if (playerAttack.toLowerCase().equals("a")) {
+                PROMPTER.info("Crack! Right in the kisser!");
+                thiefHealth = thiefHealth - 25;
+            }
+            if (playerAttack.toLowerCase().equals("b")) {
+                PROMPTER.info("Phenomenal head kick! You may be in the wrong profession here");
+                thiefHealth = thiefHealth - 30;
+            }
+            if (playerAttack.toLowerCase().equals("c")) {
+                PROMPTER.info("OHHHHH Snap! You pick the thief up and slammed them!");
+                thiefHealth = thiefHealth - 40;
+
+            }
+            if (playerAttack.toLowerCase().equals("d")) {
+                PROMPTER.info("WHAP! You didnt do much damage but you certainly showed them whos boss!");
+                thiefHealth = thiefHealth - 10;
+            }
+            PROMPTER.info("Give me that package!");
+            Random rand = new Random();
+            int randomNum = rand.nextInt((3 - 1) + 1) + 1;
+            if (randomNum == 1){
+                PROMPTER.info("WHAP! You didnt do much damage but you certainly showed them whos boss!");
+            }
+            if (randomNum == 2){
+                PROMPTER.info("WHAP! You didnt do much damage but you certainly showed them whos boss!");
+            }
+            if (randomNum == 3){
+                PROMPTER.info("");
+                playersHealth = playersHealth - 50;
+            }
+
+        }
+    }
+
     public void playAgain() {
 //        Console.blankLines(1);
         String playAgain = PROMPTER.prompt("Would you like to play again? " +
