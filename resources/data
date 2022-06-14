@@ -1,7 +1,7 @@
 {
 "warehouse": {
     "directions" : {"south": "sunnyside park"},
-    "item": ["map", "Dog Treats"],
+    "item": ["map", "DogTreats"],
     "description": "You are in a huge Amazon warehouse filled with packages to be delivered. You see a map and a bag of dog treats. Going south will take you to sunnyside park"
   },
   "sunnyside park": {
@@ -21,7 +21,7 @@
     "customer": "Rock Star Ronney",
      "directions" : {   "west": "sunnyside park",
                          "south": "hollywood blvd"},
-    "item":["water balloons"] ,
+    "item":["waterBalloons"] ,
     "adversary":"dog",
     "description": "wow that's a scary dog. You better hope he is nice!"
   },
