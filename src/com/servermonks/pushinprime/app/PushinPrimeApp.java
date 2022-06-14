@@ -11,6 +11,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Locale;
+import java.util.Random;
 
 import java.util.List;
 
@@ -25,7 +27,6 @@ public class PushinPrimeApp {
 
     private JSONObject data;
     private String currentLocation = "warehouse";
-
 
     private boolean gameOver;
     private String password = "password";
@@ -224,12 +225,18 @@ public class PushinPrimeApp {
             dropItem(commands[1]);
         }else if (route.equals("quit game")) {
             playAgain();
+
+        } else if (route.equals("attack")) {
+            combat();
+
         } else if (route.equals("inventory")) {
             showInventory();
+
         } else {
             PROMPTER.info("Invalid command!");
             help();
         }
+
 
 //        board.clear();
         getCommands();
@@ -269,7 +276,61 @@ public class PushinPrimeApp {
         return json;
 
     }
+//    String streetFight = "yoo";
+    public void combat(){
+        try {
+          String streetFight = data.getJSONObject(currentLocation).get("adversary").toString();
+          if(streetFight.equals("thief")){
+              PROMPTER.info("OH noo the thief is coming to steal a package!");
+              fight();
+          }
+            System.out.println(streetFight);
+        } catch (JSONException e) {
+            PROMPTER.info("We are delivery drivers. We don't attack unless to protect our packages!");
+        }
+    }
 
+    private void fight() {
+        int playersHealth = 100;
+        int thiefHealth = 100;
+        while (playersHealth > 0 && thiefHealth > 0){
+            PROMPTER.info("Thief health: " + thiefHealth + "Your health: " + playersHealth);
+            String playerAttack = PROMPTER.prompt("Choose your attacks 'A' Punch. 'B' Kick. 'C' BodySlam. 'D' Open Hand smack.");
+            if (playerAttack.toLowerCase().equals("a")) {
+                PROMPTER.info("Crack! Right in the kisser!");
+                thiefHealth = thiefHealth - 25;
+            }
+            if (playerAttack.toLowerCase().equals("b")) {
+                PROMPTER.info("Phenomenal head kick! You may be in the wrong profession here");
+                thiefHealth = thiefHealth - 30;
+            }
+            if (playerAttack.toLowerCase().equals("c")) {
+                PROMPTER.info("OHHHHH Snap! You pick the thief up and slammed them!");
+                thiefHealth = thiefHealth - 40;
+
+            }
+            if (playerAttack.toLowerCase().equals("d")) {
+                PROMPTER.info("WHAP! You didnt do much damage but you certainly showed them whos boss!");
+                thiefHealth = thiefHealth - 10;
+            }
+            Random rand = new Random();
+            int randomNum = rand.nextInt((3 - 1) + 1) + 1;
+
+            if (randomNum == 1){
+                PROMPTER.info("The thief backhanded you.....Disrespectful");
+                playersHealth = playersHealth - 10;
+            }
+            if (randomNum == 2){
+                PROMPTER.info("thief throws a nasty uppercut that connected...ouch");
+                playersHealth = playersHealth - 30;
+            }
+            if (randomNum == 3){
+                PROMPTER.info("OH no the thief body slammed you into the pavement...That has to hurt");
+                playersHealth = playersHealth - 50;
+            }
+
+        }
+    }
 
     public void playAgain() {
 //        Console.blankLines(1);
