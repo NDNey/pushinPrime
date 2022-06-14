@@ -237,6 +237,7 @@ public class PushinPrimeApp {
             }
             Random rand = new Random();
             int randomNum = rand.nextInt((3 - 1) + 1) + 1;
+
             if (randomNum == 1){
                 PROMPTER.info("The thief backhanded you.....Disrespectful");
                 playersHealth = playersHealth - 10;
