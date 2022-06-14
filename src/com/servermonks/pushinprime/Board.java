@@ -122,7 +122,7 @@ public class Board {
 
         commandInput.requestFocus();
 
-//        startClock();
+       // startClock();
     }
 
 
