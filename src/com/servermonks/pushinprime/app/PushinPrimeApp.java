@@ -6,6 +6,7 @@ import com.servermonks.pushinprime.Prompter;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.html.HTMLImageElement;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.servermonks.pushinprime.Colors.*;
 
@@ -44,7 +46,9 @@ public class PushinPrimeApp {
         welcome();
         howToPlay();
         promptForUsername();
+        countdown();
         getCommands();
+
     }
 
     private void welcome() {
@@ -100,7 +104,7 @@ public class PushinPrimeApp {
                     user.setInventory(inventory);
                     data.getJSONObject(currentLocation).getJSONArray("item").remove(i);
                     break;
-                }else{
+                } else {
                     PROMPTER.info("It seems that there is not any " + item + " around");
                     help();
                 }
@@ -118,15 +122,15 @@ public class PushinPrimeApp {
         PROMPTER.info(" ");
         List inventory = user.getInventory();
         try {
-            if(inventory.contains(item)){
+            if (inventory.contains(item)) {
                 JSONArray locationItems = data.getJSONObject(currentLocation).getJSONArray("item");
                 int nextIndex = locationItems.length();
-                locationItems.put(nextIndex,item);
+                locationItems.put(nextIndex, item);
                 inventory.remove(item);
                 PROMPTER.info(item + " has been dropped in " + currentLocation +
                         " from your inventory!");
-            }else{
-                PROMPTER.info("You don't have " + item + " in your Inventory" );
+            } else {
+                PROMPTER.info("You don't have " + item + " in your Inventory");
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -148,13 +152,13 @@ public class PushinPrimeApp {
 
     }
 
-    public void showInventory(){
+    public void showInventory() {
         List inventory = user.getInventory();
-        if(inventory.size() > 0){
+        if (inventory.size() > 0) {
             PROMPTER.info(user.getName() + " This is your inventory: " + user.getInventory());
-        }else{
+        } else {
             PROMPTER.info("Hey!" + user.getName() + " it seems that you don't have anything in your inventory yet!\n" +
-                    "look around to check what you can add to your inventory." );
+                    "look around to check what you can add to your inventory.");
         }
     }
 
@@ -223,7 +227,7 @@ public class PushinPrimeApp {
             getItem(commands[1]);
         } else if (commands[0].equals("drop")) {
             dropItem(commands[1]);
-        }else if (route.equals("quit game")) {
+        } else if (route.equals("quit game")) {
             playAgain();
 
         } else if (route.equals("attack")) {
@@ -276,14 +280,15 @@ public class PushinPrimeApp {
         return json;
 
     }
-//    String streetFight = "yoo";
-    public void combat(){
+
+    //    String streetFight = "yoo";
+    public void combat() {
         try {
-          String streetFight = data.getJSONObject(currentLocation).get("adversary").toString();
-          if(streetFight.equals("thief")){
-              PROMPTER.info("OH noo the thief is coming to steal a package!");
-              fight();
-          }
+            String streetFight = data.getJSONObject(currentLocation).get("adversary").toString();
+            if (streetFight.equals("thief")) {
+                PROMPTER.info("OH noo the thief is coming to steal a package!");
+                fight();
+            }
             System.out.println(streetFight);
         } catch (JSONException e) {
             PROMPTER.info("We are delivery drivers. We don't attack unless to protect our packages!");
@@ -293,7 +298,7 @@ public class PushinPrimeApp {
     private void fight() {
         int playersHealth = 100;
         int thiefHealth = 100;
-        while (playersHealth > 0 && thiefHealth > 0){
+        while (playersHealth > 0 && thiefHealth > 0) {
             PROMPTER.info("Thief health: " + thiefHealth + "Your health: " + playersHealth);
             String playerAttack = PROMPTER.prompt("Choose your attacks 'A' Punch. 'B' Kick. 'C' BodySlam. 'D' Open Hand smack.");
             if (playerAttack.toLowerCase().equals("a")) {
@@ -316,15 +321,15 @@ public class PushinPrimeApp {
             Random rand = new Random();
             int randomNum = rand.nextInt((3 - 1) + 1) + 1;
 
-            if (randomNum == 1){
+            if (randomNum == 1) {
                 PROMPTER.info("The thief backhanded you.....Disrespectful");
                 playersHealth = playersHealth - 10;
             }
-            if (randomNum == 2){
+            if (randomNum == 2) {
                 PROMPTER.info("thief throws a nasty uppercut that connected...ouch");
                 playersHealth = playersHealth - 30;
             }
-            if (randomNum == 3){
+            if (randomNum == 3) {
                 PROMPTER.info("OH no the thief body slammed you into the pavement...That has to hurt");
                 playersHealth = playersHealth - 50;
             }
@@ -381,7 +386,39 @@ public class PushinPrimeApp {
     public static void setInputStream(ByteArrayInputStream inputStream) {
         PushinPrimeApp.inputStream = inputStream;
     }
-}
+
+    public void countdown() throws InterruptedException {
+        board.startClock();
+        boolean x = true;
+        int timeElapsed = 3;
+        long displayMinutes = 0;
+        long starttime = System.currentTimeMillis();
+        PROMPTER.info(YELLOW + "You have 3 minutes till game over" + RESET);
+        System.out.println("Your time starts now");
+        while (x) {
+            //Thread.sleep(1);
+            TimeUnit.SECONDS.sleep(1);
+            long timepassed = System.currentTimeMillis() - starttime;
+            long secondspassed = timepassed / 1000;
+            if (secondspassed == 60) {
+                secondspassed = 0;
+                starttime = System.currentTimeMillis();
+
+            }
+            if ((secondspassed % 60) == 0) {
+                displayMinutes++;
+            }
+
+                System.out.println(displayMinutes + ":" + secondspassed);
+                if (displayMinutes == timeElapsed && secondspassed == 0) {
+                    PROMPTER.info("Time is over");
+                    board.stopClock();
+                    playAgain();
+                }
+            }
+        }
+    }
+
 
 
 
