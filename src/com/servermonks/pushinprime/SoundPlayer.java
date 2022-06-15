@@ -31,8 +31,8 @@ public class SoundPlayer extends Thread {
     }
 
     public void run() {
-        while(powerOn) {
-            while(playList.isEmpty() || playing == true);
+        while (powerOn) {
+            while (playList.isEmpty() || playing == true) ;
             synchronized (playList) {
                 playSound(playList.get(0));
                 removeSoundFile(playList.get(0));
@@ -56,7 +56,9 @@ public class SoundPlayer extends Thread {
             });
             clip.start();
 
-        } catch (Exception ex) { ex.printStackTrace(); }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public synchronized void addSoundFile(String fileName) {
@@ -65,7 +67,7 @@ public class SoundPlayer extends Thread {
 
     public synchronized void addSoundFile(String fileName, boolean loop) {
         playList.add(fileName);
-        if(loop) {
+        if (loop) {
             repeatSound = fileName;
         }
     }
@@ -77,11 +79,11 @@ public class SoundPlayer extends Thread {
     public void setVolume(float volumeAdjustment) {
         volumeAdjustment = volumeAdjustment * 2;
         float newVolume = volume + volumeAdjustment;
-        newVolume = BigDecimal.valueOf(newVolume).setScale(1,RoundingMode.FLOOR)
+        newVolume = BigDecimal.valueOf(newVolume).setScale(1, RoundingMode.FLOOR)
                 .floatValue();
-        if(newVolume < 0.0f) {
+        if (newVolume < 0.0f) {
             newVolume = 0.0f;
-        } else if(newVolume > 1.0f) {
+        } else if (newVolume > 1.0f) {
             newVolume = 1.0f;
         }
         volume = newVolume;
@@ -89,6 +91,7 @@ public class SoundPlayer extends Thread {
         newVolume = 20f * (float) Math.log10(newVolume);
         gainControl.setValue(newVolume);
     }
+
     public void lowerVolume() {
         setVolume(-0.1f);
     }

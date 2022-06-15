@@ -11,22 +11,22 @@ public class TextFieldPlaceholder extends JTextField {
     public TextFieldPlaceholder() {
     }
 
-    public TextFieldPlaceholder (
-        Document document,
-        String text,
-        int columns) {
+    public TextFieldPlaceholder(
+            Document document,
+            String text,
+            int columns) {
         super(document, text, columns);
     }
 
-    public TextFieldPlaceholder (int columns) {
+    public TextFieldPlaceholder(int columns) {
         super(columns);
     }
 
-    public TextFieldPlaceholder (String text) {
+    public TextFieldPlaceholder(String text) {
         super(text);
     }
 
-    public TextFieldPlaceholder (String text, int columns) {
+    public TextFieldPlaceholder(String text, int columns) {
         super(text, columns);
     }
 

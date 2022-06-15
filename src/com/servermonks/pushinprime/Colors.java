@@ -22,7 +22,9 @@ public enum Colors {
         this.color = color;
     }
 
-    public Color getRGB() { return Color.decode("#FFCCEE"); }
+    public Color getRGB() {
+        return Color.decode("#FFCCEE");
+    }
 
     public String toString() {
         return color;

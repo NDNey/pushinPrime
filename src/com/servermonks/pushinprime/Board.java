@@ -22,6 +22,7 @@ public class Board {
     private JTextField clockText;
     private String playerName = "you";
     private long time = 0;
+    private Clock clock;
     private Font sysOutTextFont = new Font("SansSerif", Font.BOLD, 12);
     private Font inputTextFont = new Font("SansSerif", Font.BOLD, 35);
     private Colors sysOutColorBG = Colors.LIGHT_GREY;
@@ -127,7 +128,11 @@ public class Board {
         frame.setIconImage(imageIcon);
         commandInput.requestFocus();
 
+
         playGameMusic();
+
+        // startClock();
+
     }
 
     public JTextPane getTextPane() {
@@ -160,9 +165,49 @@ public class Board {
     public Image getImageFile(String fileName) {
         try {
             return ImageIO.read(getResourceFile(fileName));
-        } catch(Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
+    public void startClock() {
+        if (clock == null)
+            clock = new Clock();
+        clock.start();
+    }
+
+    public void stopClock() {
+        clock.clockRunning = false;
+        clock = null;
+    }
+
+    public void resetClock() {
+        stopClock();
+        time = 0;
+    }
+
+    class Clock extends Thread {
+
+        public boolean clockRunning = true;
+
+        @Override
+        public void run() {
+            while (clockRunning) {
+                try {
+                    Thread.sleep(1000);
+                    time++;
+                    if (time > 3600) {
+                        time = 0;
+                    }
+                    String timeString = String.format("%02d:%02d", time / 60, time % 60);
+                    clockText.setText(timeString);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 
     public File getResourceFile(String fileName) {
         return new File("resources/" + fileName);
@@ -171,13 +216,13 @@ public class Board {
     public void attachVolumeControls(JComponent component) {
         component.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                if(evt.getKeyCode() == KeyEvent.VK_UP) {
+                if (evt.getKeyCode() == KeyEvent.VK_UP) {
                     soundPlayer.raiseVolume();
-                } else if(evt.getKeyCode() == KeyEvent.VK_DOWN) {
+                } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
                     soundPlayer.lowerVolume();
-                } else if(evt.getKeyCode() == KeyEvent.VK_RIGHT) {
+                } else if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
                     soundPlayer.mute();
-                } else if(evt.getKeyCode() == KeyEvent.VK_LEFT) {
+                } else if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
                     soundPlayer.unMute();
                 }
             }

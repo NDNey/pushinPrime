@@ -62,9 +62,9 @@ public class Prompter {
         scroll2bottom();
         try {
             String str = doc.getText(0, doc.getLength() - 1);
-            System.out.println(str);
-            System.out.println(board.getTextPane().getText());
-        } catch(Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String getInput() {
@@ -77,8 +77,8 @@ public class Prompter {
 
     public String prompt(String message) {
         board.getCommandInput().setText("");
-        if(message.substring(message.length()-2,message.length()-1).equals(":")) {
-            message = message.substring(0,message.length()-2);
+        if (message.substring(message.length() - 2, message.length() - 1).equals(":")) {
+            message = message.substring(0, message.length() - 2);
         }
         message = message.toLowerCase();
         board.getCommandInput().setPlaceholder("enter " + message);
@@ -88,9 +88,9 @@ public class Prompter {
 
     public String prompt(String var1, String var2, String var3) {
         String var4 = null;
-        while(true) {
+        while (true) {
             var4 = prompt(var3);
-            if(var4.matches(var2)) {
+            if (var4.matches(var2)) {
                 break;
             }
         }
