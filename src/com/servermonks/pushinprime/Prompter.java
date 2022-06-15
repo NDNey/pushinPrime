@@ -2,10 +2,10 @@ package com.servermonks.pushinprime;
 
 import com.servermonks.pushinprime.app.PushinPrimeApp;
 
+import javax.swing.text.DefaultCaret;
 import javax.swing.text.Element;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.html.HTMLDocument;
-import java.awt.*;
 
 import static com.servermonks.pushinprime.Colors.*;
 
@@ -19,6 +19,12 @@ public class Prompter {
 
     public void asciiArt(String var1) {
         info("<pre>" + var1 + "</pre>");
+    }
+
+    public void scroll2bottom() {
+        DefaultCaret caret = (DefaultCaret) board.getTextPane().getCaret();
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+        board.getTextPane().setCaretPosition(board.getTextPane().getDocument().getLength());
     }
 
     public void info(String var1) {
@@ -53,37 +59,41 @@ public class Prompter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        scroll2bottom();
+        try {
+            String str = doc.getText(0, doc.getLength() - 1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public String prompt() {
+    public String getInput() {
         while (PushinPrimeApp.inputStream == null || PushinPrimeApp.inputStream.available() == 0) ;
         byte[] byteArray = new byte[PushinPrimeApp.inputStream.available()];
         PushinPrimeApp.inputStream.read(byteArray, 0, PushinPrimeApp.inputStream.available());
+        board.getCommandInput().setPlaceholder("");
         return new String(byteArray);
     }
 
     public String prompt(String message) {
-        Color bgColor = new Color(226, 226, 226);
-        //board.getCommandInput().setText(message);
-        //board.getCommandInput().setForeground(bgColor);
-        info("<b>" + message + "</b>");
-        return prompt();
+        board.getCommandInput().setText("");
+        if (message.substring(message.length() - 2, message.length() - 1).equals(":")) {
+            message = message.substring(0, message.length() - 2);
+        }
+        message = message.toLowerCase();
+        board.getCommandInput().setPlaceholder("enter " + message);
+        info("<b>" + message + ": </b>");
+        return getInput();
     }
 
     public String prompt(String var1, String var2, String var3) {
-        return prompt(var1);
-//        String var4 = null;
-//        boolean var5 = false;
-//
-//        while(!var5) {
-//            System.out.print(var1);
-//            var4 = prompt();
-//            var5 = var4.matches(var2);
-//            if (var5) {
-//                break;
-//            }
-//            System.out.println(var3);
-//        }
-//        return var4;
+        String var4 = null;
+        while (true) {
+            var4 = prompt(var3);
+            if (var4.matches(var2)) {
+                break;
+            }
+        }
+        return var4;
     }
 }

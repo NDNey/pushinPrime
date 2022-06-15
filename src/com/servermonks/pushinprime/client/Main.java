@@ -1,9 +1,6 @@
 package com.servermonks.pushinprime.client;
 
 import com.servermonks.pushinprime.app.PushinPrimeApp;
-import org.json.JSONException;
-
-import java.io.IOException;
 
 public class Main {
 
