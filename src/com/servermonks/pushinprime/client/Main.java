@@ -1,9 +1,6 @@
 package com.servermonks.pushinprime.client;
 
 import com.servermonks.pushinprime.app.PushinPrimeApp;
-import org.json.JSONException;
-
-import java.io.IOException;
 
 public class Main {
 
@@ -12,7 +9,7 @@ public class Main {
         PushinPrimeApp pushinPrimeApp = new PushinPrimeApp();
         try {
             pushinPrimeApp.execute();
-        } catch (IOException | InterruptedException | JSONException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

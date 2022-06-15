@@ -3,9 +3,12 @@ package com.servermonks.pushinprime;
 import com.servermonks.pushinprime.app.Player;
 import com.servermonks.pushinprime.app.PushinPrimeApp;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.PrintStream;
 
 public class Board {
@@ -15,8 +18,7 @@ public class Board {
     private int boardHeight = 800;
     private JFrame frame;
     private JTextPane textPane;
-    private JTextField commandInput;
-    private JTextArea commandInfo;
+    private TextFieldPlaceholder commandInput;
     private JTextField clockText;
     private String playerName = "you";
     private long time = 0;
@@ -28,7 +30,9 @@ public class Board {
     private Color clockColorBG = Color.darkGray;
     private Player player;
     private ByteArrayInputStream inputStream = new ByteArrayInputStream("".getBytes());
-
+    private SoundPlayer soundPlayer = new SoundPlayer();
+    private SoundPlayer soundEffectPlayer = new SoundPlayer();
+    private Color textPaneBg = new Color(106, 105, 111);
 
     private static Board instance;
 
@@ -54,8 +58,10 @@ public class Board {
 
     public void createBoard() {
 
-        frame = new JFrame("pushinPRIME :)");
+        frame = new JFrame("pushinPRIME");
         frame.setSize(new Dimension(boardWidth, boardHeight));
+        frame.setLocationByPlatform(true);
+        frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         Container pane = frame.getContentPane();
@@ -65,10 +71,10 @@ public class Board {
         textPane = new JTextPane();
         textPane.setContentType("text/html;charset=UTF-16");
         textPane.setEditable(false);
-        Color bg = new Color(106, 105, 111);
-        textPane.setBackground(bg);
+        textPane.setBackground(textPaneBg);
         textPane.setFont(sysOutTextFont);
         textPane.setText("<html><head><style>body{width:100%;text-align:left;}</style></head><body><div id=\"content\"></div></body></html>");
+        attachVolumeControls(textPane);
 
         GridBagConstraints sysOutScrollPaneConstraints = new GridBagConstraints();
         sysOutScrollPaneConstraints.fill = GridBagConstraints.BOTH;
@@ -84,10 +90,9 @@ public class Board {
         sysOutScrollPane.setBackground(new java.awt.Color(Color.darkGray.getRGB()));
         pane.add(sysOutScrollPane, sysOutScrollPaneConstraints);
 
-        commandInput = new JTextField(50);
+        commandInput = new TextFieldPlaceholder(50);
         commandInput.setMinimumSize(new Dimension(400, 45));
         commandInput.setMaximumSize(new Dimension(400, 45));
-        commandInput.setBackground(new java.awt.Color(commandInputColorBG.getRGB()));
         commandInput.setFont(inputTextFont);
         GridBagConstraints commandInputConstraints = new GridBagConstraints();
         commandInputConstraints.fill = GridBagConstraints.BOTH;
@@ -95,7 +100,7 @@ public class Board {
         commandInputConstraints.gridy = 1;
         commandInputConstraints.weightx = 1;
 
-
+        attachVolumeControls(commandInput);
         commandInput.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 if (evt.getKeyCode() == 10) {
@@ -105,8 +110,8 @@ public class Board {
                 }
             }
         });
-
         pane.add(commandInput, commandInputConstraints);
+
         clockText = new JTextField(" ");
         clockText.setMinimumSize(new Dimension(100, 45));
         clockText.setMaximumSize(new Dimension(100, 45));
@@ -119,13 +124,52 @@ public class Board {
         pane.add(clockText, clockTextConstraints);
 
         frame.setVisible(true);
-
+        Image imageIcon = getImageFile("a1.png");
+        frame.setIconImage(imageIcon);
         commandInput.requestFocus();
 
-//        startClock();
+
+        playGameMusic();
+
+        // startClock();
+
     }
 
+    public JTextPane getTextPane() {
+        return textPane;
+    }
 
+    public void setTextPane(JTextPane textPane) {
+        this.textPane = textPane;
+    }
+
+    public TextFieldPlaceholder getCommandInput() {
+        return commandInput;
+    }
+
+    public void setCommandInput(TextFieldPlaceholder commandInput) {
+        this.commandInput = commandInput;
+    }
+
+    public void playGameMusic() {
+        soundPlayer.addSoundFile("theme.wav");
+        soundPlayer.addSoundFile("game.wav", true);
+        soundPlayer.start();
+    }
+
+    public void playSoundEffect(String name) {
+        soundEffectPlayer.addSoundFile(name);
+        soundEffectPlayer.start();
+    }
+
+    public Image getImageFile(String fileName) {
+        try {
+            return ImageIO.read(getResourceFile(fileName));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public void startClock() {
         if (clock == null)
             clock = new Clock();
@@ -140,14 +184,6 @@ public class Board {
     public void resetClock() {
         stopClock();
         time = 0;
-    }
-
-    public JTextPane getTextPane() {
-        return textPane;
-    }
-
-    public void setTextPane(JTextPane textPane) {
-        this.textPane = textPane;
     }
 
     class Clock extends Thread {
@@ -172,11 +208,24 @@ public class Board {
         }
     }
 
-    public JTextField getCommandInput() {
-        return commandInput;
+
+    public File getResourceFile(String fileName) {
+        return new File("resources/" + fileName);
     }
 
-    public void setCommandInput(JTextField commandInput) {
-        this.commandInput = commandInput;
+    public void attachVolumeControls(JComponent component) {
+        component.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_UP) {
+                    soundPlayer.raiseVolume();
+                } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+                    soundPlayer.lowerVolume();
+                } else if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    soundPlayer.mute();
+                } else if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
+                    soundPlayer.unMute();
+                }
+            }
+        });
     }
 }
