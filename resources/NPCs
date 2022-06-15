@@ -22,7 +22,7 @@
     }
   },
   "adversaries" : {
-    "usps": {
+    "thief": {
       "dialog": "blablalblabllabl",
       "power": "djhjfh",
       "more.." : "more..."
