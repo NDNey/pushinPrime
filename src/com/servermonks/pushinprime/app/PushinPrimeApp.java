@@ -1,16 +1,17 @@
 package com.servermonks.pushinprime.app;
 
-import com.apps.util.Console;
 import com.servermonks.pushinprime.Board;
 import com.servermonks.pushinprime.Prompter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.awt.*;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.servermonks.pushinprime.Colors.*;
@@ -44,22 +45,23 @@ public class PushinPrimeApp {
         data = getJson();
         welcome();
         howToPlay();
-//        PROMPTER.prompt(GREEN + "Press [enter] to start..." + RESET + "");
+        //PROMPTER.prompt(GREEN + "Press [enter] to start..." + RESET + "");
         promptForUsername();
         getCommands();
     }
 
     private void welcome() {
-        Console.clear();
-        String banner = null;
+
+        PROMPTER.info("<img src=\"https://i.ibb.co/Wxf5cJ4/pushin-Prime-banner.png\" '/>");
+
+        /*String banner = null;
         try {
             banner = Files.readString(Path.of("resources/welcome_banner.txt"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        PROMPTER.asciiArt(banner);
+        PROMPTER.asciiArt(banner);*/
     }
-
 
     public void help() {
         PROMPTER.info(" ");
@@ -78,7 +80,6 @@ public class PushinPrimeApp {
             e.printStackTrace();
         }
     }
-
 
     public void look() {
         PROMPTER.info(" ");
@@ -119,8 +120,8 @@ public class PushinPrimeApp {
     // Prompts for usernames and password for authentication
     private void promptForUsername() throws InterruptedException {
 
-        String username = PROMPTER.prompt("Enter username: ");
-        password = PROMPTER.prompt("Enter password: ");
+        String username = PROMPTER.prompt("username: ");
+        password = PROMPTER.prompt("password: ");
         user = new Player(username);
         int totalAttempts = 2;
 
@@ -129,7 +130,7 @@ public class PushinPrimeApp {
                 PROMPTER.info("Authenticating....please wait");
                 Thread.sleep(3000);
                 PROMPTER.info("Authentication Successful !\n");
-//                PROMPTER.info();
+                PROMPTER.info(" ");
                 PROMPTER.info("Welcome " + CYAN + username + RESET + " to your first day as a Prime Driver");
                 PROMPTER.info("Your mission today is to deliver all of the packages correctly to our customers. I hope you're up for the challenge!");
                 break;
@@ -140,7 +141,7 @@ public class PushinPrimeApp {
                     PROMPTER.info("Authenticating....please wait");
                     Thread.sleep(3000);
                     PROMPTER.info("Authentication Successful !\n");
-//                    PROMPTER.info();
+                    PROMPTER.info(" ");
                     PROMPTER.info("Welcome " + CYAN + username + RESET + " to your first day as a Prime Driver");
                     PROMPTER.info("Your mission today is to deliver all of the packages correctly to our customers. I hope you're up for the challenge!");
                     break;
@@ -162,7 +163,7 @@ public class PushinPrimeApp {
 
     public void getCommands() {
         showStatus();
-        String route = PROMPTER.prompt().toLowerCase();
+        String route = PROMPTER.prompt("route").toLowerCase();
         String[] commands = route.replaceAll("\\s+", " ").split(" ");
 
 
@@ -197,7 +198,7 @@ public class PushinPrimeApp {
                 "   *  driver is expected to delivered all packages to keep customer satisfaction up.\n" +
                 "   *  If no obstacle,or you overcome, package is delivered successfully." + RESET + "\n" +
                 "   *  If you need help type 'help' \n" +
-                "   *  The user password is " + RED + "password" + RESET + "\n");
+                "   *  The user password is " + RED + "password" + RESET);
 
         PROMPTER.asciiArt("================\\\n" +
                 " |----------||@  \\\\   ___\n" +
@@ -230,7 +231,7 @@ public class PushinPrimeApp {
         String playAgain = PROMPTER.prompt("Would you like to play again? " +
                         GREEN + " [N]ew Game " + RESET + "/" + YELLOW +
                         "[R]ematch" + RESET + "/" + RED + "[E]xit " + RESET,
-                "(?i)E|N|R", RED + "Please enter 'E', 'R', or 'N'" + RESET);
+                "(?i)E|N|R", RED + "'E', 'R', or 'N'" + RESET);
 
         if ("N".equalsIgnoreCase(playAgain)) {
             gameOver = false;
@@ -256,10 +257,8 @@ public class PushinPrimeApp {
     private void gameOver() {
         try {
             board.clear();
-            Console.blankLines(1);
             String banner = Files.readString(Path.of("resources/thankyou.txt"));
             PROMPTER.asciiArt(banner);
-            Console.blankLines(1);
             Thread.sleep(3000);
             System.exit(0);
         } catch (InterruptedException | IOException e) {
