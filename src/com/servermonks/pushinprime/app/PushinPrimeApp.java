@@ -26,6 +26,7 @@ public class PushinPrimeApp {
     private JSONObject data;
     private String currentLocation = "warehouse";
 
+
     private boolean gameOver;
     private String password = "password";
     private Player user;

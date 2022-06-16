@@ -23,19 +23,15 @@
     }
   },
   "adversaries" : {
-    "usps": {
-      "dialog": "blablalblabllabl",
-      "power": "djhjfh",
-      "more.." : "more..."
+    "thief": {
+      "dialog1": " I should have brought some back up!",
+      "dialog2": "I am going to kick your butt!",
+      "dialog3" : "Give Me that package punk!"
     },
-    "dog": {
-      "dialog": "blablalblabllabl",
-      "power": "djhjfh",
-      "more.." : "more..."
-    },"rain": {
-      "dialog": "blablalblabllabl",
-      "power": "djhjfh",
-      "more.." : "more..."
+    "rain": {
+      "dialog1": "Thunder Cracks",
+      "dialog2": "Rain Pounding the street",
+      "dialog3" : "Wind Howling"
     }
   }
 }
