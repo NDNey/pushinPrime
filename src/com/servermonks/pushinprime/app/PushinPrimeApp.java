@@ -236,6 +236,7 @@ public class PushinPrimeApp {
                 "   *  driver is expected to delivered all packages to keep customer satisfaction up.\n" +
                 "   *  If no obstacle,or you overcome, package is delivered successfully." + RESET + "\n" +
                 "   *  If you need help type 'help' \n" +
+                "   *  To win the game successfully deliver all the packages to the correct customers before time runs out.\n"+
                 "   *  The user password is " + RED + "password" + RESET);
 
         PROMPTER.asciiArt("================\\\n" +
