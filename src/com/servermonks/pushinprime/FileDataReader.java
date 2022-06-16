@@ -35,6 +35,68 @@ public class FileDataReader {
         return json;
     }
 
+    public String getDirections(String currentLocation) {
+        String directions = null;
+        try {
+            directions = data.getJSONObject(currentLocation).getJSONObject("directions").toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return directions;
+    }
+    public String getAdversary(String currentLocation) {
+        String adversary = null;
+        try {
+            adversary = data.getJSONObject(currentLocation).get("adversary").toString();
+        } catch (JSONException e) {
+            adversary = "non";
+            return adversary;
+        }
+        return adversary;
+    }
+    public JSONArray getItems(String currentLocation) {
+        JSONArray item = null;
+        try {
+            item =  data.getJSONObject(currentLocation).getJSONArray("item");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return item;
+    }
+
+    public String goToLocation(String currentLocation, String direction) {
+        String location = null;
+        try {
+            location = (String) data.getJSONObject(currentLocation).getJSONObject("directions").get(direction);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return location;
+    }
+
+    public String getNpc(String currentLocation ) {
+        String npc = null;
+        try {
+            npc = data.getJSONObject(currentLocation).get("customer").toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return npc;
+    }
+
+    public String getNpcDialog(String npc,int index ) {
+        String dialog = null;
+        try {
+            dialog = (String) NPCs.getJSONObject("customers").getJSONObject(npc).getJSONArray("dialog").get(index);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return dialog;
+    }
+
+
+
+
 
 
 
