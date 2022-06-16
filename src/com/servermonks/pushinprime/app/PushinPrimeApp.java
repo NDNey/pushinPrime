@@ -319,7 +319,7 @@ public class PushinPrimeApp {
             PROMPTER.info("You lost the fight!"); // maybe add a trophy of some sort!
             PROMPTER.info("Bobby Singer package has been stolen");
         }
-        if (thiefHealth <= 0 || playersHealth <= 0 && thiefHealth <= 0 ){
+        if (thiefHealth <= 0 || playersHealth <= 0 && thiefHealth <= 0){
             PROMPTER.info("You won the fight!"); // Do we want the user to restart or continue.
         }
         fightOver = true;
