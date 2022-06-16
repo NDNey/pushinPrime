@@ -62,8 +62,8 @@ public class Prompter {
         scroll2bottom();
         try {
             String str = doc.getText(0, doc.getLength() - 1);
-            System.out.println(str);
-            System.out.println(board.getTextPane().getText());
+//            System.out.println(str);
+//            System.out.println(board.getTextPane().getText());
         } catch (Exception e) {
             e.printStackTrace();
         }

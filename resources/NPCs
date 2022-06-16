@@ -1,37 +1,37 @@
 {
   "customers" : {
     "Banana Hammock": {
-      "dialog1": "Top of the morning to you! I see your having fun today.",
-      "dialog2": "I'm afraid for the calendar. Its days are numbered.",
-      "dialog3" : "I don't trust those trees. They seem kind of shady."
+      "dialog": ["Top of the morning to you! I see your having fun today.",
+       "I'm afraid for the calendar. Its days are numbered.",
+       "I don't trust those trees. They seem kind of shady."]
     },
     "Gazzy Colon": {
-         "dialog1": "Did you know Howler monkeys can be heard three miles away?",
-         "dialog2": "Did you know A dog's nose is as unique as a human fingerprint. Interesting right?",
-         "dialog3" : "Did you know The giant squid has eyes the size of a beach ball."
-"
+         "dialog": ["Did you know Howler monkeys can be heard three miles away?",
+          "Did you know A dog's nose is as unique as a human fingerprint. Interesting right?",
+          "Did you know The giant squid has eyes the size of a beach ball."]
+
     },
     "Rock Star Ronney": {
-        "dialog1": "NASA has recorded eerie space "sounds." I think I seen a UFO yesterday.",
-        "dialog2": "The International Space Station (ISS) is the size of a football field. Crazy right?",
-        "dialog3" : "GET OUT OF HERE!"
+        "dialog": ["NASA has recorded eerie space sounds. I think I seen a UFO yesterday.",
+   "The International Space Station (ISS) is the size of a football field. Crazy right?",
+       "GET OUT OF HERE!"]
     },
     "Bobby Singer": {
-        "dialog1": "This isn't a great neighborhood kid.",
-        "dialog2": "I'm gonna make him an offer he can't refuse.",
-        "dialog3" : "I think, therefore I am."
+        "dialog": ["This isn't a great neighborhood kid.",
+        "I'm gonna make him an offer he can't refuse.",
+         "I think, therefore I am."]
     }
   },
   "adversaries" : {
     "thief": {
-      "dialog1": " I should have brought some back up!",
-      "dialog2": "I am going to kick your butt!",
-      "dialog3" : "Give Me that package punk!"
+      "dialog": [" I should have brought some back up!",
+    "I am going to kick your butt!",
+        "Give Me that package punk!"]
     },
     "rain": {
-      "dialog1": "Thunder Cracks",
-      "dialog2": "Rain Pounding the street",
-      "dialog3" : "Wind Howling"
+      "dialog": ["Thunder Cracks",
+       "Rain Pounding the street",
+        "Wind Howling"]
     }
   }
 }
