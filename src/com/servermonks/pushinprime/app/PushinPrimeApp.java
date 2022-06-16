@@ -1,6 +1,7 @@
 package com.servermonks.pushinprime.app;
 
 import com.servermonks.pushinprime.Board;
+import com.servermonks.pushinprime.FileDataReader;
 import com.servermonks.pushinprime.Prompter;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,7 +24,7 @@ public class PushinPrimeApp {
     private Board board = Board.getInstance();
     private Prompter PROMPTER = new Prompter(board);
 
-    private JSONObject data;
+    private JSONObject data ;
     private String currentLocation = "warehouse";
 
     private boolean gameOver;
@@ -39,7 +40,7 @@ public class PushinPrimeApp {
 
 
     public void execute() throws InterruptedException {
-        data = getJson();
+        data = new FileDataReader().getData();
         welcome();
         howToPlay();
         promptForUsername();
@@ -242,20 +243,7 @@ public class PushinPrimeApp {
     }
 
 
-    private JSONObject getJson() {
-        String content = null;
-        JSONObject json = null;
 
-        try {
-            content = new String(Files.readAllBytes(Path.of("resources/data")));
-            json = new JSONObject(content);
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
-
-        return json;
-
-    }
 
     //    String streetFight = "yoo";
     public void combat() {
