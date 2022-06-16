@@ -1,24 +1,25 @@
 {
   "customers" : {
     "Banana Hammock": {
-      "dialog": "blablalblabllabl",
-      "power": "djhjfh",
-      "more.." : "more..."
+      "dialog1": "Top of the morning to you! I see your having fun today.",
+      "dialog2": "I'm afraid for the calendar. Its days are numbered.",
+      "dialog3" : "I don't trust those trees. They seem kind of shady."
     },
     "Gazzy Colon": {
-      "dialog": "blablalblabllabl",
-      "power": "djhjfh",
-      "more.." : "more..."
+         "dialog1": "Did you know Howler monkeys can be heard three miles away?",
+         "dialog2": "Did you know A dog's nose is as unique as a human fingerprint.",
+         "dialog3" : "Did you know The giant squid has eyes the size of a beach ball."
+"
     },
     "Rock Star Ronney": {
-      "dialog": "blablalblabllabl",
-      "power": "djhjfh",
-      "more.." : "more..."
+        "dialog1": "NASA has recorded eerie space "sounds." I think I seen a UFO yesterday.",
+        "dialog2": "The International Space Station (ISS) is the size of a football field. Crazy right?",
+        "dialog3" : "GET OUT OF HERE!"
     },
     "Bobby Singer": {
-      "dialog": "blablalblabllabl",
-      "power": "djhjfh",
-      "more.." : "more..."
+        "dialog1": "This isn't a great neighborhood kid.",
+        "dialog2": "I'm gonna make him an offer he can't refuse.",
+        "dialog3" : "I think, therefore I am."
     }
   },
   "adversaries" : {
