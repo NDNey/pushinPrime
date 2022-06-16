@@ -30,7 +30,10 @@ public class PushinPrimeApp {
     private boolean gameOver;
     private String password = "password";
     private Player user;
+
     private boolean fightOver = false;
+    private boolean playing = true;
+
 
 
     /*
@@ -331,9 +334,8 @@ public class PushinPrimeApp {
 //        Console.blankLines(1);
         String playAgain = PROMPTER.prompt("Would you like to play again? " +
                         GREEN + " [N]ew Game " + RESET + "/" + YELLOW +
-                        "[R]ematch" + RESET + "/" + RED + "[E]xit " + RESET,
-                "(?i)E|N|R", RED + "'E', 'R', or 'N'" + RESET);
-
+                        "[R]ematch" + RESET + "/" + RED + "[E]xit " + RESET +CYAN + "/" + "[S]ave " + RESET +
+                WHITE + "Please enter 'E', 'R','N' or 'S'" + RESET);
         if ("N".equalsIgnoreCase(playAgain)) {
             gameOver = false;
 
@@ -345,7 +347,21 @@ public class PushinPrimeApp {
             PROMPTER.info("Hello " + user.getName() + " welcome back for another round of PushinPrime!");
             getCommands();
 
-        } else {
+        }else if ("S".equalsIgnoreCase(playAgain)) {
+
+            board.clear();
+            welcome();
+            PROMPTER.info("Hello " + user.getName() + "you can resume de game you saved");
+            String keepPlaying = PROMPTER.prompt("Would you like to load your saved game?" ).toLowerCase();
+
+            if ("Y".equalsIgnoreCase(keepPlaying) ){
+                getCommands();
+            }else{
+                playAgain();
+            }
+
+
+        }  else {
             gameOver();
         }
         try {
@@ -379,13 +395,13 @@ public class PushinPrimeApp {
 
     public void countdown() throws InterruptedException {
         board.startClock();
-        boolean x = true;
+
         int timeElapsed = 3;
         long displayMinutes = 0;
         long starttime = System.currentTimeMillis();
         PROMPTER.info(YELLOW + "You have 3 minutes till game over" + RESET);
         getCommands();
-        while (x) {
+        while (playing) {
             //Thread.sleep(1);
             TimeUnit.SECONDS.sleep(1);
             long timepassed = System.currentTimeMillis() - starttime;
@@ -408,3 +424,4 @@ public class PushinPrimeApp {
     }
 }
 
+///lasss changes
