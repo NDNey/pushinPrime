@@ -318,7 +318,7 @@ public class PushinPrimeApp {
     }
 
     public void playAgain() {
-//        Console.blankLines(1);
+
         String playAgain = PROMPTER.prompt("Would you like to play again? " +
                 GREEN + " [N]ew Game " + RESET + "/" + YELLOW +
                 "[R]ematch" + RESET + "/" + RED + "[E]xit " + RESET + CYAN + "/" + "[S]ave " + RESET +
