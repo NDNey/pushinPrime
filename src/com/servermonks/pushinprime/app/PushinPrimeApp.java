@@ -198,7 +198,8 @@ public class PushinPrimeApp {
             }
         } else if (commands[0].equals("look")) {
             look();
-        } else if (commands[0].equals("get")) {
+        } else if (commands[0].equals("grab") || commands[0].equals("take") || commands[0].equals("pick up")
+                || commands[0].equals("get")){
             getItem(commands[1]);
         } else if (commands[0].equals("drop")) {
             dropItem(commands[1]);
@@ -308,6 +309,16 @@ public class PushinPrimeApp {
                 PROMPTER.info("OH no the thief body slammed you into the pavement...That has to hurt");
                 playersHealth = playersHealth - 50;
             }
+        }
+        String badge = "PrimeMedallion";
+        if (playersHealth > thiefHealth) {
+            System.out.println();
+            PROMPTER.info(GREEN +"You fought like a pro !" + RESET);
+            PROMPTER.info(GREEN + "You have earned yourself a "+ RESET + ORANGE+ badge + RESET);
+        }
+        else if (thiefHealth > playersHealth){
+            PROMPTER.info(GREEN + "The thief won :( " + RESET);
+            PROMPTER.info(GREEN + "You live to fight another day" + RESET);
 
         }
     }
