@@ -74,16 +74,15 @@ public class PushinPrimeApp {
                 "   *  driver is expected to delivered all packages to keep customer satisfaction up.\n" +
                 "   *  If no obstacle,or you overcome, package is delivered successfully." + RESET + "\n" +
                 "   *  If you need help type 'help' \n" +
-                "   *  To win the game successfully deliver all the packages to the correct customers before time runs out.\n" +
                 "   *  The user password is " + RED + "password" + RESET);
 
-        PROMPTER.asciiArt("================\\\n" +
+        PROMPTER.asciiArt(YELLOW +"================\\\n" +
                 " |----------||@  \\\\   ___\n" +
                 " |____|_____|||_/_\\\\_|___|_\n" +
                 "<|  ___\\    ||     | ____  |\n" +
                 "<| /    |___||_____|/    | |\n" +
                 "||/  O  |__________/  O  |_||\n" +
-                "   \\___/            \\___/\n");
+                "  \\___/            \\___/\n" + RESET);
     }
 
     public void showStatus() {
@@ -231,11 +230,13 @@ public class PushinPrimeApp {
 
         } else if (commands[0].equals("look")) {
             look();
+
+        } else if (commands[0].equals("grab") || commands[0].equals("take") || commands[0].equals("pick up")
+                || commands[0].equals("get")){
+            getItem(commands[1]);
         } else if (commands[0].equals("talk")) {
             talk();
-        } else if (commands[0].equals("get")) {
-            getItem(commands[1]);
-        } else if (commands[0].equals("drop")) {
+        }   else if (commands[0].equals("drop")) {
             dropItem(commands[1]);
         } else if (route.equals("quit game")) {
             playAgain();
@@ -255,6 +256,7 @@ public class PushinPrimeApp {
         getCommands();
 
     }
+
 
 
     //    String streetFight = "yoo";
@@ -305,6 +307,16 @@ public class PushinPrimeApp {
                 PROMPTER.info("OH no the thief body slammed you into the pavement...That has to hurt");
                 playersHealth = playersHealth - 40;
             }
+        }
+        String badge = "PrimeMedallion";
+        if (playersHealth > thiefHealth) {
+            System.out.println();
+            PROMPTER.info(GREEN +"You fought like a pro !" + RESET);
+            PROMPTER.info(GREEN + "You have earned yourself a "+ RESET + ORANGE+ badge + RESET);
+        }
+        else if (thiefHealth > playersHealth){
+            PROMPTER.info(GREEN + "The thief won :( " + RESET);
+            PROMPTER.info(GREEN + "You live to fight another day" + RESET);
 
         }
         if (playersHealth <= 0) {
@@ -318,7 +330,7 @@ public class PushinPrimeApp {
     }
 
     public void playAgain() {
-//        Console.blankLines(1);
+
         String playAgain = PROMPTER.prompt("Would you like to play again? " +
                 GREEN + " [N]ew Game " + RESET + "/" + YELLOW +
                 "[R]ematch" + RESET + "/" + RED + "[E]xit " + RESET + CYAN + "/" + "[S]ave " + RESET +

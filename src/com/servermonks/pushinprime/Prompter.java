@@ -44,7 +44,11 @@ public class Prompter {
             var1 = var1.replaceAll(GREEN.toString(), "<span style=\"color:#00FF00;\">");
         }
         if (var1.contains(YELLOW.toString())) {
-            var1 = var1.replaceAll(GREEN.toString(), "<span style=\"color:#FFFF00;\">");
+            var1 = var1.replace(YELLOW.toString(), "<span style=\"color:#FFFF00;\">");
+        }
+        if (var1.contains(ORANGE.toString())) {
+            var1 = var1.replace(ORANGE.toString(), "<span style=\"color:#ffa500;\">");
+
         }
         if (var1.contains("RESET")) {
             var1 = var1.replaceAll("RESET", "</span>");
