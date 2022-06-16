@@ -325,6 +325,7 @@ public class PushinPrimeApp {
                 WHITE + "Please enter 'E', 'R','N' or 'S'" + RESET);
         if ("N".equalsIgnoreCase(playAgain)) {
             try {
+                board.stopClock();
                 execute();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -383,26 +384,25 @@ public class PushinPrimeApp {
     public void countdown() throws InterruptedException {
         board.startClock();
 
-        int timeElapsed = 3;
+        int timeElapsed = 1;
         long displayMinutes = 0;
-        long starttime = System.currentTimeMillis();
-        PROMPTER.info(YELLOW + "You have 3 minutes till game over" + RESET);
+        long startTime = System.currentTimeMillis();
+        PROMPTER.info(YELLOW + "You have " + timeElapsed + " minutes till game over" + RESET);
         getCommands();
         while (playing) {
             //Thread.sleep(1);
             TimeUnit.SECONDS.sleep(1);
-            long timepassed = System.currentTimeMillis() - starttime;
-            long secondspassed = timepassed / 1000;
-            if (secondspassed == 60) {
-                secondspassed = 0;
-                starttime = System.currentTimeMillis();
-
+            long timePassed = System.currentTimeMillis() - startTime;
+            long secondsPassed = timePassed / 1000;
+            if (secondsPassed == 60) {
+                secondsPassed = 0;
+                startTime = System.currentTimeMillis();
             }
-            if ((secondspassed % 60) == 0) {
+            if ((secondsPassed % 60) == 0) {
                 displayMinutes++;
             }
 
-            if (displayMinutes == timeElapsed && secondspassed == 0) {
+            if (displayMinutes == timeElapsed && secondsPassed == 0) {
                 PROMPTER.info("Time is over");
                 board.stopClock();
                 playAgain();
