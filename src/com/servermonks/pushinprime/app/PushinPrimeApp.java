@@ -27,10 +27,14 @@ public class PushinPrimeApp {
     private JSONObject data ;
     private String currentLocation = "warehouse";
 
+
     private boolean gameOver;
     private String password = "password";
     private Player user;
+
+    private boolean fightOver = false;
     private boolean playing = true;
+
 
 
     /*
@@ -59,6 +63,7 @@ public class PushinPrimeApp {
                 "* To move type 'go' and the direction you want move (go north)\n" +
                 "* To pick up an item type 'get' and the item (get snacks)\n" +
                 "* To look around the area type 'look'\n" +
+                "* To to defend yourself against thieves use the word 'Attack' to start a combat match\n" +
                 "* To quit game type 'quit game'");
     }
 
@@ -67,8 +72,13 @@ public class PushinPrimeApp {
         try {
             PROMPTER.info("You are in the " + currentLocation + " from here you can go");
             PROMPTER.info(data.getJSONObject(currentLocation).getJSONObject("directions").toString());
+            String skidRow = data.getJSONObject(currentLocation).get("adversary").toString();
+                if (skidRow.equals("thief") && !fightOver) {
+                    PROMPTER.info("The neighborhood thief is coming straight towards you! use 'Attack' to fight for your packages!");
+                }
         } catch (JSONException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("");
         }
     }
 
@@ -218,7 +228,6 @@ public class PushinPrimeApp {
             help();
         }
 
-
 //        board.clear();
         getCommands();
 
@@ -231,6 +240,7 @@ public class PushinPrimeApp {
                 "   *  driver is expected to delivered all packages to keep customer satisfaction up.\n" +
                 "   *  If no obstacle,or you overcome, package is delivered successfully." + RESET + "\n" +
                 "   *  If you need help type 'help' \n" +
+                "   *  To win the game successfully deliver all the packages to the correct customers before time runs out.\n"+
                 "   *  The user password is " + RED + "password" + RESET);
 
         PROMPTER.asciiArt("================\\\n" +
@@ -250,10 +260,9 @@ public class PushinPrimeApp {
         try {
             String streetFight = data.getJSONObject(currentLocation).get("adversary").toString();
             if (streetFight.equals("thief")) {
-                PROMPTER.info("OH noo the thief is coming to steal a package!");
+                PROMPTER.info("Its GO Time! Protect those packages at all cost!");
                 fight();
             }
-            System.out.println(streetFight);
         } catch (JSONException e) {
             PROMPTER.info("We are delivery drivers. We don't attack unless to protect our packages!");
         }
@@ -263,7 +272,7 @@ public class PushinPrimeApp {
         int playersHealth = 100;
         int thiefHealth = 100;
         while (playersHealth > 0 && thiefHealth > 0) {
-            PROMPTER.info("Thief health: " + thiefHealth + "Your health: " + playersHealth);
+            PROMPTER.info("Thief health: " + thiefHealth + " Your health: " + playersHealth);
             String playerAttack = PROMPTER.prompt("Choose your attacks 'A' Punch. 'B' Kick. 'C' BodySlam. 'D' Open Hand smack.");
             if (playerAttack.toLowerCase().equals("a")) {
                 PROMPTER.info("Crack! Right in the kisser!");
@@ -279,7 +288,7 @@ public class PushinPrimeApp {
 
             }
             if (playerAttack.toLowerCase().equals("d")) {
-                PROMPTER.info("WHAP! You didnt do much damage but you certainly showed them whos boss!");
+                PROMPTER.info("WHAP! You didn't do much damage but you certainly showed them who's boss!");
                 thiefHealth = thiefHealth - 10;
             }
             Random rand = new Random();
@@ -295,10 +304,18 @@ public class PushinPrimeApp {
             }
             if (randomNum == 3) {
                 PROMPTER.info("OH no the thief body slammed you into the pavement...That has to hurt");
-                playersHealth = playersHealth - 50;
+                playersHealth = playersHealth - 40;
             }
 
         }
+        if (playersHealth <= 0){
+            PROMPTER.info("You lost the fight!"); // maybe add a trophy of some sort!
+            PROMPTER.info("Bobby Singer package has been stolen");
+        }
+        if (thiefHealth <= 0 || playersHealth <= 0 && thiefHealth <= 0){
+            PROMPTER.info("You won the fight!"); // Do we want the user to restart or continue.
+        }
+        fightOver = true;
     }
 
     public void playAgain() {
