@@ -312,7 +312,7 @@ public class PushinPrimeApp {
             }
             if (randomNum == 3) {
                 PROMPTER.info("OH no the thief body slammed you into the pavement...That has to hurt");
-                playersHealth = playersHealth - 50;
+                playersHealth = playersHealth - 40;
             }
 
         }
