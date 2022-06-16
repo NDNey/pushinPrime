@@ -15,7 +15,7 @@
     "directions" : {"north": "sunnyside park"},
     "item": [],
     "adversary": "Rain storms with  high wind advisory!",
-    "description": "Be careful there is a storm going in the Ballar area. From here you can go north to sunnyside park you can get some items there to protect yourself from the rain."
+    "description": "RAIN STORM ADVISORY! SEVERE WIND ADVISORY!"
   },
   "waterlow row": {
     "customer": "Rock Star Ronney",
@@ -30,7 +30,7 @@
      "directions" : {"north": "waterlow row",},
      "item": [],
     "adversary":"thief",
-    "description": "I see the enemy...I better be careful"
+    "description": "Oh no! this place is notorious for thieves. I better watch out."
   }
 
 }

@@ -1,6 +1,7 @@
 package com.servermonks.pushinprime.app;
 
 import com.servermonks.pushinprime.Board;
+import com.servermonks.pushinprime.FileDataReader;
 import com.servermonks.pushinprime.Prompter;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,12 +24,17 @@ public class PushinPrimeApp {
     private Board board = Board.getInstance();
     private Prompter PROMPTER = new Prompter(board);
 
-    private JSONObject data;
+    private FileDataReader data;
     private String currentLocation = "warehouse";
+
 
     private boolean gameOver;
     private String password = "password";
     private Player user;
+
+    private boolean fightOver = false;
+    private boolean playing = true;
+
 
 
     /*
@@ -38,7 +44,7 @@ public class PushinPrimeApp {
 
 
     public void execute() throws InterruptedException {
-        data = getJson();
+        data = new FileDataReader();
         welcome();
         howToPlay();
         promptForUsername();
@@ -57,40 +63,69 @@ public class PushinPrimeApp {
                 "* To move type 'go' and the direction you want move (go north)\n" +
                 "* To pick up an item type 'get' and the item (get snacks)\n" +
                 "* To look around the area type 'look'\n" +
+                "* To to defend yourself against thieves use the word 'Attack' to start a combat match\n" +
                 "* To quit game type 'quit game'");
+    }
+
+    private void howToPlay() {
+        PROMPTER.info(YELLOW + "How to play:" + RESET + "\n" + CYAN +
+                "   *  Driver moves to loading dock.\n" +
+                "   *  Four packages are assigned for delivery, with their routes\n" +
+                "   *  driver is expected to delivered all packages to keep customer satisfaction up.\n" +
+                "   *  If no obstacle,or you overcome, package is delivered successfully." + RESET + "\n" +
+                "   *  If you need help type 'help' \n" +
+                "   *  The user password is " + RED + "password" + RESET);
+
+        PROMPTER.asciiArt(YELLOW +"================\\\n" +
+                " |----------||@  \\\\   ___\n" +
+                " |____|_____|||_/_\\\\_|___|_\n" +
+                "<|  ___\\    ||     | ____  |\n" +
+                "<| /    |___||_____|/    | |\n" +
+                "||/  O  |__________/  O  |_||\n" +
+                "  \\___/            \\___/\n" + RESET);
     }
 
     public void showStatus() {
         PROMPTER.info(" ");
-        try {
-            PROMPTER.info("You are in the " + currentLocation + " from here you can go");
-            PROMPTER.info(data.getJSONObject(currentLocation).getJSONObject("directions").toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+        PROMPTER.info("You are in the " + currentLocation + " from here you can go");
+        PROMPTER.info(data.getDirections(currentLocation));
+        String skidRow = data.getAdversary(currentLocation);
+
+        if (skidRow.equals("thief") && !fightOver) {
+            PROMPTER.info("The neighborhood thief is coming straight towards you! use 'Attack' to fight for your packages!");
         }
+
     }
 
     public void look() {
         PROMPTER.info(" ");
-        try {
-            PROMPTER.info("Here you can see: ");
-            PROMPTER.info(data.getJSONObject(currentLocation).getJSONArray("item").toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+        PROMPTER.info("Here you can see: ");
+        PROMPTER.info(data.getItems(currentLocation).toString());
+
     }
+
+    public void talk() {
+        PROMPTER.info(" ");
+        int random = (int) (Math.random() * 3);
+        String npc = data.getNpc(currentLocation);
+        String dialog = data.getNpcDialog(npc, random);
+        PROMPTER.info(npc + " says " + dialog);
+    }
+
 
     public void getItem(String item) {
         PROMPTER.info(" ");
         List inventory = user.getInventory();
         try {
-            String[] items = data.getJSONObject(currentLocation).getJSONArray("item").join("-").split("-");
+            String[] items = data.getItems(currentLocation).join("-").split("-");
 
             for (int i = 0; i < items.length; i++) {
                 if (items[i].toLowerCase().contains(item)) {
                     inventory.add(item);
                     user.setInventory(inventory);
-                    data.getJSONObject(currentLocation).getJSONArray("item").remove(i);
+                    data.getItems(currentLocation).remove(i);
                     break;
                 } else {
                     PROMPTER.info("It seems that there is not any " + item + " around");
@@ -111,7 +146,7 @@ public class PushinPrimeApp {
         List inventory = user.getInventory();
         try {
             if (inventory.contains(item)) {
-                JSONArray locationItems = data.getJSONObject(currentLocation).getJSONArray("item");
+                JSONArray locationItems = data.getItems(currentLocation);
                 int nextIndex = locationItems.length();
                 locationItems.put(nextIndex, item);
                 inventory.remove(item);
@@ -191,17 +226,17 @@ public class PushinPrimeApp {
         if (route.equals("help")) {
             help();
         } else if (commands[0].equals("go")) {
-            try {
-                currentLocation = (String) data.getJSONObject(currentLocation).getJSONObject("directions").get(commands[1]);
-            } catch (JSONException e) {
-                help();
-            }
+            currentLocation = data.goToLocation(currentLocation, commands[1]);
+
         } else if (commands[0].equals("look")) {
             look();
+
         } else if (commands[0].equals("grab") || commands[0].equals("take") || commands[0].equals("pick up")
                 || commands[0].equals("get")){
             getItem(commands[1]);
-        } else if (commands[0].equals("drop")) {
+        } else if (commands[0].equals("talk")) {
+            talk();
+        }   else if (commands[0].equals("drop")) {
             dropItem(commands[1]);
         } else if (route.equals("quit game")) {
             playAgain();
@@ -217,65 +252,28 @@ public class PushinPrimeApp {
             help();
         }
 
-
 //        board.clear();
         getCommands();
 
     }
 
-    private void howToPlay() {
-        PROMPTER.info(YELLOW + "How to play:" + RESET + "\n" + CYAN +
-                "   *  Driver moves to loading dock.\n" +
-                "   *  Four packages are assigned for delivery, with their routes\n" +
-                "   *  driver is expected to delivered all packages to keep customer satisfaction up.\n" +
-                "   *  If no obstacle,or you overcome, package is delivered successfully." + RESET + "\n" +
-                "   *  If you need help type 'help' \n" +
-                "   *  The user password is " + RED + "password" + RESET);
 
-        PROMPTER.asciiArt(YELLOW +"================\\\n" +
-                        " |----------||@  \\\\   ___\n" +
-                        " |____|_____|||_/_\\\\_|___|_\n" +
-                        "<|  ___\\    ||     | ____  |\n" +
-                        "<| /    |___||_____|/    | |\n" +
-                        "||/  O  |__________/  O  |_||\n" +
-                        "  \\___/            \\___/\n" + RESET);
-    }
-
-
-    private JSONObject getJson() {
-        String content = null;
-        JSONObject json = null;
-
-        try {
-            content = new String(Files.readAllBytes(Path.of("resources/data")));
-            json = new JSONObject(content);
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
-
-        return json;
-
-    }
 
     //    String streetFight = "yoo";
     public void combat() {
-        try {
-            String streetFight = data.getJSONObject(currentLocation).get("adversary").toString();
-            if (streetFight.equals("thief")) {
-                PROMPTER.info("OH noo the thief is coming to steal a package!");
-                fight();
-            }
-            System.out.println(streetFight);
-        } catch (JSONException e) {
-            PROMPTER.info("We are delivery drivers. We don't attack unless to protect our packages!");
+        String streetFight = data.getAdversary(currentLocation);
+        if (streetFight.equals("thief")) {
+            PROMPTER.info("Its GO Time! Protect those packages at all cost!");
+            fight();
         }
+
     }
 
     private void fight() {
         int playersHealth = 100;
         int thiefHealth = 100;
         while (playersHealth > 0 && thiefHealth > 0) {
-            PROMPTER.info("Thief health: " + thiefHealth + "Your health: " + playersHealth);
+            PROMPTER.info("Thief health: " + thiefHealth + " Your health: " + playersHealth);
             String playerAttack = PROMPTER.prompt("Choose your attacks 'A' Punch. 'B' Kick. 'C' BodySlam. 'D' Open Hand smack.");
             if (playerAttack.toLowerCase().equals("a")) {
                 PROMPTER.info("Crack! Right in the kisser!");
@@ -291,7 +289,7 @@ public class PushinPrimeApp {
 
             }
             if (playerAttack.toLowerCase().equals("d")) {
-                PROMPTER.info("WHAP! You didnt do much damage but you certainly showed them whos boss!");
+                PROMPTER.info("WHAP! You didn't do much damage but you certainly showed them who's boss!");
                 thiefHealth = thiefHealth - 10;
             }
             Random rand = new Random();
@@ -307,7 +305,7 @@ public class PushinPrimeApp {
             }
             if (randomNum == 3) {
                 PROMPTER.info("OH no the thief body slammed you into the pavement...That has to hurt");
-                playersHealth = playersHealth - 50;
+                playersHealth = playersHealth - 40;
             }
         }
         String badge = "PrimeMedallion";
@@ -321,34 +319,56 @@ public class PushinPrimeApp {
             PROMPTER.info(GREEN + "You live to fight another day" + RESET);
 
         }
+        if (playersHealth <= 0) {
+            PROMPTER.info("You lost the fight!"); // maybe add a trophy of some sort!
+            PROMPTER.info("Bobby Singer package has been stolen");
+        }
+        if (thiefHealth <= 0 || playersHealth <= 0 && thiefHealth <= 0) {
+            PROMPTER.info("You won the fight!"); // Do we want the user to restart or continue.
+        }
+        fightOver = true;
     }
 
     public void playAgain() {
-//        Console.blankLines(1);
-        String playAgain = PROMPTER.prompt("Would you like to play again? " +
-                        GREEN + " [N]ew Game " + RESET + "/" + YELLOW +
-                        "[R]ematch" + RESET + "/" + RED + "[E]xit " + RESET,
-                "(?i)E|N|R", RED + "'E', 'R', or 'N'" + RESET);
 
+        String playAgain = PROMPTER.prompt("Would you like to play again? " +
+                GREEN + " [N]ew Game " + RESET + "/" + YELLOW +
+                "[R]ematch" + RESET + "/" + RED + "[E]xit " + RESET + CYAN + "/" + "[S]ave " + RESET +
+                WHITE + "Please enter 'E', 'R','N' or 'S'" + RESET);
         if ("N".equalsIgnoreCase(playAgain)) {
-            gameOver = false;
+            try {
+                board.stopClock();
+                execute();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         } else if ("R".equalsIgnoreCase(playAgain)) {
-            gameOver = false;
+
             board.clear();
 //            Console.clear();
             currentLocation = "warehouse";
             PROMPTER.info("Hello " + user.getName() + " welcome back for another round of PushinPrime!");
             getCommands();
 
+        } else if ("S".equalsIgnoreCase(playAgain)) {
+
+            board.clear();
+            welcome();
+            PROMPTER.info("Hello " + user.getName() + "you can resume de game you saved");
+            String keepPlaying = PROMPTER.prompt("Would you like to load your saved game?").toLowerCase();
+
+            if ("Y".equalsIgnoreCase(keepPlaying)) {
+                getCommands();
+            } else {
+                playAgain();
+            }
+
+
         } else {
             gameOver();
         }
-        try {
-            execute();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
     }
 
     private void gameOver() {
@@ -375,27 +395,26 @@ public class PushinPrimeApp {
 
     public void countdown() throws InterruptedException {
         board.startClock();
-        boolean x = true;
-        int timeElapsed = 3;
+
+        int timeElapsed = 1;
         long displayMinutes = 0;
-        long starttime = System.currentTimeMillis();
-        PROMPTER.info(YELLOW + "You have 3 minutes till game over" + RESET);
+        long startTime = System.currentTimeMillis();
+        PROMPTER.info(YELLOW + "You have " + timeElapsed + " minutes till game over" + RESET);
         getCommands();
-        while (x) {
+        while (playing) {
             //Thread.sleep(1);
             TimeUnit.SECONDS.sleep(1);
-            long timepassed = System.currentTimeMillis() - starttime;
-            long secondspassed = timepassed / 1000;
-            if (secondspassed == 60) {
-                secondspassed = 0;
-                starttime = System.currentTimeMillis();
-
+            long timePassed = System.currentTimeMillis() - startTime;
+            long secondsPassed = timePassed / 1000;
+            if (secondsPassed == 60) {
+                secondsPassed = 0;
+                startTime = System.currentTimeMillis();
             }
-            if ((secondspassed % 60) == 0) {
+            if ((secondsPassed % 60) == 0) {
                 displayMinutes++;
             }
 
-            if (displayMinutes == timeElapsed && secondspassed == 0) {
+            if (displayMinutes == timeElapsed && secondsPassed == 0) {
                 PROMPTER.info("Time is over");
                 board.stopClock();
                 playAgain();
@@ -403,4 +422,3 @@ public class PushinPrimeApp {
         }
     }
 }
-

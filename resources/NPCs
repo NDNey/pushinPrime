@@ -1,40 +1,37 @@
 {
   "customers" : {
     "Banana Hammock": {
-      "dialog": "blablalblabllabl",
-      "power": "djhjfh",
-      "more.." : "more..."
+      "dialog": ["Top of the morning to you! I see your having fun today.",
+       "I'm afraid for the calendar. Its days are numbered.",
+       "I don't trust those trees. They seem kind of shady."]
     },
     "Gazzy Colon": {
-      "dialog": "blablalblabllabl",
-      "power": "djhjfh",
-      "more.." : "more..."
+         "dialog": ["Did you know Howler monkeys can be heard three miles away?",
+          "Did you know A dog's nose is as unique as a human fingerprint. Interesting right?",
+          "Did you know The giant squid has eyes the size of a beach ball."]
+
     },
     "Rock Star Ronney": {
-      "dialog": "blablalblabllabl",
-      "power": "djhjfh",
-      "more.." : "more..."
+        "dialog": ["NASA has recorded eerie space sounds. I think I seen a UFO yesterday.",
+   "The International Space Station (ISS) is the size of a football field. Crazy right?",
+       "GET OUT OF HERE!"]
     },
     "Bobby Singer": {
-      "dialog": "blablalblabllabl",
-      "power": "djhjfh",
-      "more.." : "more..."
+        "dialog": ["This isn't a great neighborhood kid.",
+        "I'm gonna make him an offer he can't refuse.",
+         "I think, therefore I am."]
     }
   },
   "adversaries" : {
-    "usps": {
-      "dialog": "blablalblabllabl",
-      "power": "djhjfh",
-      "more.." : "more..."
+    "thief": {
+      "dialog": [" I should have brought some back up!",
+    "I am going to kick your butt!",
+        "Give Me that package punk!"]
     },
-    "dog": {
-      "dialog": "blablalblabllabl",
-      "power": "djhjfh",
-      "more.." : "more..."
-    },"rain": {
-      "dialog": "blablalblabllabl",
-      "power": "djhjfh",
-      "more.." : "more..."
+    "rain": {
+      "dialog": ["Thunder Cracks",
+       "Rain Pounding the street",
+        "Wind Howling"]
     }
   }
 }
