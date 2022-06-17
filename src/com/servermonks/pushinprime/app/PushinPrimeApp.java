@@ -35,6 +35,7 @@ public class PushinPrimeApp {
 
     private boolean fightOver = false;
     private boolean playing = true;
+    ArrayList<String> temp = new ArrayList<>();
 
 
 
@@ -78,7 +79,7 @@ public class PushinPrimeApp {
                 "   *  If you need help type 'help' \n" +
                 "   *  The user password is " + RED + "password" + RESET);
 
-        PROMPTER.asciiArt(YELLOW +"================\\\n" +
+        PROMPTER.asciiArt(YELLOW + "================\\\n" +
                 " |----------||@  \\\\   ___\n" +
                 " |____|_____|||_/_\\\\_|___|_\n" +
                 "<|  ___\\    ||     | ____  |\n" +
@@ -142,12 +143,13 @@ public class PushinPrimeApp {
             e.printStackTrace();
         }
     }
-    public void locations () {
+
+    public void locations() {
         PROMPTER.info("");
 
-            PROMPTER.info("Here is a list of locations you can go");
-            PROMPTER.info(data.getDirections(currentLocation).toString());
-        }
+        PROMPTER.info("Here is a list of locations you can go");
+        PROMPTER.info(data.getDirections(currentLocation).toString());
+    }
 
     public void dropItem(String item) {
         PROMPTER.info(" ");
@@ -225,6 +227,7 @@ public class PushinPrimeApp {
 
     public void getCommands() {
         showStatus();
+
         String route = PROMPTER.prompt("route").toLowerCase();
         String[] commands = route.replaceAll("\\s+", " ").split(" ");
 
@@ -233,21 +236,21 @@ public class PushinPrimeApp {
             help();
         } else if (commands[0].equals("go")) {
             currentLocation = data.goToLocation(currentLocation, commands[1]);
+            askForPackage();
 
         } else if (commands[0].equals("look")) {
             look();
 
-        }
-          else if (route.equals("location")) {
+        } else if (route.equals("location")) {
             locations();
-        }
-          else if (commands[0].equals("grab") || commands[0].equals("take") || commands[0].equals("pick up")
-                || commands[0].equals("get")){
+        } else if (commands[0].equals("grab") || commands[0].equals("take") || commands[0].equals("pick up")
+                || commands[0].equals("get")) {
             getItem(commands[1]);
             packages();
-        } else if (commands[0].equals("talk")) {
+        } else if (route.equals("talk")) {
             talk();
-        }   else if (commands[0].equals("drop")) {
+
+        } else if (commands[0].equals("drop")) {
             dropItem(commands[1]);
         } else if (route.equals("quit game")) {
             playAgain();
@@ -267,7 +270,8 @@ public class PushinPrimeApp {
         getCommands();
 
     }
-    public void packages () {
+
+    public void packages() {
         List<String> list = new ArrayList<>();
 
         // add 5 element in ArrayList
@@ -277,7 +281,7 @@ public class PushinPrimeApp {
         list.add("Frozen foods");
         list.add("Furnitures");
 
-        PushinPrimeApp obj = new PushinPrimeApp() ;
+        PushinPrimeApp obj = new PushinPrimeApp();
 
         // boundIndex for select in sub list
         int numberOfElements = 3;
@@ -286,9 +290,9 @@ public class PushinPrimeApp {
         System.out.println(
                 obj.getRandomElement(list, numberOfElements));
     }
+
     public List<String>
-    getRandomElement(List<String> list, int totalItems)
-    {
+    getRandomElement(List<String> list, int totalItems) {
         Random rand = new Random();
 
         // create a temporary list for storing
@@ -305,8 +309,6 @@ public class PushinPrimeApp {
         }
         return newList;
     }
-
-
 
 
     //    String streetFight = "yoo";
@@ -362,10 +364,9 @@ public class PushinPrimeApp {
         String badge = "PrimeMedallion";
         if (playersHealth > thiefHealth) {
             System.out.println();
-            PROMPTER.info(GREEN +"You fought like a pro !" + RESET);
-            PROMPTER.info(GREEN + "You have earned yourself a "+ RESET + ORANGE+ badge + RESET);
-        }
-        else if (thiefHealth > playersHealth){
+            PROMPTER.info(GREEN + "You fought like a pro !" + RESET);
+            PROMPTER.info(GREEN + "You have earned yourself a " + RESET + ORANGE + badge + RESET);
+        } else if (thiefHealth > playersHealth) {
             PROMPTER.info(GREEN + "The thief won :( " + RESET);
             PROMPTER.info(GREEN + "You live to fight another day" + RESET);
 
@@ -473,13 +474,42 @@ public class PushinPrimeApp {
         }
     }
 
-    public void distributePackages(){
+    private void distributePackages() {
+        int packagesNum = 2;
+        int random = 0;
         try {
             String[] packages = data.getPackages("warehouse").join("-").split("-");
-            String[] customers = data.getKeys();
-            System.out.println(Arrays.toString(customers));
+            System.out.println(Arrays.toString(packages));
+            ArrayList<String> customers = data.getKeys();
+            ArrayList<String> temp = new ArrayList<>();
 
 
+            temp.add("david");
+            if(temp.contains("david")){
+                System.out.println("yes david is here" );
+            }
+
+            for( int i = 0 ; i < customers.size(); i++){
+
+                JSONArray custPackages = data.getPackages(customers.get(i));
+
+                while (custPackages.length() < packagesNum ){
+                    random = (int) (Math.random() * packages.length);
+
+                    if(!temp.contains(packages[random]) ){
+                        temp.add(packages[random]);
+                        custPackages =  custPackages.put(custPackages.length(),packages[random]);
+                    }
+
+
+                }
+
+            }
+            System.out.println("A :   " +  data.getPackages( "sunnyside park") );
+            System.out.println("B :   " + data.getPackages(  "Ballard"));
+            System.out.println("C :   " + data.getPackages(   "waterlow row"));
+            System.out.println(" D :   " + data.getPackages(   "hollywood blvd"));
+//            System.out.println(data.getKeys());
 
         } catch (JSONException e) {
             System.out.println("here");
@@ -488,6 +518,27 @@ public class PushinPrimeApp {
 
     }
 
+public void askForPackage( ){
+    ArrayList<String> locations = data.getKeys();
+
+    if(locations.contains(currentLocation)) {
+        String playerTalks = PROMPTER.prompt("you can deliver your package here talk to the customer to get their name and deliver the package");
+
+        if (playerTalks.equals("talk")) {
+            talk();
+            for(int i = 0; i < temp.size(); i++){
+                int asciiValue = 65 + i;
+                char convertedChar = (char)asciiValue;
+                PROMPTER.info(convertedChar + " : " + temp.get(i));
+
+            }
+            PROMPTER.prompt("Please choose from the following packages");
+
+        }
+    }
+
+
+}
 
 
 }

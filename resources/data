@@ -2,22 +2,7 @@
 "warehouse": {
     "directions" : {"south": "sunnyside park"},
     "item": ["map", "DogTreats"],
-    "packages":[ "Video Games",
-                  "Aquarium",
-                  "Movies",
-                  "Tablecloth",
-                  "Sheet Of Paper",
-                  "Mystery Novels",
-                   "Afghan",
-                 "Bifocals",
-                 "Armchair",
-                 "Piece Of Paper",
-                 "Money",
-                 "Brush",
-                 "Clutter",
-                 "Vodka",
-                 "Bookcase",
-                 "Bottle"],
+    "packages":[ "Video Games","Aquarium","Movies","Tablecloth","Sheet Of Paper","Mystery Novels","Afghan","Bifocals","Armchair","Piece Of Paper","Money","Brush", "Clutter","Vodka","Bookcase","Bottle"],
     "description": "You are in a huge Amazon warehouse filled with packages to be delivered. You see a map and a bag of dog treats. Going south will take you to sunnyside park"
   },
   "sunnyside park": {
