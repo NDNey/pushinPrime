@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Iterator;
 
 public class FileDataReader {
     private JSONObject data = getJson("resources/data");
@@ -63,6 +64,35 @@ public class FileDataReader {
         }
         return item;
     }
+
+    public JSONArray getPackages(String currentLocation) {
+        JSONArray packages = null;
+        try {
+            packages =  data.getJSONObject(currentLocation).getJSONArray("packages");
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+        }
+        return packages;
+    }
+    public String[] getKeys( ) {
+        String[] keys = null;
+        try {
+            for (Iterator it = data.keys(); it.hasNext(); ) {
+                int place = it.next();
+
+
+            }
+            keys =  packagesJson.join("-").split("-");
+
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+        }
+        return keys;
+    }
+
+
 
     public String goToLocation(String currentLocation, String direction) {
         String location = null;

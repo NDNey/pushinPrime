@@ -5,12 +5,13 @@ import com.servermonks.pushinprime.FileDataReader;
 import com.servermonks.pushinprime.Prompter;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -45,6 +46,7 @@ public class PushinPrimeApp {
 
     public void execute() throws InterruptedException {
         data = new FileDataReader();
+        distributePackages();
         welcome();
         howToPlay();
         promptForUsername();
@@ -140,6 +142,12 @@ public class PushinPrimeApp {
             e.printStackTrace();
         }
     }
+    public void locations () {
+        PROMPTER.info("");
+
+            PROMPTER.info("Here is a list of locations you can go");
+            PROMPTER.info(data.getDirections(currentLocation).toString());
+        }
 
     public void dropItem(String item) {
         PROMPTER.info(" ");
@@ -206,9 +214,7 @@ public class PushinPrimeApp {
                     PROMPTER.info("You have " + totalAttempts + " attempts left");
                     password = tryAgain;
                 }
-
             }
-
             if (totalAttempts == 0) {
                 PROMPTER.info("Password limit reached..Goodbye!");
                 System.exit(0);
@@ -231,9 +237,14 @@ public class PushinPrimeApp {
         } else if (commands[0].equals("look")) {
             look();
 
-        } else if (commands[0].equals("grab") || commands[0].equals("take") || commands[0].equals("pick up")
+        }
+          else if (route.equals("location")) {
+            locations();
+        }
+          else if (commands[0].equals("grab") || commands[0].equals("take") || commands[0].equals("pick up")
                 || commands[0].equals("get")){
             getItem(commands[1]);
+            packages();
         } else if (commands[0].equals("talk")) {
             talk();
         }   else if (commands[0].equals("drop")) {
@@ -256,6 +267,45 @@ public class PushinPrimeApp {
         getCommands();
 
     }
+    public void packages () {
+        List<String> list = new ArrayList<>();
+
+        // add 5 element in ArrayList
+        list.add("Groceries");
+        list.add("Electronics");
+        list.add("Medication");
+        list.add("Frozen foods");
+        list.add("Furnitures");
+
+        PushinPrimeApp obj = new PushinPrimeApp() ;
+
+        // boundIndex for select in sub list
+        int numberOfElements = 3;
+
+        // take a random element from list and print them
+        System.out.println(
+                obj.getRandomElement(list, numberOfElements));
+    }
+    public List<String>
+    getRandomElement(List<String> list, int totalItems)
+    {
+        Random rand = new Random();
+
+        // create a temporary list for storing
+        // selected element
+        List<String> newList = new ArrayList<>();
+        for (int i = 0; i < totalItems; i++) {
+
+            // take a random index between 0 to size
+            // of given List
+            int randomIndex = rand.nextInt(list.size());
+
+            // add element in temporary list
+            newList.add(list.get(randomIndex));
+        }
+        return newList;
+    }
+
 
 
 
@@ -274,8 +324,9 @@ public class PushinPrimeApp {
         int thiefHealth = 100;
         while (playersHealth > 0 && thiefHealth > 0) {
             PROMPTER.info("Thief health: " + thiefHealth + " Your health: " + playersHealth);
-            String playerAttack = PROMPTER.prompt("Choose your attacks 'A' Punch. 'B' Kick. 'C' BodySlam. 'D' Open Hand smack.");
-            if (playerAttack.toLowerCase().equals("a")) {
+            String playerAttack = PROMPTER.prompt("Choose your attacks: \n (A) Punch.\n (B) Kick. \n (C) BodySlam.\n (D) Open Hand smack.");
+            if ("A".equalsIgnoreCase(playerAttack)) {
+                //(playerAttack.toLowerCase().equals("a"))
                 PROMPTER.info("Crack! Right in the kisser!");
                 thiefHealth = thiefHealth - 25;
             }
@@ -421,4 +472,22 @@ public class PushinPrimeApp {
             }
         }
     }
+
+    public void distributePackages(){
+        try {
+            String[] packages = data.getPackages("warehouse").join("-").split("-");
+            String[] customers = data.getKeys();
+            System.out.println(Arrays.toString(customers));
+
+
+
+        } catch (JSONException e) {
+            System.out.println("here");
+            e.printStackTrace();
+        }
+
+    }
+
+
+
 }
