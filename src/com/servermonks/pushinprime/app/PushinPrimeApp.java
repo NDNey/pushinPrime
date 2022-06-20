@@ -372,7 +372,7 @@ public class PushinPrimeApp {
 
             board.clear();
             welcome();
-            PROMPTER.info("Hello " + user.getName() + "you can resume de game you saved");
+            PROMPTER.info("Hello " + user.getName() + " you can resume de game you saved");
             String keepPlaying = PROMPTER.prompt("Would you like to load your saved game?").toLowerCase();
 
             if ("Y".equalsIgnoreCase(keepPlaying)) {
