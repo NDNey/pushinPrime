@@ -10,10 +10,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static com.servermonks.pushinprime.Colors.*;
@@ -26,7 +23,8 @@ public class PushinPrimeApp {
     private Prompter PROMPTER = new Prompter(board);
 
     private FileDataReader data;
-    private String currentLocation = "warehouse";
+    private final String START_LOCATION = "warehouse";
+    private String currentLocation = START_LOCATION;
 
 
     private boolean gameOver;
@@ -35,7 +33,7 @@ public class PushinPrimeApp {
 
     private boolean fightOver = false;
     private boolean playing = true;
-    ArrayList<String> temp = new ArrayList<>();
+
 
 
 
@@ -101,23 +99,6 @@ public class PushinPrimeApp {
 
     }
 
-    public void look() {
-        PROMPTER.info(" ");
-
-        PROMPTER.info("Here you can see: ");
-        PROMPTER.info(data.getItems(currentLocation).toString());
-
-    }
-
-    public void talk() {
-        PROMPTER.info(" ");
-        int random = (int) (Math.random() * 3);
-        String npc = data.getNpc(currentLocation);
-        String dialog = data.getNpcDialog(npc, random);
-        PROMPTER.info(npc + " says " + dialog);
-    }
-
-
     public void getItem(String item) {
         PROMPTER.info(" ");
         List inventory = user.getInventory();
@@ -144,13 +125,6 @@ public class PushinPrimeApp {
         }
     }
 
-    public void locations() {
-        PROMPTER.info("");
-
-        PROMPTER.info("Here is a list of locations you can go");
-        PROMPTER.info(data.getDirections(currentLocation).toString());
-    }
-
     public void dropItem(String item) {
         PROMPTER.info(" ");
         List inventory = user.getInventory();
@@ -171,6 +145,14 @@ public class PushinPrimeApp {
 
 
     }
+
+    public void locations() {
+        PROMPTER.info("");
+        PROMPTER.info("Here is a list of locations you can go");
+        PROMPTER.info(data.getDirections(currentLocation));
+    }
+
+
 
     public void showInventory() {
         List inventory = user.getInventory();
@@ -199,6 +181,11 @@ public class PushinPrimeApp {
                 PROMPTER.info(" ");
                 PROMPTER.info("Welcome " + CYAN + username + RESET + " to your first day as a Prime Driver");
                 PROMPTER.info("Your mission today is to deliver all of the packages correctly to our customers. I hope you're up for the challenge!");
+                PROMPTER.info(data.getOrders());
+                PROMPTER.prompt("Press enter to start your journey");
+
+                board.clear();
+                howToPlay();
                 break;
 
             } else if (!password.equals("password")) {
@@ -210,6 +197,12 @@ public class PushinPrimeApp {
                     PROMPTER.info(" ");
                     PROMPTER.info("Welcome " + CYAN + username + RESET + " to your first day as a Prime Driver");
                     PROMPTER.info("Your mission today is to deliver all of the packages correctly to our customers. I hope you're up for the challenge!");
+                    PROMPTER.info("Make sure to memorize the order and deliver the packages without any mistake!");
+                    PROMPTER.info(data.getOrders());
+                    PROMPTER.prompt("Press enter to start your journey");
+
+                    board.clear();
+                    howToPlay();
                     break;
                 } else {
                     totalAttempts--;
@@ -235,20 +228,21 @@ public class PushinPrimeApp {
         if (route.equals("help")) {
             help();
         } else if (commands[0].equals("go")) {
-            currentLocation = data.goToLocation(currentLocation, commands[1]);
+            String nextLocation = data.goToLocation(currentLocation, commands[1]) == null ? currentLocation : data.goToLocation(currentLocation, commands[1]);
+            currentLocation = nextLocation ;
+            showStatus();
             askForPackage();
 
         } else if (commands[0].equals("look")) {
-            look();
+            user.look(data,currentLocation);
 
         } else if (route.equals("location")) {
             locations();
         } else if (commands[0].equals("grab") || commands[0].equals("take") || commands[0].equals("pick up")
                 || commands[0].equals("get")) {
             getItem(commands[1]);
-            packages();
         } else if (route.equals("talk")) {
-            talk();
+            user.talk(data, currentLocation);
 
         } else if (commands[0].equals("drop")) {
             dropItem(commands[1]);
@@ -271,45 +265,6 @@ public class PushinPrimeApp {
 
     }
 
-    public void packages() {
-        List<String> list = new ArrayList<>();
-
-        // add 5 element in ArrayList
-        list.add("Groceries");
-        list.add("Electronics");
-        list.add("Medication");
-        list.add("Frozen foods");
-        list.add("Furnitures");
-
-        PushinPrimeApp obj = new PushinPrimeApp();
-
-        // boundIndex for select in sub list
-        int numberOfElements = 3;
-
-        // take a random element from list and print them
-        System.out.println(
-                obj.getRandomElement(list, numberOfElements));
-    }
-
-    public List<String>
-    getRandomElement(List<String> list, int totalItems) {
-        Random rand = new Random();
-
-        // create a temporary list for storing
-        // selected element
-        List<String> newList = new ArrayList<>();
-        for (int i = 0; i < totalItems; i++) {
-
-            // take a random index between 0 to size
-            // of given List
-            int randomIndex = rand.nextInt(list.size());
-
-            // add element in temporary list
-            newList.add(list.get(randomIndex));
-        }
-        return newList;
-    }
-
 
     //    String streetFight = "yoo";
     public void combat() {
@@ -318,14 +273,13 @@ public class PushinPrimeApp {
             PROMPTER.info("Its GO Time! Protect those packages at all cost!");
             fight();
         }
-
     }
 
     private void fight() {
-        int playersHealth = 100;
+
         int thiefHealth = 100;
-        while (playersHealth > 0 && thiefHealth > 0) {
-            PROMPTER.info("Thief health: " + thiefHealth + " Your health: " + playersHealth);
+        while (user.getHealth() > 0 && thiefHealth > 0) {
+            PROMPTER.info("Thief health: " + thiefHealth + " Your health: " + user.getHealth());
             String playerAttack = PROMPTER.prompt("Choose your attacks: \n (A) Punch.\n (B) Kick. \n (C) BodySlam.\n (D) Open Hand smack.");
             if ("A".equalsIgnoreCase(playerAttack)) {
                 //(playerAttack.toLowerCase().equals("a"))
@@ -350,32 +304,32 @@ public class PushinPrimeApp {
 
             if (randomNum == 1) {
                 PROMPTER.info("The thief backhanded you.....Disrespectful");
-                playersHealth = playersHealth - 10;
+                user.setHealth(user.getHealth() - 10);
             }
             if (randomNum == 2) {
                 PROMPTER.info("thief throws a nasty uppercut that connected...ouch");
-                playersHealth = playersHealth - 30;
+                user.setHealth(user.getHealth() - 30);
             }
             if (randomNum == 3) {
                 PROMPTER.info("OH no the thief body slammed you into the pavement...That has to hurt");
-                playersHealth = playersHealth - 40;
+                user.setHealth(user.getHealth() - 40);
             }
         }
         String badge = "PrimeMedallion";
-        if (playersHealth > thiefHealth) {
+        if (user.getHealth() > thiefHealth) {
             System.out.println();
             PROMPTER.info(GREEN + "You fought like a pro !" + RESET);
             PROMPTER.info(GREEN + "You have earned yourself a " + RESET + ORANGE + badge + RESET);
-        } else if (thiefHealth > playersHealth) {
+        } else if (thiefHealth > user.getHealth()) {
             PROMPTER.info(GREEN + "The thief won :( " + RESET);
             PROMPTER.info(GREEN + "You live to fight another day" + RESET);
 
         }
-        if (playersHealth <= 0) {
+        if (user.getHealth() <= 0) {
             PROMPTER.info("You lost the fight!"); // maybe add a trophy of some sort!
             PROMPTER.info("Bobby Singer package has been stolen");
         }
-        if (thiefHealth <= 0 || playersHealth <= 0 && thiefHealth <= 0) {
+        if (thiefHealth <= 0 || user.getHealth() <= 0 && thiefHealth <= 0) {
             PROMPTER.info("You won the fight!"); // Do we want the user to restart or continue.
         }
         fightOver = true;
@@ -399,7 +353,7 @@ public class PushinPrimeApp {
 
             board.clear();
 //            Console.clear();
-            currentLocation = "warehouse";
+            currentLocation = START_LOCATION;
             PROMPTER.info("Hello " + user.getName() + " welcome back for another round of PushinPrime!");
             getCommands();
 
@@ -478,38 +432,31 @@ public class PushinPrimeApp {
         int packagesNum = 2;
         int random = 0;
         try {
-            String[] packages = data.getPackages("warehouse").join("-").split("-");
+            String[] packages = data.getPackages(START_LOCATION).join("-").split("-");
             System.out.println(Arrays.toString(packages));
             ArrayList<String> customers = data.getKeys();
-            ArrayList<String> temp = new ArrayList<>();
+            ArrayList<String> setOfPackages = new ArrayList<>();
 
 
-            temp.add("david");
-            if(temp.contains("david")){
-                System.out.println("yes david is here" );
-            }
-
-            for( int i = 0 ; i < customers.size(); i++){
+            for (int i = 0; i < customers.size(); i++) {
 
                 JSONArray custPackages = data.getPackages(customers.get(i));
 
-                while (custPackages.length() < packagesNum ){
+                while (custPackages.length() < packagesNum) {
                     random = (int) (Math.random() * packages.length);
 
-                    if(!temp.contains(packages[random]) ){
-                        temp.add(packages[random]);
-                        custPackages =  custPackages.put(custPackages.length(),packages[random]);
+                    if (!setOfPackages.contains(packages[random])) {
+
+                        setOfPackages.add(packages[random]);
+
+                        custPackages = custPackages.put(custPackages.length(), packages[random]);
                     }
 
 
                 }
 
             }
-            System.out.println("A :   " +  data.getPackages( "sunnyside park") );
-            System.out.println("B :   " + data.getPackages(  "Ballard"));
-            System.out.println("C :   " + data.getPackages(   "waterlow row"));
-            System.out.println(" D :   " + data.getPackages(   "hollywood blvd"));
-//            System.out.println(data.getKeys());
+
 
         } catch (JSONException e) {
             System.out.println("here");
@@ -518,27 +465,45 @@ public class PushinPrimeApp {
 
     }
 
-public void askForPackage( ){
-    ArrayList<String> locations = data.getKeys();
+    public void askForPackage() {
+        ArrayList<String> locations = data.getKeys();
+        ArrayList<JSONArray> customerOrders = new ArrayList<>();
 
-    if(locations.contains(currentLocation)) {
-        String playerTalks = PROMPTER.prompt("you can deliver your package here talk to the customer to get their name and deliver the package");
+        if (locations.contains(currentLocation)) {
 
-        if (playerTalks.equals("talk")) {
-            talk();
-            for(int i = 0; i < temp.size(); i++){
-                int asciiValue = 65 + i;
-                char convertedChar = (char)asciiValue;
-                PROMPTER.info(convertedChar + " : " + temp.get(i));
+            String playerTalks = PROMPTER.prompt("you can deliver your package here talk to the customer to get their name and deliver the package");
 
+            if (playerTalks.equals("talk")) {
+                int random = 0;
+                ArrayList<Integer> temp = new ArrayList<>();
+                user.talk(data,currentLocation);
+                for (int i = 0; i < locations.size(); i++) {
+                    int asciiValue = 65 + i;
+                    char convertedChar = (char) asciiValue;
+                    random = (int) (Math.random() * locations.size());
+
+                    if (!temp.contains(random)) {
+                        temp.add(random);
+                        PROMPTER.info(convertedChar + " : " + data.getPackages(locations.get(random)));
+                    } else {
+                        i -= 1;
+                    }
+                    customerOrders.add(data.getPackages(locations.get(i)));
+                }
+
+               String deliverPackage = PROMPTER.prompt("Please choose from the following packages");
+                int index = deliverPackage.toUpperCase().charAt(0) -65;
+                
+                if ( customerOrders.get(index).equals(data.getPackages(currentLocation))){
+                    PROMPTER.info("Congrats! " + data.getNpc(currentLocation) + " is happy with the service");
+                }else{
+                    PROMPTER.info( data.getNpc(currentLocation) + " says sorry that was not what I ordered, I want a refund!");
+                }
             }
-            PROMPTER.prompt("Please choose from the following packages");
-
         }
+
+
     }
-
-
-}
 
 
 }

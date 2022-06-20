@@ -79,13 +79,24 @@ public class FileDataReader {
         return packages;
     }
 
+    public String getOrders() {
+        String order = "";
+        for (int i = 0; i < getKeys().size(); i++) {
+
+            order += getNpc(getKeys().get(i)) + " : " + getPackages(getKeys().get(i)) + "\n";
+
+        }
+        return order;
+    }
+
+
     public ArrayList<String> getKeys() {
         ArrayList<String> keys = new ArrayList<>();
         Iterator i = data.keys();
 
         while (i.hasNext()) {
             String location = i.next().toString();
-            if(!location.equals("warehouse")){
+            if (!location.equals("warehouse")) {
                 keys.add(location);
             }
         }
@@ -99,7 +110,7 @@ public class FileDataReader {
         try {
             location = (String) data.getJSONObject(currentLocation).getJSONObject("directions").get(direction);
         } catch (JSONException e) {
-            e.printStackTrace();
+            location = currentLocation;
         }
         return location;
     }
