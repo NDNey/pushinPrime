@@ -355,6 +355,7 @@ public class PushinPrimeApp {
         if ("N".equalsIgnoreCase(playAgain)) {
             try {
                 board.stopClock();
+                currentLocation = START_LOCATION;
                 execute();
             } catch (InterruptedException e) {
                 e.printStackTrace();
