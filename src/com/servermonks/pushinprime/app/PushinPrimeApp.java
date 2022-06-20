@@ -246,7 +246,7 @@ public class PushinPrimeApp {
 
         }  else if (route.equals("heal")) {
             user.heal();
-            PROMPTER.info("your health is recovering...");
+
         }  else if (route.equals("health")) {
             PROMPTER.info("your health is: " + user.getHealth());
         } else if (commands[0].equals("drop")) {

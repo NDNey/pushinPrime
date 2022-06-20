@@ -15,7 +15,7 @@
   "Ballard": {
     "customer": "Gazzy Colon",
     "directions" : {"north": "sunnyside park"},
-    "item": [],
+    "item": ["medicine"],
       "packages":[],
     "adversary": "Rain storms with  high wind advisory!",
     "description": "RAIN STORM ADVISORY! SEVERE WIND ADVISORY!"

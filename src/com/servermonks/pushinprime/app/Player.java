@@ -65,9 +65,11 @@ public class Player {
     }
 
     public void heal() {
-        if(inventory.contains("Coffee") && getHealth() <= 95){
+        if(inventory.contains("medicine") && getHealth() <= 95){
             setHealth(getHealth() + 5);
-
+            PROMPTER.info("your health is recovering...");
+        }else{
+            PROMPTER.info("you will need some medicine to hill yourself");
         }
     }
 
