@@ -244,6 +244,11 @@ public class PushinPrimeApp {
         } else if (route.equals("talk")) {
             user.talk(data, currentLocation);
 
+        }  else if (route.equals("heal")) {
+            user.heal();
+            PROMPTER.info("your health is recovering...");
+        }  else if (route.equals("health")) {
+            PROMPTER.info("your health is: " + user.getHealth());
         } else if (commands[0].equals("drop")) {
             dropItem(commands[1]);
         } else if (route.equals("quit game")) {
@@ -495,9 +500,15 @@ public class PushinPrimeApp {
                 int index = deliverPackage.toUpperCase().charAt(0) -65;
                 
                 if ( customerOrders.get(index).equals(data.getPackages(currentLocation))){
+                    user.setCustomerSatisfaction(user.getCustomerSatisfaction() - (user.getCustomerSatisfaction()/customerOrders.size()));
                     PROMPTER.info("Congrats! " + data.getNpc(currentLocation) + " is happy with the service");
+                    PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
                 }else{
+                    user.setCustomerSatisfaction(user.getCustomerSatisfaction() - (user.getCustomerSatisfaction()/customerOrders.size()));
                     PROMPTER.info( data.getNpc(currentLocation) + " says sorry that was not what I ordered, I want a refund!");
+                    PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
+
+
                 }
             }
         }

@@ -13,9 +13,17 @@ public class Player {
     private Prompter PROMPTER = new Prompter(board);
     private String name;
     private int health = 100;
+    private int customerSatisfaction ;
 
     private List<String> inventory = new ArrayList<String>();
 
+    public int getCustomerSatisfaction() {
+        return customerSatisfaction;
+    }
+
+    public void setCustomerSatisfaction(int customerSatisfaction) {
+        this.customerSatisfaction = customerSatisfaction;
+    }
 
     public Player(String name) {
         this.name = name;
@@ -56,7 +64,12 @@ public class Player {
         PROMPTER.info(npc + " says " + dialog);
     }
 
+    public void heal() {
+        if(inventory.contains("Coffee") && getHealth() <= 95){
+            setHealth(getHealth() + 5);
 
+        }
+    }
 
     @Override
     public String toString() {
