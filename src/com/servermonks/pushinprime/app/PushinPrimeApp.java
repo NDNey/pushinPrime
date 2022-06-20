@@ -507,6 +507,8 @@ public class PushinPrimeApp {
                     user.setCustomerSatisfaction(user.getCustomerSatisfaction() - (user.getCustomerSatisfaction()/customerOrders.size()));
                     PROMPTER.info( data.getNpc(currentLocation) + " says sorry that was not what I ordered, I want a refund!");
                     PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
+
+
                 }
             }
         }
