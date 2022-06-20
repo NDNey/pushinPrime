@@ -518,20 +518,25 @@ public class PushinPrimeApp {
                 String deliverPackage = PROMPTER.prompt("Please choose from the following packages");
                 int index = deliverPackage.toUpperCase().charAt(0) - 65;
 
-                if (data.getPackages(currentLocation).equals(randomDisplay.get(index))) {
-                    user.setCustomerSatisfaction(user.getCustomerSatisfaction() + (100 / locations.size()));
-                    PROMPTER.info("Congrats! " + data.getNpc(currentLocation) + " is happy with the service");
-                    PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
-                    deliveryStatus.put(currentLocation, true);
+                if (index < locations.size()) {
+                    if (data.getPackages(currentLocation).equals(randomDisplay.get(index))) {
+                        user.setCustomerSatisfaction(user.getCustomerSatisfaction() + (100 / locations.size()));
+                        PROMPTER.info("Congrats! " + data.getNpc(currentLocation) + " is happy with the service");
+                        PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
+                        deliveryStatus.put(currentLocation, true);
 
+                    } else {
+                        user.setCustomerSatisfaction(user.getCustomerSatisfaction() - (100 / locations.size()));
+                        PROMPTER.info(data.getNpc(currentLocation) + " says sorry that was not what I ordered, I want a refund!");
+                        PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
+                        deliveryStatus.put(currentLocation, true);
+
+                    }
                 } else {
-                    user.setCustomerSatisfaction(user.getCustomerSatisfaction() - (100 / locations.size()));
-                    PROMPTER.info(data.getNpc(currentLocation) + " says sorry that was not what I ordered, I want a refund!");
-                    PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
-                    deliveryStatus.put(currentLocation, true);
-
+                    PROMPTER.info("That is not a correct option! Please try to " +
+                            GREEN + "deliver" + RESET +
+                            " again. ");
                 }
-
             }
         } else {
             PROMPTER.info("It seems that you have been here already! This customer already send feedback of your service.");
