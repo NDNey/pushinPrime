@@ -1,2 +1,3 @@
 # pushinPrime
-This is a cool Game
+This is a cool Game!
+new version
