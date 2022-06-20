@@ -22,7 +22,11 @@ public class Player {
     }
 
     public void setCustomerSatisfaction(int customerSatisfaction) {
-        this.customerSatisfaction = customerSatisfaction;
+       if(customerSatisfaction > 0){
+           this.customerSatisfaction = customerSatisfaction;
+       }else{
+           this.customerSatisfaction = 0;
+       }
     }
 
     public Player(String name) {
