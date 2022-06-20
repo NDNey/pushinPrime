@@ -12,7 +12,17 @@ public class Player {
     private Board board = Board.getInstance();
     private Prompter PROMPTER = new Prompter(board);
     private String name;
-    private int health = 100;
+    private int health ;
+
+    public int getCustomerSatisfaction() {
+        return customerSatisfaction;
+    }
+
+    public void setCustomerSatisfaction(int customerSatisfaction) {
+        this.customerSatisfaction = customerSatisfaction;
+    }
+
+    private int customerSatisfaction = 100;
 
     private List<String> inventory = new ArrayList<String>();
 

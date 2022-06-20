@@ -495,9 +495,13 @@ public class PushinPrimeApp {
                 int index = deliverPackage.toUpperCase().charAt(0) -65;
                 
                 if ( customerOrders.get(index).equals(data.getPackages(currentLocation))){
+                    user.setCustomerSatisfaction(user.getCustomerSatisfaction() - (user.getCustomerSatisfaction()/customerOrders.size()));
                     PROMPTER.info("Congrats! " + data.getNpc(currentLocation) + " is happy with the service");
+                    PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
                 }else{
+                    user.setCustomerSatisfaction(user.getCustomerSatisfaction() - (user.getCustomerSatisfaction()/customerOrders.size()));
                     PROMPTER.info( data.getNpc(currentLocation) + " says sorry that was not what I ordered, I want a refund!");
+                    PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
                 }
             }
         }
