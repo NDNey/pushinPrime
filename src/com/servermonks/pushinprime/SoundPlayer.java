@@ -16,6 +16,8 @@ public class SoundPlayer extends Thread {
     private String repeatSound = "";
     private Clip clip;
     private float volume = 1.0f;
+    private float mutedVolume = 1.0f;
+    private String volumeLevelString = "";
 
     /*
 
@@ -90,6 +92,16 @@ public class SoundPlayer extends Thread {
         FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         newVolume = 20f * (float) Math.log10(newVolume);
         gainControl.setValue(newVolume);
+        volumeLevelString = getVolumeString();
+    }
+
+    public String getVolumeString() {
+        int volumeInt = BigDecimal.valueOf(volume*10).intValue()/2;
+        String volumeString = "volume ";
+        for(int i=0;i<volumeInt;i++) {
+            volumeString += ")";
+        }
+        return volumeString;
     }
 
     public void lowerVolume() {
@@ -101,10 +113,11 @@ public class SoundPlayer extends Thread {
     }
 
     public void mute() {
+        mutedVolume = volume;
         setVolume(-1.0f);
     }
 
     public void unMute() {
-        setVolume(1.0f);
+        setVolume(mutedVolume);
     }
 }

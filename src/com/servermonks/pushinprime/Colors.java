@@ -4,10 +4,10 @@ import java.awt.*;
 
 public enum Colors {
 
-    RESET("RESET"),
+    RESET("</span>"),
     CYAN("#00FFFF"),
     MAGENTA("#FF00FF"),
-    ORANGE("##ffa500"),
+    ORANGE("#ffa500"),
     RED("#ff0000"),
     RED_UNDERLINED("RED_UNDERLINED"),
     GREEN("#00FF00"),
