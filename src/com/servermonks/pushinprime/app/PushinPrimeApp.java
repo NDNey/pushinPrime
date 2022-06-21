@@ -60,7 +60,7 @@ public class PushinPrimeApp {
     }
 
     private void welcome() {
-        PROMPTER.info("<img src=\"https://i.ibb.co/Wxf5cJ4/pushin-Prime-banner.png\" '/>");
+        PROMPTER.info("<img src=\"https://res.cloudinary.com/dile8hu1p/image/upload/v1655777095/pushinPrime_banner_t2m09s.png\" '/>");
     }
 
     public void help() {
@@ -256,7 +256,13 @@ public class PushinPrimeApp {
             PROMPTER.info("your health is: " + user.getHealth());
         } else if (commands[0].equals("drop")) {
             dropItem(commands[1]);
-        } else if (route.equals("quit game")) {
+        } else if (route.equals("map")) {
+      if(user.getInventory().contains("map")){
+            map();
+       }else{
+           PROMPTER.info("It seems that you don't have any map in your inventory!");
+        }
+      }else if (route.equals("quit game")) {
             playAgain();
 
         } else if (route.equals("attack")) {
@@ -292,7 +298,7 @@ public class PushinPrimeApp {
             PROMPTER.info("Thief health: " + thiefHealth + " Your health: " + user.getHealth());
             String playerAttack = PROMPTER.prompt("Choose your attacks: \n (A) Punch.\n (B) Kick. \n (C) BodySlam.\n (D) Open Hand smack.");
             if ("A".equalsIgnoreCase(playerAttack)) {
-                //(playerAttack.toLowerCase().equals("a"))
+
                 PROMPTER.info("Crack! Right in the kisser!");
                 thiefHealth = thiefHealth - 25;
             }
@@ -355,6 +361,7 @@ public class PushinPrimeApp {
         if ("N".equalsIgnoreCase(playAgain)) {
             try {
                 board.stopClock();
+                currentLocation = START_LOCATION;
                 execute();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -439,6 +446,24 @@ public class PushinPrimeApp {
         }
     }
 
+    public void map() {
+        if(currentLocation.equals("Ballard")){
+            PROMPTER.info("<img src=\"https://res.cloudinary.com/dile8hu1p/image/upload/c_scale,w_386/v1655776418/ballard_q45ymc.png\" '/>");
+        }else if(currentLocation.equals("warehouse")){
+            PROMPTER.info("<img src=\"https://res.cloudinary.com/dile8hu1p/image/upload/c_scale,w_386/v1655776451/warehouse_hsdhze.png\" '/>");
+        }
+        else if(currentLocation.equals("waterlow row")){
+            PROMPTER.info("<img src=\"https://res.cloudinary.com/dile8hu1p/image/upload/c_scale,w_386/v1655776457/water_w52jzo.png\" '/>");
+        }
+        else if(currentLocation.equals("hollywood blvd")){
+            PROMPTER.info("<img src=\"https://res.cloudinary.com/dile8hu1p/image/upload/c_scale,w_386/v1655776438/hollywood_za0zlp.png\" '/>");
+        }
+        else if(currentLocation.equals("sunnyside park")){
+            PROMPTER.info("<img src=\"https://res.cloudinary.com/dile8hu1p/image/upload/c_scale,w_386/v1655776444/sunnyside_xcdujb.png\" '/>");
+        }
+
+    }
+
     private void distributePackages() {
         int packagesNum = 2;
         int random = 0;
@@ -517,20 +542,25 @@ public class PushinPrimeApp {
                 String deliverPackage = PROMPTER.prompt("Please choose from the following packages");
                 int index = deliverPackage.toUpperCase().charAt(0) - 65;
 
-                if (data.getPackages(currentLocation).equals(randomDisplay.get(index))) {
-                    user.setCustomerSatisfaction(user.getCustomerSatisfaction() + (100 / locations.size()));
-                    PROMPTER.info("Congrats! " + data.getNpc(currentLocation) + " is happy with the service");
-                    PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
-                    deliveryStatus.put(currentLocation, true);
+                if (index < locations.size()) {
+                    if (data.getPackages(currentLocation).equals(randomDisplay.get(index))) {
+                        user.setCustomerSatisfaction(user.getCustomerSatisfaction() + (100 / locations.size()));
+                        PROMPTER.info("Congrats! " + data.getNpc(currentLocation) + " is happy with the service");
+                        PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
+                        deliveryStatus.put(currentLocation, true);
 
+                    } else {
+                        user.setCustomerSatisfaction(user.getCustomerSatisfaction() - (100 / locations.size()));
+                        PROMPTER.info(data.getNpc(currentLocation) + " says sorry that was not what I ordered, I want a refund!");
+                        PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
+                        deliveryStatus.put(currentLocation, true);
+
+                    }
                 } else {
-                    user.setCustomerSatisfaction(user.getCustomerSatisfaction() - (100 / locations.size()));
-                    PROMPTER.info(data.getNpc(currentLocation) + " says sorry that was not what I ordered, I want a refund!");
-                    PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
-                    deliveryStatus.put(currentLocation, true);
-
+                    PROMPTER.info("That is not a correct option! Please try to " +
+                            GREEN + "deliver" + RESET +
+                            " again. ");
                 }
-
             }
         } else {
             PROMPTER.info("It seems that you have been here already! This customer already send feedback of your service.");
