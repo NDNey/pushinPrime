@@ -4,7 +4,7 @@ import java.awt.*;
 
 public enum Colors {
 
-    RESET("RESET"),
+    RESET("</span>"),
     CYAN("#00FFFF"),
     MAGENTA("#FF00FF"),
     ORANGE ("##ffa500"),

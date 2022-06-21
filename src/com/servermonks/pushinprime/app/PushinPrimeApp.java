@@ -2,10 +2,10 @@ package com.servermonks.pushinprime.app;
 
 import com.servermonks.pushinprime.Board;
 import com.servermonks.pushinprime.FileDataReader;
+import com.servermonks.pushinprime.MysticSquare;
 import com.servermonks.pushinprime.Prompter;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -36,7 +36,6 @@ public class PushinPrimeApp {
     private boolean playing = true;
 
 
-
     /*
      * Initial game execution:
      *  -> displays welcome banner, instructions and promps for player name
@@ -49,8 +48,6 @@ public class PushinPrimeApp {
         howToPlay();
         promptForUsername();
         countdown();
-
-
     }
 
     private void welcome() {
@@ -64,6 +61,8 @@ public class PushinPrimeApp {
                 "* To pick up an item type 'get' and the item (get snacks)\n" +
                 "* To look around the area type 'look'\n" +
                 "* To to defend yourself against thieves use the word 'Attack' to start a combat match\n" +
+                "* To mute volume press the &#8594; key, to un-mute press &#8592; \n" +
+                "* To lower volume press the &#8595; key, to raise press &#8593; \n" +
                 "* To quit game type 'quit game'");
     }
 
@@ -100,7 +99,6 @@ public class PushinPrimeApp {
 
     public void look() {
         PROMPTER.info(" ");
-
         PROMPTER.info("Here you can see: ");
         PROMPTER.info(data.getItems(currentLocation).toString());
 
@@ -225,6 +223,7 @@ public class PushinPrimeApp {
 
         if (route.equals("help")) {
             help();
+
         } else if (commands[0].equals("go")) {
             currentLocation = data.goToLocation(currentLocation, commands[1]);
 
@@ -332,9 +331,10 @@ public class PushinPrimeApp {
     public void playAgain() {
 
         String playAgain = PROMPTER.prompt("Would you like to play again? " +
-                GREEN + " [N]ew Game " + RESET + "/" + YELLOW +
-                "[R]ematch" + RESET + "/" + RED + "[E]xit " + RESET + CYAN + "/" + "[S]ave " + RESET +
-                WHITE + "Please enter 'E', 'R','N' or 'S'" + RESET);
+                GREEN + " [N]ew Game " + RESET + YELLOW +
+                "[R]ematch" + RESET + RED + " [E]xit" + RESET + CYAN + " [S]ave " + RESET,
+                "^[EeRrNnSs]{1}$","Please enter 'E', 'R', 'N' or 'S'");
+
         if ("N".equalsIgnoreCase(playAgain)) {
             try {
                 board.stopClock();
@@ -346,7 +346,6 @@ public class PushinPrimeApp {
         } else if ("R".equalsIgnoreCase(playAgain)) {
 
             board.clear();
-//            Console.clear();
             currentLocation = "warehouse";
             PROMPTER.info("Hello " + user.getName() + " welcome back for another round of PushinPrime!");
             getCommands();
@@ -419,6 +418,17 @@ public class PushinPrimeApp {
                 board.stopClock();
                 playAgain();
             }
+        }
+    }
+
+    public void playMysticSquare() {
+        MysticSquare mysticSquare = new MysticSquare();
+        mysticSquare.createBoard();
+        String gameBoard = mysticSquare.showBoard();
+        System.out.println(gameBoard);
+        PROMPTER.info(gameBoard);
+        while(!mysticSquare.isOver()) {
+            PROMPTER.prompt("choose a square: " + mysticSquare.showValidMoves());
         }
     }
 }
