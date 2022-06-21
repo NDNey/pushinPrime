@@ -298,7 +298,7 @@ public class PushinPrimeApp {
             PROMPTER.info("Thief health: " + thiefHealth + " Your health: " + user.getHealth());
             String playerAttack = PROMPTER.prompt("Choose your attacks: \n (A) Punch.\n (B) Kick. \n (C) BodySlam.\n (D) Open Hand smack.");
             if ("A".equalsIgnoreCase(playerAttack)) {
-                //(playerAttack.toLowerCase().equals("a"))
+
                 PROMPTER.info("Crack! Right in the kisser!");
                 thiefHealth = thiefHealth - 25;
             }
