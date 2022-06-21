@@ -78,7 +78,6 @@ public class MysticSquare {
         if(square - 1 < 0 || square - rowColumnLength < 0 ||
                 square + rowColumnLength > squareCount ||
                 square + 1 > squareCount) {
-                System.out.println("nothing added");
         }  if(square - rowColumnLength > 0) {
             validMoves.add(square - rowColumnLength);
         }  if(square + rowColumnLength < squareCount) {

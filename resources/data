@@ -1,19 +1,22 @@
 {
 "warehouse": {
     "directions" : {"south": "sunnyside park"},
-    "item": ["map", "DogTreats"],
+    "item": ["map", "Coffee"],
+    "packages":[ "Video Games","Aquarium","Movies","Tablecloth","Sheet Of Paper","Mystery Novels","Afghan","Bifocals","Armchair","Piece Of Paper","Money","Brush", "Clutter","Vodka","Bookcase","Bottle"],
     "description": "You are in a huge Amazon warehouse filled with packages to be delivered. You see a map and a bag of dog treats. Going south will take you to sunnyside park"
   },
   "sunnyside park": {
-  "directions" : {"south": "Ballard", "east": "waterlow row"},
+  "directions" : {"north": "warehouse","south": "Ballard", "east": "waterlow row"},
    "customer": "Banana Hammock",
-    "item": ["Umbrella", "Coffee"],
+    "item": ["Umbrella"],
+     "packages":[],
     "description": "You are in sunnyside park you will find Ballard to the south and waterlow row to the east. Don't forget to look around you can find useful items for your journey"
   },
   "Ballard": {
     "customer": "Gazzy Colon",
     "directions" : {"north": "sunnyside park"},
-    "item": [],
+    "item": ["medicine"],
+      "packages":[],
     "adversary": "Rain storms with  high wind advisory!",
     "description": "RAIN STORM ADVISORY! SEVERE WIND ADVISORY!"
   },
@@ -22,13 +25,15 @@
      "directions" : {   "west": "sunnyside park",
                          "south": "hollywood blvd"},
     "item":["waterBalloons"] ,
+      "packages":[],
     "adversary":"dog",
     "description": "wow that's a scary dog. You better hope he is nice!"
   },
   "hollywood blvd": {
   "customer": "Bobby Singer",
      "directions" : {"north": "waterlow row",},
-     "item": [],
+     "item": ["sunscreen"],
+       "packages":[],
     "adversary":"thief",
     "description": "Oh no! this place is notorious for thieves. I better watch out."
   }
