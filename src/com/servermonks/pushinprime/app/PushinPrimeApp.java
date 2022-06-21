@@ -61,7 +61,7 @@ public class PushinPrimeApp {
 
     private void welcome() {
         PROMPTER.info("<img src=\"https://res.cloudinary.com/dile8hu1p/image/upload/v1655777095/pushinPrime_banner_t2m09s.png\" '/>");
-        PROMPTER.info("In pushingPrime you are an Amazon delivery driver. You are responsible for optimizing customer satisfaction by transporting and delivering goods, merchandise, and/or other items in a safe and timely manner.");
+        PROMPTER.info("In pushingPrime you are an Amazon delivery driver. You are responsible for maximizing customer satisfaction by transporting and delivering goods, merchandise, and/or other items in a safe and timely manner.");
     }
 
     public void help() {
@@ -69,7 +69,8 @@ public class PushinPrimeApp {
         PROMPTER.info(CYAN + "Seems that you need some Help!\n"+
                 "* To move type " + ORANGE + " go " + CYAN + " and the direction you want move " + GREEN + "(go north) " + CYAN + "\n" +
                 "* To look around type " + ORANGE + "look " + CYAN + "you will find useful items to complete your journey.\n" +
-                "* To pick up an item type" + ORANGE + " get " + CYAN + "and the item " + GREEN + "(get snacks)" + CYAN + "\n" +
+                "* To pick up an item type" + ORANGE + " get, grab, take or pick up " + CYAN + "and the item " + GREEN + "(get snacks)" + CYAN + "\n" +
+                "* If you miss a delivery type" + ORANGE + " deliver" + CYAN + " and you will be prompted to deliver package" + CYAN + "\n" +
                 "* If you have a map you can type " + ORANGE + "map " + CYAN + "to see your location.\n" +
                 "* Type " + ORANGE + "heal " + CYAN + "to heal yourself when needed.\n" +
                 "* To quit game type " + ORANGE +"quit game."+ RESET );
@@ -81,8 +82,8 @@ public class PushinPrimeApp {
                 "   *  As you explore the streets new locations will become available to explore.\n" +
                 "   *  A direction guide will show up under ever location to show what location can be explored next. \n" +
                 "   *  Don't forget your being timed. You got this! \n" +
-                "   *  If you need help type " + ORANGE + " help \n" + RESET +
-                "   *  The user password is " + ORANGE  + "password" + RESET);
+                "   *  If you need help type " + ORANGE + " help. \n" + RESET +
+                "   *  The user password is " + ORANGE  + "password." + RESET);
 
         PROMPTER.asciiArt(ORANGE + "================\\\n" +
                 " |----------||@  \\\\   ___\n" +
@@ -175,7 +176,7 @@ public class PushinPrimeApp {
     private void promptForUsername() throws InterruptedException {
 
         String username = PROMPTER.prompt("username ");
-        password = PROMPTER.prompt("password ").toLowerCase();
+        password = PROMPTER.prompt("password ");
         user = new Player(username);
         int totalAttempts = 2;
 
@@ -185,12 +186,12 @@ public class PushinPrimeApp {
                 Thread.sleep(3000);
                 PROMPTER.info("Authentication Successful !\n");
                 PROMPTER.info(" ");
-                PROMPTER.info(CYAN +"Welcome " +  username  + " to your first day as a Prime Driver");
+                PROMPTER.info(CYAN +"Welcome " + ORANGE +  username  + CYAN + " to your first day as a Prime Driver!");
                 PROMPTER.info(CYAN +"Your mission today is to deliver all of the packages correctly to our customers. I hope you're up for the challenge!");
                 PROMPTER.info(CYAN +"The orders for today are:"+ RESET);
                 PROMPTER.info("");
                 PROMPTER.info(data.getOrders());
-                PROMPTER.prompt( "If you have your order memorized Type 'Ready' to start your journey");
+                PROMPTER.prompt( "If you have your order memorized Type 'Ready' to start your journey!");
                 board.clear();
                 howToPlay();
                 break;
@@ -202,7 +203,7 @@ public class PushinPrimeApp {
                     Thread.sleep(3000);
                     PROMPTER.info("Authentication Successful !\n");
                     PROMPTER.info(" ");
-                    PROMPTER.info(CYAN +"Welcome " +  username  + " to your first day as a Prime Driver");
+                    PROMPTER.info(CYAN +"Welcome "+ ORANGE +  username  + CYAN +" to your first day as a Prime Driver");
                     PROMPTER.info(CYAN +"Your mission today is to deliver all of the packages correctly to our customers. I hope you're up for the challenge!");
                     PROMPTER.info(CYAN +"The orders for today are:"+ RESET);
                     PROMPTER.info("");
@@ -334,9 +335,19 @@ public class PushinPrimeApp {
         if (user.getHealth() > thiefHealth || user.getHealth() == thiefHealth) {
             PROMPTER.info(GREEN + "You fought like a pro !" + RESET);
             PROMPTER.info(GREEN + "You have earned yourself a " + RESET + ORANGE + badge + RESET);
-        } else if (thiefHealth > user.getHealth()) {
-            PROMPTER.info(RED + "The thief won :( " + RESET);
-            PROMPTER.info(RED + "You live to fight another day" + RESET);
+        } else {
+            try{
+                PROMPTER.info(RED + "The thief won :( " + RESET);
+                PROMPTER.info(RED + "You live to fight another day" + RESET);
+                board.clear();
+                String banner = Files.readString(Path.of("resources/loser"));
+                PROMPTER.asciiArt(banner);
+                Thread.sleep(3000);
+                gameOver();
+            }
+            catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         fightOver = true;
     }
