@@ -10,7 +10,10 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import static com.servermonks.pushinprime.Colors.*;
@@ -25,6 +28,7 @@ public class PushinPrimeApp {
     private FileDataReader data;
     private final String START_LOCATION = "warehouse";
     private String currentLocation = START_LOCATION;
+    private Hashtable<String, Boolean> deliveryStatus = new Hashtable<>();
 
 
     private boolean gameOver;
@@ -33,6 +37,7 @@ public class PushinPrimeApp {
 
     private boolean fightOver = false;
     private boolean playing = true;
+
 
 
 
@@ -55,7 +60,7 @@ public class PushinPrimeApp {
     }
 
     private void welcome() {
-        PROMPTER.info("<img src=\"https://i.ibb.co/Wxf5cJ4/pushin-Prime-banner.png\" '/>");
+        PROMPTER.info("<img src=\"https://res.cloudinary.com/dile8hu1p/image/upload/v1655777095/pushinPrime_banner_t2m09s.png\" '/>");
     }
 
     public void help() {
@@ -153,7 +158,6 @@ public class PushinPrimeApp {
     }
 
 
-
     public void showInventory() {
         List inventory = user.getInventory();
         if (inventory.size() > 0) {
@@ -229,13 +233,15 @@ public class PushinPrimeApp {
             help();
         } else if (commands[0].equals("go")) {
             String nextLocation = data.goToLocation(currentLocation, commands[1]) == null ? currentLocation : data.goToLocation(currentLocation, commands[1]);
-            currentLocation = nextLocation ;
+            currentLocation = nextLocation;
             showStatus();
             askForPackage();
 
         } else if (commands[0].equals("look")) {
-            user.look(data,currentLocation);
+            user.look(data, currentLocation);
 
+        } else if (route.equals("deliver")) {
+            askForPackage();
         } else if (route.equals("location")) {
             locations();
         } else if (commands[0].equals("grab") || commands[0].equals("take") || commands[0].equals("pick up")
@@ -244,14 +250,19 @@ public class PushinPrimeApp {
         } else if (route.equals("talk")) {
             user.talk(data, currentLocation);
 
-        }  else if (route.equals("heal")) {
+        } else if (route.equals("heal")) {
             user.heal();
-            PROMPTER.info("your health is recovering...");
-        }  else if (route.equals("health")) {
+        } else if (route.equals("health")) {
             PROMPTER.info("your health is: " + user.getHealth());
         } else if (commands[0].equals("drop")) {
             dropItem(commands[1]);
-        } else if (route.equals("quit game")) {
+        } else if (route.equals("map")) {
+      if(user.getInventory().contains("map")){
+            map();
+       }else{
+           PROMPTER.info("It seems that you don't have any map in your inventory!");
+        }
+      }else if (route.equals("quit game")) {
             playAgain();
 
         } else if (route.equals("attack")) {
@@ -265,7 +276,7 @@ public class PushinPrimeApp {
             help();
         }
 
-//        board.clear();
+        checkForWinner();
         getCommands();
 
     }
@@ -287,7 +298,7 @@ public class PushinPrimeApp {
             PROMPTER.info("Thief health: " + thiefHealth + " Your health: " + user.getHealth());
             String playerAttack = PROMPTER.prompt("Choose your attacks: \n (A) Punch.\n (B) Kick. \n (C) BodySlam.\n (D) Open Hand smack.");
             if ("A".equalsIgnoreCase(playerAttack)) {
-                //(playerAttack.toLowerCase().equals("a"))
+
                 PROMPTER.info("Crack! Right in the kisser!");
                 thiefHealth = thiefHealth - 25;
             }
@@ -322,7 +333,7 @@ public class PushinPrimeApp {
         }
         String badge = "PrimeMedallion";
         if (user.getHealth() > thiefHealth) {
-            System.out.println();
+
             PROMPTER.info(GREEN + "You fought like a pro !" + RESET);
             PROMPTER.info(GREEN + "You have earned yourself a " + RESET + ORANGE + badge + RESET);
         } else if (thiefHealth > user.getHealth()) {
@@ -342,13 +353,15 @@ public class PushinPrimeApp {
 
     public void playAgain() {
 
-        String playAgain = PROMPTER.prompt("Would you like to play again? " +
+        PROMPTER.info("Would you like to play again? " +
                 GREEN + " [N]ew Game " + RESET + "/" + YELLOW +
-                "[R]ematch" + RESET + "/" + RED + "[E]xit " + RESET + CYAN + "/" + "[S]ave " + RESET +
-                WHITE + "Please enter 'E', 'R','N' or 'S'" + RESET);
+                "[R]ematch" + RESET + "/" + RED + "[E]xit " + RESET + CYAN + "/" + "[S]ave " + RESET + "\n" +
+                MAGENTA + "Please enter 'E', 'R','N' or 'S'" + RESET);
+        String playAgain = PROMPTER.prompt("");
         if ("N".equalsIgnoreCase(playAgain)) {
             try {
                 board.stopClock();
+                currentLocation = START_LOCATION;
                 execute();
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -366,7 +379,7 @@ public class PushinPrimeApp {
 
             board.clear();
             welcome();
-            PROMPTER.info("Hello " + user.getName() + "you can resume de game you saved");
+            PROMPTER.info("Hello " + user.getName() + " you can resume de game you saved");
             String keepPlaying = PROMPTER.prompt("Would you like to load your saved game?").toLowerCase();
 
             if ("Y".equalsIgnoreCase(keepPlaying)) {
@@ -407,7 +420,7 @@ public class PushinPrimeApp {
     public void countdown() throws InterruptedException {
         board.startClock();
 
-        int timeElapsed = 1;
+        int timeElapsed = 6;
         long displayMinutes = 0;
         long startTime = System.currentTimeMillis();
         PROMPTER.info(YELLOW + "You have " + timeElapsed + " minutes till game over" + RESET);
@@ -433,12 +446,30 @@ public class PushinPrimeApp {
         }
     }
 
+    public void map() {
+        if(currentLocation.equals("Ballard")){
+            PROMPTER.info("<img src=\"https://res.cloudinary.com/dile8hu1p/image/upload/c_scale,w_386/v1655776418/ballard_q45ymc.png\" '/>");
+        }else if(currentLocation.equals("warehouse")){
+            PROMPTER.info("<img src=\"https://res.cloudinary.com/dile8hu1p/image/upload/c_scale,w_386/v1655776451/warehouse_hsdhze.png\" '/>");
+        }
+        else if(currentLocation.equals("waterlow row")){
+            PROMPTER.info("<img src=\"https://res.cloudinary.com/dile8hu1p/image/upload/c_scale,w_386/v1655776457/water_w52jzo.png\" '/>");
+        }
+        else if(currentLocation.equals("hollywood blvd")){
+            PROMPTER.info("<img src=\"https://res.cloudinary.com/dile8hu1p/image/upload/c_scale,w_386/v1655776438/hollywood_za0zlp.png\" '/>");
+        }
+        else if(currentLocation.equals("sunnyside park")){
+            PROMPTER.info("<img src=\"https://res.cloudinary.com/dile8hu1p/image/upload/c_scale,w_386/v1655776444/sunnyside_xcdujb.png\" '/>");
+        }
+
+    }
+
     private void distributePackages() {
         int packagesNum = 2;
         int random = 0;
         try {
             String[] packages = data.getPackages(START_LOCATION).join("-").split("-");
-            System.out.println(Arrays.toString(packages));
+
             ArrayList<String> customers = data.getKeys();
             ArrayList<String> setOfPackages = new ArrayList<>();
 
@@ -459,12 +490,12 @@ public class PushinPrimeApp {
 
 
                 }
-
+                deliveryStatus.put(customers.get(i), false);
             }
 
 
         } catch (JSONException e) {
-            System.out.println("here");
+
             e.printStackTrace();
         }
 
@@ -472,48 +503,96 @@ public class PushinPrimeApp {
 
     public void askForPackage() {
         ArrayList<String> locations = data.getKeys();
+        int counter = 0;
         ArrayList<JSONArray> customerOrders = new ArrayList<>();
+        ArrayList<JSONArray> randomDisplay = new ArrayList<>();
 
-        if (locations.contains(currentLocation)) {
+        if (locations.contains(currentLocation) && deliveryStatus.get(currentLocation).equals(false)) {
 
-            String playerTalks = PROMPTER.prompt("you can deliver your package here talk to the customer to get their name and deliver the package");
+            PROMPTER.info("You can deliver your package here" +
+                    GREEN + " talk " + RESET +
+                    "to the customer to get their name and deliver the package");
+            String playerTalks = PROMPTER.prompt("Talk?");
 
             if (playerTalks.equals("talk")) {
                 int random = 0;
                 ArrayList<Integer> temp = new ArrayList<>();
-                user.talk(data,currentLocation);
+                user.talk(data, currentLocation);
                 for (int i = 0; i < locations.size(); i++) {
+
                     int asciiValue = 65 + i;
                     char convertedChar = (char) asciiValue;
                     random = (int) (Math.random() * locations.size());
 
                     if (!temp.contains(random)) {
                         temp.add(random);
+                        randomDisplay.add(data.getPackages(locations.get(random)));
                         PROMPTER.info(convertedChar + " : " + data.getPackages(locations.get(random)));
                     } else {
                         i -= 1;
                     }
-                    customerOrders.add(data.getPackages(locations.get(i)));
+                    if (counter < locations.size()) {
+                        customerOrders.add(data.getPackages(locations.get(counter)));
+                        counter++;
+                    }
+
                 }
 
-               String deliverPackage = PROMPTER.prompt("Please choose from the following packages");
-                int index = deliverPackage.toUpperCase().charAt(0) -65;
-                
-                if ( customerOrders.get(index).equals(data.getPackages(currentLocation))){
-                    user.setCustomerSatisfaction(user.getCustomerSatisfaction() - (user.getCustomerSatisfaction()/customerOrders.size()));
-                    PROMPTER.info("Congrats! " + data.getNpc(currentLocation) + " is happy with the service");
-                    PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
-                }else{
-                    user.setCustomerSatisfaction(user.getCustomerSatisfaction() - (user.getCustomerSatisfaction()/customerOrders.size()));
-                    PROMPTER.info( data.getNpc(currentLocation) + " says sorry that was not what I ordered, I want a refund!");
-                    PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
 
+                String deliverPackage = PROMPTER.prompt("Please choose from the following packages");
+                int index = deliverPackage.toUpperCase().charAt(0) - 65;
 
+                if (index < locations.size()) {
+                    if (data.getPackages(currentLocation).equals(randomDisplay.get(index))) {
+                        user.setCustomerSatisfaction(user.getCustomerSatisfaction() + (100 / locations.size()));
+                        PROMPTER.info("Congrats! " + data.getNpc(currentLocation) + " is happy with the service");
+                        PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
+                        deliveryStatus.put(currentLocation, true);
+
+                    } else {
+                        user.setCustomerSatisfaction(user.getCustomerSatisfaction() - (100 / locations.size()));
+                        PROMPTER.info(data.getNpc(currentLocation) + " says sorry that was not what I ordered, I want a refund!");
+                        PROMPTER.info("your customer satisfaction is: " + user.getCustomerSatisfaction());
+                        deliveryStatus.put(currentLocation, true);
+
+                    }
+                } else {
+                    PROMPTER.info("That is not a correct option! Please try to " +
+                            GREEN + "deliver" + RESET +
+                            " again. ");
                 }
             }
+        } else {
+            PROMPTER.info("It seems that you have been here already! This customer already send feedback of your service.");
+            user.talk(data, currentLocation);
         }
+    }
 
+    private void checkForWinner() {
+        if (!deliveryStatus.values().contains(false)) {
+            if (user.getCustomerSatisfaction() > 50) {
+                try {
+                    board.clear();
+                    String banner = Files.readString(Path.of("resources/winner"));
+                    PROMPTER.asciiArt(banner);
+                    Thread.sleep(3000);
+                    playAgain();
+                } catch (InterruptedException | IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    board.clear();
+                    String banner = Files.readString(Path.of("resources/loser"));
+                    PROMPTER.asciiArt(banner);
+                    Thread.sleep(3000);
+                    playAgain();
+                } catch (InterruptedException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
+        }
     }
 
 
