@@ -346,7 +346,9 @@ public class PushinPrimeApp {
                 GREEN + " [N]ew Game " + RESET + "/" + YELLOW +
                 "[R]ematch" + RESET + "/" + RED + "[E]xit " + RESET + CYAN + "/" + "[S]ave " + RESET + "\n" +
                 ORANGE + "Please enter 'N', 'R','E' or 'S'" + RESET);
+
         String playAgain = PROMPTER.prompt("");
+
         if ("N".equalsIgnoreCase(playAgain)) {
             try {
                 board.stopClock();
