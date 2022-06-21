@@ -28,33 +28,9 @@ public class Prompter {
     }
 
     public void info(String var1) {
-        if (var1.contains(YELLOW.toString())) {
-            var1 = var1.replaceAll(YELLOW.toString(), "<span style=\"color:yellow;\">");
-        }
-        if (var1.contains(RED.toString())) {
-            var1 = var1.replaceAll(RED.toString(), "<span style=\"color:red;\">");
-        }
-        if (var1.contains(CYAN.toString())) {
-            var1 = var1.replaceAll(CYAN.toString(), "<span style=\"color:#00FFFF;\">");
-        }
-        if (var1.contains(MAGENTA.toString())) {
-            var1 = var1.replaceAll(MAGENTA.toString(), "<span style=\"color:#FF00FF;\">");
-        }
-        if (var1.contains(GREEN.toString())) {
-            var1 = var1.replaceAll(GREEN.toString(), "<span style=\"color:#00FF00;\">");
-        }
-        if (var1.contains(YELLOW.toString())) {
-            var1 = var1.replace(YELLOW.toString(), "<span style=\"color:#FFFF00;\">");
-        }
-        if (var1.contains(ORANGE.toString())) {
-            var1 = var1.replace(ORANGE.toString(), "<span style=\"color:#ffa500;\">");
-
-        }
-        if (var1.contains("RESET")) {
-            var1 = var1.replaceAll("RESET", "</span>");
-        }
+        var1 = addColorTags(var1);
         var1 = var1.replaceAll("\n", "<br/>");
-        var1 = "<span style=\"\">" + var1 + "</span><br/>";
+        var1 = var1 + "<br>";
         StyledDocument styleDoc = board.getTextPane().getStyledDocument();
         HTMLDocument doc = (HTMLDocument) styleDoc;
         Element last = doc.getParagraphElement(doc.getLength());
@@ -66,8 +42,7 @@ public class Prompter {
         scroll2bottom();
         try {
             String str = doc.getText(0, doc.getLength() - 1);
-//            System.out.println(str);
-//            System.out.println(board.getTextPane().getText());
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -83,23 +58,34 @@ public class Prompter {
 
     public String prompt(String message) {
         board.getCommandInput().setText("");
-//        if (message.substring(message.length() - 2, message.length() - 1).equals(":")) {
-//            message = message.substring(0, message.length() - 2);
-//        }
-        message = message.toLowerCase();
-        board.getCommandInput().setPlaceholder("enter " + message);
-        info("<b>" + message + ": </b>");
+        String placeholderMessage = stripColorTags(message);
+        board.getCommandInput().setPlaceholder(placeholderMessage);
+        info("<b>" + message + "</b>");
         return getInput();
     }
 
     public String prompt(String var1, String var2, String var3) {
-        String var4 = null;
-        while (true) {
+        String var4 = prompt(var1);
+        var3 = RED + var3 + RESET;
+        while (!var4.matches(var2)) {
             var4 = prompt(var3);
-            if (var4.matches(var2)) {
-                break;
-            }
         }
         return var4;
+    }
+
+    public String addColorTags(String message) {
+        Colors colors[] = Colors.values();
+        for(Colors color: colors) {
+            message = message.replaceAll(color.toString(),"<span style=\"color:"+color.toString()+";\">");
+        }
+        return message;
+    }
+
+    public String stripColorTags(String message) {
+        Colors colors[] = Colors.values();
+        for(Colors color: colors) {
+            message = message.replaceAll(color.toString(),"");
+        }
+        return message;
     }
 }

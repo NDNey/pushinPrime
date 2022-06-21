@@ -2,6 +2,7 @@ package com.servermonks.pushinprime.app;
 
 import com.servermonks.pushinprime.Board;
 import com.servermonks.pushinprime.FileDataReader;
+import com.servermonks.pushinprime.MysticSquare;
 import com.servermonks.pushinprime.Prompter;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,8 +41,6 @@ public class PushinPrimeApp {
 
 
 
-
-
     /*
      * Initial game execution:
      *  -> displays welcome banner, instructions and promps for player name
@@ -55,8 +54,6 @@ public class PushinPrimeApp {
         howToPlay();
         promptForUsername();
         countdown();
-
-
     }
 
     private void welcome() {
@@ -66,6 +63,7 @@ public class PushinPrimeApp {
 
     public void help() {
         PROMPTER.info(" ");
+
         PROMPTER.info(CYAN + "Seems that you need some Help!\n"+
                 "* To move type " + ORANGE + " go " + CYAN + " and the direction you want move " + GREEN + "(go north) " + CYAN + "\n" +
                 "* To look around type " + ORANGE + "look " + CYAN + "you will find useful items to complete your journey.\n" +
@@ -73,16 +71,20 @@ public class PushinPrimeApp {
                 "* If you miss a delivery type" + ORANGE + " deliver" + CYAN + " and you will be prompted to deliver package" + CYAN + "\n" +
                 "* If you have a map you can type " + ORANGE + "map " + CYAN + "to see your location.\n" +
                 "* Type " + ORANGE + "heal " + CYAN + "to heal yourself when needed.\n" +
+                "* To mute volume press the " +  ORANGE +"&#8594;" + CYAN + " key, to un-mute press &#8592; \n" +
+                "* To lower volume press the " + ORANGE + "&#8595;" + CYAN +" key, to raise press &#8593; \n" +
                 "* To quit game type " + ORANGE +"quit game."+ RESET );
+
     }
 
     private void howToPlay() {
+        PROMPTER.info("");
         PROMPTER.info(ORANGE + "How to play:" + RESET + "\n" + CYAN +
                 "   *  Deliver the correct packages to customers to earn customer satisfaction points.\n" +
                 "   *  As you explore the streets new locations will become available to explore.\n" +
                 "   *  A direction guide will show up under ever location to show what location can be explored next. \n" +
                 "   *  Don't forget your being timed. You got this! \n" +
-                "   *  If you need help type " + ORANGE + " help. \n" + RESET +
+                "   *  If you need help type " + ORANGE + " help. \n"+ CYAN +
                 "   *  The user password is " + ORANGE  + "password." + RESET);
 
         PROMPTER.asciiArt(ORANGE + "================\\\n" +
@@ -104,7 +106,6 @@ public class PushinPrimeApp {
         if (skidRow.equals("thief") && !fightOver) {
             PROMPTER.info(CYAN + "The neighborhood " + RED + "thief" + CYAN + " is coming straight towards you! use " + ORANGE + " Attack " + CYAN + "to fight for your packages!" + RESET);
         }
-        PROMPTER.info(" ");
     }
 
     public void getItem(String item) {
@@ -235,6 +236,7 @@ public class PushinPrimeApp {
 
         if (route.equals("help")) {
             help();
+
         } else if (commands[0].equals("go")) {
             String nextLocation = data.goToLocation(currentLocation, commands[1]) == null ? currentLocation : data.goToLocation(currentLocation, commands[1]);
             currentLocation = nextLocation;
@@ -264,7 +266,8 @@ public class PushinPrimeApp {
       if(user.getInventory().contains("map")){
             map();
        }else{
-           PROMPTER.info("It seems that you don't have any map in your inventory!");
+          PROMPTER.info("");
+           PROMPTER.info(RED + "It seems that you don't have any map in your inventory!" + RESET);
         }
       }else if (route.equals("quit game")) {
             playAgain();
@@ -353,11 +356,21 @@ public class PushinPrimeApp {
     }
 
     public void playAgain() {
-        PROMPTER.info("Would you like to play again? " +
-                GREEN + " [N]ew Game " + RESET + "/" + YELLOW +
-                "[R]ematch" + RESET + "/" + RED + "[E]xit " + RESET + CYAN + "/" + "[S]ave " + RESET + "\n" +
-                ORANGE + "Please enter 'N', 'R','E' or 'S'" + RESET);
-        String playAgain = PROMPTER.prompt("");
+
+
+        String playAgain = PROMPTER.prompt("Would you like to play again? " +
+                GREEN + " [N]ew Game " + RESET + YELLOW +
+                "[R]ematch" + RESET + RED + " [E]xit" + RESET + CYAN + " [S]ave " + RESET,
+                "^[EeRrNnSs]{1}$","Please enter 'E', 'R', 'N' or 'S'");
+
+//        PROMPTER.info("Would you like to play again? " +
+//                GREEN + " [N]ew Game " + RESET + "/" + YELLOW +
+//                "[R]ematch" + RESET + "/" + RED + "[E]xit " + RESET + CYAN + "/" + "[S]ave " + RESET + "\n" +
+//                ORANGE + "Please enter 'N', 'R','E' or 'S'" + RESET);
+//
+//        String playAgain = PROMPTER.prompt("");
+
+
         if ("N".equalsIgnoreCase(playAgain)) {
             try {
                 board.stopClock();
@@ -369,7 +382,9 @@ public class PushinPrimeApp {
 
         } else if ("R".equalsIgnoreCase(playAgain)) {
             board.clear();
+
             currentLocation = START_LOCATION;
+
             PROMPTER.info("Hello " + user.getName() + " welcome back for another round of PushinPrime!");
             getCommands();
 
@@ -438,6 +453,19 @@ public class PushinPrimeApp {
             }
         }
     }
+
+
+    public void playMysticSquare() {
+        MysticSquare mysticSquare = new MysticSquare();
+        mysticSquare.createBoard();
+        String gameBoard = mysticSquare.showBoard();
+        System.out.println(gameBoard);
+        PROMPTER.info(gameBoard);
+        while(!mysticSquare.isOver()) {
+            PROMPTER.prompt("choose a square: " + mysticSquare.showValidMoves());
+        }
+    }
+
 
     public void map() {
         if(currentLocation.equals("Ballard")){
@@ -555,7 +583,8 @@ public class PushinPrimeApp {
                 }
             }
         } else {
-            PROMPTER.info("It seems that you have been here already! This customer already send feedback of your service.");
+            PROMPTER.info("");
+            PROMPTER.info(RED + "It seems that you have been here already! This customer already sent feedback of your service." + RESET);
             user.talk(data, currentLocation);
         }
     }
@@ -592,3 +621,4 @@ public class PushinPrimeApp {
 
 
 }
+
